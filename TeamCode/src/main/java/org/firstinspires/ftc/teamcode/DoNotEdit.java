@@ -3,17 +3,15 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 //import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotor;
-import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import  com.qualcomm.robotcore.hardware.Gyroscope;
 import  com.qualcomm.robotcore.hardware.DigitalChannel;
 import  com.qualcomm.robotcore.hardware.DistanceSensor;
 import  com.qualcomm.robotcore.hardware.Servo;
+//import org.firstinspires.ftc.team code.Code1;
+@TeleOp(name = "DoNotEdit", group="Linear OpMode")
 
-@TeleOp(name = "NewJavaCode", group="Linear OpMode")
 
-
-public class NewJavaCode extends LinearOpMode {
-    //private Gyroscope imu;
+public class DoNotEdit extends LinearOpMode {
     private DcMotor motorOne;
     private DcMotor motorZero;
     private DcMotor motorTwo;
@@ -33,8 +31,7 @@ public class NewJavaCode extends LinearOpMode {
         //digitalTouch = hardwareMap.get(DigitalChannel.class, "digitalTouch");
         //sensorColorRange = hardwareMap.get(DistanceSensor.class, "sensorColorRange");
         // servoTest = hardwareMap.get(Servo.class, "servoTest");
-        motorZero.setDirection(DcMotor.Direction.REVERSE);
-        motorTwo.setDirection(DcMotor.Direction.REVERSE);
+
         telemetry.addData ("Initialized","is a win");
         telemetry.update();
         // Wait for the game to start (driver presses PLAY)
@@ -44,27 +41,19 @@ public class NewJavaCode extends LinearOpMode {
         // just a reminder it reads it line by line not all at once
         while (opModeIsActive()) {
             float tgtPower = -this.gamepad1.left_stick_y;
-           // float tgtReverse = -this.gamepad1.right_stick_y;
-            motorZero.setPower(tgtPower);
             motorOne.setPower(tgtPower);
             motorTwo.setPower(tgtPower);
             motorThree.setPower(tgtPower);
-            motorZero.setPower(gamepad1.right_stick_y);
-            motorThree.setPower(gamepad1.right_stick_y);
-            motorOne.setPower(gamepad1.right_stick_x);
-            motorTwo.setPower(gamepad1.right_stick_x);
-
-
-           //tgtPower can be named anything it is just a place holder for now
+            motorZero.setPower(tgtPower);
+            //tgtPower can be named anything it is just a place holder for now
             //Inside the () in line 48 basically says this is how you move this motor
-           // motorZero.setPower( -this.gamepad1.right_stick_y);
-         // line 50 to 52 just sends data to the hub this is an example and isn't
-//            telemetry.addData("Target Power", tgtPower);
-//            //telemetry.addData("Target Power", tgtReverse);
-//            telemetry.addData("Motor Power", motorZero.getPower());
-//            telemetry.addData("Motor Power", motorOne.getPower());
-//            telemetry.addData("Motor Power", motorTwo.getPower());
-//            telemetry.addData("Motor Power", motorThree.getPower());
+            // motorZero.setPower( -this.gamepad1.right_stick_y);
+            // line 50 to 52 just sends data to the hub this is an example and isn't
+            telemetry.addData("Target Power", tgtPower);
+            telemetry.addData("Motor Power", motorZero.getPower());
+            telemetry.addData("Motor Power", motorOne.getPower());
+            telemetry.addData("Motor Power", motorTwo.getPower());
+            telemetry.addData("Motor Power", motorThree.getPower());
             telemetry.addData("Status", "Running");
         }
         while (opModeIsActive()) {
