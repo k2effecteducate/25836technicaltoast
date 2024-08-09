@@ -35,9 +35,11 @@ public class auto extends LinearOpMode {
         while (opModeIsActive()) {
 
             motorThree.setPower(1);
-            motorThree.setPower(1);
-            motorThree.setPower(1);
-            motorThree.setPower(1);
+            motorTwo.setPower(1);
+            motorZero.setPower(1);
+            motorOne.setPower(1);
+
+
 
 
             telemetry.addData("Status", "Running");

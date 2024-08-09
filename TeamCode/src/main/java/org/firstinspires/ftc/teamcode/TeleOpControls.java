@@ -51,8 +51,22 @@ public class TeleOpControls extends LinearOpMode {
                 motorTwo.setPower(-0.7);
                 motorOne.setPower(-0.7);
                 motorThree.setPower(-0.7);
+            } else if (gamepad1.left_bumper) {
+                motorTwo.setDirection(DcMotor.Direction.FORWARD);
+                motorZero.setDirection(DcMotor.Direction.FORWARD);
+                motorZero.setPower(1);
+                motorTwo.setPower(-1);
+                motorOne.setPower(-1);
+                motorThree.setPower(1);
+            } else if (gamepad1.right_bumper) {
+                motorTwo.setDirection(DcMotor.Direction.FORWARD);
+                motorZero.setDirection(DcMotor.Direction.FORWARD);
+                motorZero.setPower(-1);
+                motorTwo.setPower(1);
+                motorOne.setPower(1);
+                motorThree.setPower(-1);
 
-            } else if (gamepad1.y){
+          } else if (gamepad1.y){
                 motorOne.setPower(1);
             } else if (gamepad1.x){
                 motorZero.setPower(1);
