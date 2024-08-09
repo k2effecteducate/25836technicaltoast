@@ -30,8 +30,6 @@ public class NewJavaCode extends LinearOpMode {
         motorTwo = hardwareMap.get(DcMotor.class, "motorTwo");
         motorOne = hardwareMap.get(DcMotor.class, "motorOne");
         motorZero = hardwareMap.get(DcMotor.class, "motorZero");
-        //digitalTouch = hardwareMap.get(DigitalChannel.class, "digitalTouch");
-        //sensorColorRange = hardwareMap.get(DistanceSensor.class, "sensorColorRange");
         // servoTest = hardwareMap.get(Servo.class, "servoTest");
         motorZero.setDirection(DcMotor.Direction.REVERSE);
         motorTwo.setDirection(DcMotor.Direction.REVERSE);
