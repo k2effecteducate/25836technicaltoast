@@ -1,6 +1,7 @@
 package org.firstinspires.ftc.teamcode;
 
 
+import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
@@ -38,10 +39,10 @@ When you use it please add comments to what the stuff does so our fellow team ma
 
             while (opModeIsActive()) {
               //This is where you put your code
-                float sideways = -(gamepad1.left_stick_x);
-               float y =-(gamepad1.left_stick_y);
-               float clock =-(gamepad1.left_trigger);
-               float counterClock =-(gamepad1.right_trigger);
+                float sideways = (-gamepad1.left_stick_x);
+               float y =(-gamepad1.left_stick_y);
+               float clock =(-gamepad1.left_trigger);
+               float counterClock =(-gamepad1.right_trigger);
                 motorOne.setPower(y);
                 motorTwo.setPower(y);
                 motorZero.setPower(y);
