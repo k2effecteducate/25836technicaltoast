@@ -22,7 +22,7 @@ public class TeleOpControls extends LinearOpMode {
 
     @Override
     public void runOpMode() {
-     //    imu = hardwareMap.get(Gyroscope.class, "imu");
+        //    imu = hardwareMap.get(Gyroscope.class, "imu");
         motorThree = hardwareMap.get(DcMotor.class, "motorThree");
         motorTwo = hardwareMap.get(DcMotor.class, "motorTwo");
         motorOne = hardwareMap.get(DcMotor.class, "motorOne");
@@ -51,7 +51,7 @@ public class TeleOpControls extends LinearOpMode {
                 motorTwo.setPower(-0.7);
                 motorOne.setPower(-0.7);
                 motorThree.setPower(-0.7);
-            } else if (gamepad1.left_bumper) {
+          /*  } else if (gamepad1.left_bumper) {
                 motorTwo.setDirection(DcMotor.Direction.FORWARD);
                 motorZero.setDirection(DcMotor.Direction.FORWARD);
                 motorZero.setPower(.6);
@@ -64,19 +64,12 @@ public class TeleOpControls extends LinearOpMode {
                 motorZero.setPower(-.6);
                 motorTwo.setPower(.6);
                 motorOne.setPower(.6);
-                motorThree.setPower(-.6);
+                motorThree.setPower(-.6); */
 
-            } else if (gamepad1.y) {
-                motorOne.setPower(1);
-            } else if (gamepad1.x) {
-                motorZero.setPower(1);
-            } else if (gamepad1.b) {
-                motorTwo.setPower(1);
-            } else if (gamepad1.a) {
-                motorThree.setPower(1);
 
             } else {
                 float forward = -this.gamepad1.left_stick_y;
+
                 motorTwo.setDirection(DcMotor.Direction.FORWARD);
                 motorZero.setDirection(DcMotor.Direction.FORWARD);
                 motorTwo.setPower(forward);
@@ -85,13 +78,24 @@ public class TeleOpControls extends LinearOpMode {
                 motorThree.setPower(forward);
 
 
+                float fowardSideways = this.gamepad1.left_stick_x;
+                float reverseSideways = -this.gamepad1.left_stick_x;
+                motorZero.setPower(reverseSideways);
+                motorTwo.setPower(reverseSideways);
+                motorOne.setPower(fowardSideways);
+                motorThree.setPower(fowardSideways);
+                float turn = -this.gamepad1.right_stick_x;
+                float rTurn = this.gamepad1.right_stick_x;
+                motorZero.setPower(turn);
+                motorTwo.setPower(rTurn);
+                motorOne.setPower(rTurn);
+                motorThree.setPower(turn);
+            }
+        }while (opModeIsActive()) {
+                    telemetry.addData("Status", "Running");
+                    telemetry.update();
+
+
+                }
             }
         }
-        while (opModeIsActive()) {
-            telemetry.addData("Status", "Running");
-            telemetry.update();
-
-
-        }
-    }
-}
