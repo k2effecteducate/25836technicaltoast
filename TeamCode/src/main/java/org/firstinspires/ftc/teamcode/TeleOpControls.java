@@ -23,10 +23,10 @@ public class TeleOpControls extends LinearOpMode {
     @Override
     public void runOpMode() {
         //    imu = hardwareMap.get(Gyroscope.class, "imu");
-        motorThree = hardwareMap.get(DcMotor.class, "motorThree");
-        motorTwo = hardwareMap.get(DcMotor.class, "motorTwo");
-        motorOne = hardwareMap.get(DcMotor.class, "motorOne");
-        motorZero = hardwareMap.get(DcMotor.class, "motorZero");
+        motorThree = hardwareMap.get(DcMotor.class, "backRight");
+        motorTwo = hardwareMap.get(DcMotor.class, "backLeft");
+        motorOne = hardwareMap.get(DcMotor.class, "frontRight");
+        motorZero = hardwareMap.get(DcMotor.class, "frontLeft");
         //digitalTouch = hardwareMap.get(DigitalChannel.class, "digitalTouch");
         //sensorColorRange = hardwareMap.get(DistanceSensor.class, "sensorColorRange");
         // servoTest = hardwareMap.get(Servo.class, "servoTest");
