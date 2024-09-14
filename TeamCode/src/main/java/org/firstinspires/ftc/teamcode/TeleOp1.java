@@ -48,38 +48,38 @@ public class TeleOp1 extends LinearOpMode {
             backRight.setDirection(DcMotor.Direction.REVERSE);
             servo2.setDirection(Servo.Direction.REVERSE);
             // motorThree.setDirection(DcMotor.Direction.REVERSE);
+
             if (gamepad1.dpad_right) {
 
                 frontRight.setPower(0.7);
                 frontLeft.setPower(-0.7);
-               backLeft.setPower(0.7);
+                backLeft.setPower(0.7);
                 backRight.setPower(-0.7);
             } else if (gamepad1.dpad_left) {
                 frontLeft.setPower(0.7);
                 frontRight.setPower(-0.7);
                 backLeft.setPower(-0.7);
                 backRight.setPower(0.7);
-            } else if (gamepad2.right_bumper) {
-                servo3.setPosition(1);
-            } else if (gamepad2.left_bumper) {
-                servo3.setPosition(-1);
+          //  } else if (gamepad2.right_bumper) {
+               // servo3.setPosition(.30);
+           // } else if (gamepad2.left_bumper) {
+               // servo3.setPosition(.47);
             } else if (gamepad2.b) {
-                servo1.setPosition(.2);
-                servo2.setPosition(.2);
-         //   } else if (gamepad2.a) {
+                servo1.setPosition(0.2);
+                servo2.setPosition(0.2);
+         //   } else if (gamepad2.a); {
 
 
 
         } else {
                 float forward = -this.gamepad1.left_stick_y;
-
+              //  float armUp = this.gamepad2.left_stick_y;
                backLeft.setDirection(DcMotor.Direction.FORWARD);
                frontLeft.setDirection(DcMotor.Direction.FORWARD);
                frontLeft.setPower(forward);
-                frontRight.setPower(forward);
-              backLeft.setPower(forward);
-                backRight.setPower(forward);
-
+               frontRight.setPower(forward);
+               backLeft.setPower(forward);
+               backRight.setPower(forward);
 
                 float fowardSideways = this.gamepad1.left_stick_x;
                 float reverseSideways = -this.gamepad1.left_stick_x;
@@ -96,7 +96,10 @@ public class TeleOp1 extends LinearOpMode {
                armMotor.setPower(0);
                servo2.setPosition(0);
                servo1.setPosition(0);
-               servo3.setPosition(0);
+
+float arm = this.gamepad2.left_stick_y;
+servo3.setPosition(arm);
+servo3.scaleRange(.155,.47);
 
             }
         }while (opModeIsActive()) {
