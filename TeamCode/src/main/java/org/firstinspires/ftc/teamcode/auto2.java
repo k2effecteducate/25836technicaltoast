@@ -1,15 +1,14 @@
 package org.firstinspires.ftc.teamcode;
 
-import java.lang.Math;
-import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
-//import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
-import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
-//import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
+import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.Servo;
 
-@Autonomous (name = "auto", group="Linear OpMode")
-public class auto extends LinearOpMode {
+
+
+@Autonomous(name = "auto", group="Linear OpMode")
+public class auto2 extends LinearOpMode {
 
     private DcMotor frontRight;
     private DcMotor frontLeft;
@@ -69,7 +68,7 @@ public class auto extends LinearOpMode {
         backward(.4, 100);
         strafeLeft(.4, 3100);
         strafeRight(.4, 6000);
-       // forwardDistance(.4,12);
+        // forwardDistance(.4,12);
 
 
         telemetry.addData("Status", "Running");
@@ -113,12 +112,12 @@ public class auto extends LinearOpMode {
         backLeft.setPower(0);
         backRight.setPower(0);
     }
- public void setMotorMode(DcMotor.RunMode mode){
-     frontLeft.setMode(mode);
-     frontRight.setMode(mode);
-     backLeft.setMode(mode);
-     backRight.setMode(mode);
- }
+    public void setMotorMode(DcMotor.RunMode mode){
+        frontLeft.setMode(mode);
+        frontRight.setMode(mode);
+        backLeft.setMode(mode);
+        backRight.setMode(mode);
+    }
 
     public void forwardDistance(double speed, double distance) {
         if (opModeIsActive()) {
@@ -132,18 +131,15 @@ public class auto extends LinearOpMode {
             backLeft.setTargetPosition(backLeftTarget);
             backRight.setTargetPosition(backRightTarget);
 
-           setMotorMode(DcMotor.RunMode.RUN_TO_POSITION);
+            setMotorMode(DcMotor.RunMode.RUN_TO_POSITION);
             forward(speed,0);
 
             while (opModeIsActive()&&frontLeft.isBusy()&&frontRight.isBusy()&&backLeft.isBusy()&&backRight.isBusy()) {
 
 
             }
-           stopMotors();
-           setMotorMode(DcMotor.RunMode.RUN_USING_ENCODER);
+            stopMotors();
+            setMotorMode(DcMotor.RunMode.RUN_USING_ENCODER);
         }
     }
 }
-
-
-

@@ -9,9 +9,9 @@ import com.qualcomm.robotcore.hardware.Servo;
 import org.java_websocket.framing.ContinuousFrame;
 
 
-@TeleOp(name = "buttons", group = "Linear OpMode")
+@TeleOp(name = "DriveTeleOp", group="Linear OpMode")
 
-public class buttons extends LinearOpMode {
+    public class DriveTeleOp extends LinearOpMode {
 
     private DcMotor frontRight;
     private DcMotor frontLeft;
@@ -51,23 +51,16 @@ public class buttons extends LinearOpMode {
             telemetry.update();
 
 
-            if (gamepad2.a) {
-                armMotor.setPower(-5);
-                sleep(5000);
-            } else {
-                armMotor.setPower(0);
-            }
-            if (gamepad2.x) {
-                servo1.setPosition(1);
-            } else {
-                servo1.setPosition(0);
-            }
-            if (gamepad2.y) {
-                armMotor.setPower(8);
+            if (gamepad2.left_bumper) {
+                servo2.setPosition(-.5);
+
+            } else if (gamepad2.right_bumper) {
+                servo2.setPosition(.5);
             } else {
                 double modifier = 1;
                 if (gamepad1.b)
                     modifier = 2;
+
                 double drive = -gamepad1.left_stick_y;
                 double turn = gamepad1.left_stick_x;
                 double strafe = gamepad1.right_stick_x;
@@ -83,44 +76,14 @@ public class buttons extends LinearOpMode {
                 servo2.setPosition(0);
 
 
-//
-//            if (gamepad2.left_bumper) {
-//                servo2.setPosition(-.5);
-//
-//            } else if (gamepad2.right_bumper) {
-//                servo2.setPosition(.5);
-//            } else {
-//                double modifier = 1;
-//                if (gamepad1.b)
-//                    modifier = 2;
-
-//                double drive = -gamepad1.left_stick_y;
-//                double turn = gamepad1.left_stick_x;
-//                double strafe = gamepad1.right_stick_x;
-//                double MrArm = gamepad2.right_stick_y;
-//                double MrHand = -gamepad2.left_stick_y;
-//                //  double clipTurn = -gamepad2.left_trigger;
-//                //  double Strait = gamepad2.right_trigger;
-//
-//                //    double MrSide = -gamepad2.left_stick_x;
-//
-//
-//                backLeft.setPower((drive - strafe - turn) / modifier);
-//                frontLeft.setPower((drive - strafe + turn) / modifier);
-//                backRight.setPower((drive + strafe + turn) / modifier);
-//                frontRight.setPower((drive + strafe - turn) / modifier);
-//                servo1.setPosition(MrHand);
-//                armMotor.setPower(MrArm);
-//                servo2.setPosition(0);
-
 
                 // servo2.setPosition(MrSide);
 
 
+                }
             }
         }
     }
-}
 
 
 

@@ -2,16 +2,15 @@ package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
-import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.Servo;
 
-import org.java_websocket.framing.ContinuousFrame;
+import org.firstinspires.ftc.robotcore.internal.camera.delegating.DelegatingCaptureSequence;
 
 
-@TeleOp(name = "buttons", group = "Linear OpMode")
+@TeleOp(name = "competition ", group = "Linear OpMode")
 
-public class buttons extends LinearOpMode {
+public class competition extends LinearOpMode {
 
     private DcMotor frontRight;
     private DcMotor frontLeft;
@@ -31,17 +30,14 @@ public class buttons extends LinearOpMode {
         frontLeft = hardwareMap.get(DcMotor.class, "frontLeft");
         armMotor = hardwareMap.get(DcMotor.class, "armMotor");
         servo1 = hardwareMap.get(Servo.class, "servo1");
-
-
         servo2 = hardwareMap.get(Servo.class, "servo2");
         // servo3 = hardwareMap.get(Servo.class, "servo3");
-
         frontLeft.setDirection(DcMotor.Direction.REVERSE);
         backLeft.setDirection(DcMotor.Direction.REVERSE);
-
         //  servo2.setDirection(Servo.Direction.REVERSE);
 
-        telemetry.addData("Initialized", "is a win");
+
+        telemetry.addData("Initialized", "It is working");
         telemetry.update();
         // Wait for the game to start (driver presses PLAY)
         waitForStart();
@@ -50,24 +46,19 @@ public class buttons extends LinearOpMode {
             telemetry.addData("on", "on");
             telemetry.update();
 
-
             if (gamepad2.a) {
-                armMotor.setPower(-5);
-                sleep(5000);
-            } else {
-                armMotor.setPower(0);
-            }
-            if (gamepad2.x) {
-                servo1.setPosition(1);
-            } else {
-                servo1.setPosition(0);
-            }
-            if (gamepad2.y) {
-                armMotor.setPower(8);
+              armMotor.setPower(-1);
+              sleep(5000000);
+
+            } else if (gamepad2.right_bumper) {
+                servo2.setPosition(.5);
             } else {
                 double modifier = 1;
                 if (gamepad1.b)
                     modifier = 2;
+
+
+
                 double drive = -gamepad1.left_stick_y;
                 double turn = gamepad1.left_stick_x;
                 double strafe = gamepad1.right_stick_x;
@@ -83,44 +74,14 @@ public class buttons extends LinearOpMode {
                 servo2.setPosition(0);
 
 
-//
-//            if (gamepad2.left_bumper) {
-//                servo2.setPosition(-.5);
-//
-//            } else if (gamepad2.right_bumper) {
-//                servo2.setPosition(.5);
-//            } else {
-//                double modifier = 1;
-//                if (gamepad1.b)
-//                    modifier = 2;
-
-//                double drive = -gamepad1.left_stick_y;
-//                double turn = gamepad1.left_stick_x;
-//                double strafe = gamepad1.right_stick_x;
-//                double MrArm = gamepad2.right_stick_y;
-//                double MrHand = -gamepad2.left_stick_y;
-//                //  double clipTurn = -gamepad2.left_trigger;
-//                //  double Strait = gamepad2.right_trigger;
-//
-//                //    double MrSide = -gamepad2.left_stick_x;
-//
-//
-//                backLeft.setPower((drive - strafe - turn) / modifier);
-//                frontLeft.setPower((drive - strafe + turn) / modifier);
-//                backRight.setPower((drive + strafe + turn) / modifier);
-//                frontRight.setPower((drive + strafe - turn) / modifier);
-//                servo1.setPosition(MrHand);
-//                armMotor.setPower(MrArm);
-//                servo2.setPosition(0);
-
 
                 // servo2.setPosition(MrSide);
 
 
+                }
             }
         }
     }
-}
 
 
 
