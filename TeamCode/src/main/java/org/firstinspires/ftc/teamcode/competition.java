@@ -19,6 +19,7 @@ public class competition extends LinearOpMode {
     private DcMotor armMotor;
     private Servo servo2;
     private Servo servo1;
+    private  DcMotor slideMotor;
     // private Servo servo3;
 
     @Override
@@ -29,6 +30,7 @@ public class competition extends LinearOpMode {
         frontRight = hardwareMap.get(DcMotor.class, "frontRight");
         frontLeft = hardwareMap.get(DcMotor.class, "frontLeft");
         armMotor = hardwareMap.get(DcMotor.class, "armMotor");
+        slideMotor = hardwareMap.get(DcMotor.class, "slideMotor");
         servo1 = hardwareMap.get(Servo.class, "servo1");
         servo2 = hardwareMap.get(Servo.class, "servo2");
         // servo3 = hardwareMap.get(Servo.class, "servo3");
@@ -47,8 +49,7 @@ public class competition extends LinearOpMode {
             telemetry.update();
 
             if (gamepad2.a) {
-              armMotor.setPower(-1);
-              sleep(5000000);
+                armMotor.setPower(-1);
 
             } else if (gamepad2.right_bumper) {
                 servo2.setPosition(.5);
@@ -64,6 +65,8 @@ public class competition extends LinearOpMode {
                 double strafe = gamepad1.right_stick_x;
                 double MrArm = gamepad2.right_stick_y;
                 double MrHand = -gamepad2.left_stick_y;
+                double MrSlideOut = gamepad2.left_trigger;
+                double MrSlideIn = -gamepad2.right_trigger;
 
                 backLeft.setPower((drive - strafe + turn) / modifier);
                 frontLeft.setPower((drive - strafe - turn) / modifier);
@@ -72,6 +75,9 @@ public class competition extends LinearOpMode {
                 servo1.setPosition(MrHand);
                 armMotor.setPower(MrArm);
                 servo2.setPosition(0);
+                slideMotor.setPower(MrSlideIn);
+                slideMotor.setPower(MrSlideOut);
+
 
 
 

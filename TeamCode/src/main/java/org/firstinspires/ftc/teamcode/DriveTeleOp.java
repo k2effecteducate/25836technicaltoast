@@ -6,6 +6,7 @@ import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.Servo;
 
+import org.firstinspires.ftc.robotcore.internal.camera.delegating.DelegatingCaptureSequence;
 import org.java_websocket.framing.ContinuousFrame;
 
 
@@ -20,6 +21,7 @@ import org.java_websocket.framing.ContinuousFrame;
     private DcMotor armMotor;
     private Servo servo2;
     private Servo servo1;
+    private  DcMotor slideMotor;
     // private Servo servo3;
 
     @Override
@@ -31,6 +33,7 @@ import org.java_websocket.framing.ContinuousFrame;
         frontLeft = hardwareMap.get(DcMotor.class, "frontLeft");
         armMotor = hardwareMap.get(DcMotor.class, "armMotor");
         servo1 = hardwareMap.get(Servo.class, "servo1");
+        slideMotor = hardwareMap.get(DcMotor.class,"slideMotor");
 
 
         servo2 = hardwareMap.get(Servo.class, "servo2");
@@ -51,8 +54,8 @@ import org.java_websocket.framing.ContinuousFrame;
             telemetry.update();
 
 
-            if (gamepad2.left_bumper) {
-                servo2.setPosition(-.5);
+            if (gamepad2.a) {
+                armMotor.setPower(-1);
 
             } else if (gamepad2.right_bumper) {
                 servo2.setPosition(.5);
@@ -60,27 +63,28 @@ import org.java_websocket.framing.ContinuousFrame;
                 double modifier = 1;
                 if (gamepad1.b)
                     modifier = 2;
-
+                if (gamepad2.x){
+                    armMotor.setTargetPosition(1);
+                    sleep(10000);
+                }
                 double drive = -gamepad1.left_stick_y;
                 double turn = gamepad1.left_stick_x;
                 double strafe = gamepad1.right_stick_x;
-                double MrArm = gamepad2.right_stick_y;
+                double MrArm = -gamepad2.right_stick_y;
                 double MrHand = -gamepad2.left_stick_y;
-
+                double MrSlideOut = gamepad2.right_trigger;
+                double MrSlideIn = -gamepad2.left_trigger;
                 backLeft.setPower((drive - strafe + turn) / modifier);
                 frontLeft.setPower((drive - strafe - turn) / modifier);
                 backRight.setPower((drive + strafe - turn) / modifier);
                 frontRight.setPower((drive + strafe + turn) / modifier);
                 servo1.setPosition(MrHand);
                 armMotor.setPower(MrArm);
+                slideMotor.setPower(-gamepad2.left_trigger);
+                slideMotor.setPower(gamepad2.right_trigger);
                 servo2.setPosition(0);
 
-
-
-                // servo2.setPosition(MrSide);
-
-
-                }
+            }
             }
         }
     }

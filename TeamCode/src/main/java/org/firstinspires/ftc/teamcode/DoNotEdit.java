@@ -7,7 +7,6 @@ import  com.qualcomm.robotcore.hardware.Gyroscope;
 import  com.qualcomm.robotcore.hardware.DigitalChannel;
 import  com.qualcomm.robotcore.hardware.DistanceSensor;
 import  com.qualcomm.robotcore.hardware.Servo;
-//import org.firstinspires.ftc.team code.Code1;
 @TeleOp(name = "DoNotEdit", group="Linear OpMode")
 
 
