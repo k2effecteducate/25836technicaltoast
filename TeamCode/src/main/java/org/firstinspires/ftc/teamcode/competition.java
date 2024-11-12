@@ -51,9 +51,9 @@ public class competition extends LinearOpMode {
             if (gamepad2.a) {
                 armMotor.setPower(-1);
 
-            } else if (gamepad2.right_bumper) {
+            }  if (gamepad2.right_bumper) {
                 servo2.setPosition(.5);
-            } else {
+
                 double modifier = 1;
                 if (gamepad1.b)
                     modifier = 2;

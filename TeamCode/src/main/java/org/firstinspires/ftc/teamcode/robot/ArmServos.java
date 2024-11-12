@@ -45,10 +45,10 @@ public class ArmServos {
         armMotor.setMode(mode);
     }
 
-    public void armDistance(double speed, double distance) {
+    public void setArmPosition(double speed, double distance, long holdArmTime) {
         if (opMode.opModeIsActive()) {
             int moveCounts = (int) (distance * COUNTS_PER_INCH);
-            armTarget = armMotor.getCurrentPosition();
+            armTarget = armMotor.getCurrentPosition() + moveCounts;
             armMotor.setTargetPosition(armTarget);
 
 
@@ -58,25 +58,42 @@ public class ArmServos {
 
 
             }
-            stopMotors();
-            setMotorMode(DcMotor.RunMode.RUN_USING_ENCODER);
+            if (holdArmTime > 0) {
+                opMode.sleep(holdArmTime);
+                stopMotors();
+                setMotorMode(DcMotor.RunMode.RUN_USING_ENCODER);
+
+            }
         }
     }
 
     public void closeServoTurn() {
         servo2.setPosition(.7);
     }
-    public void intakeClose(){
+
+    public void intakeClose() {
         servo1.setPosition(1);
     }
 
     public void openServoTurn() {
-        servo2.scaleRange(0,.01);
+        servo2.scaleRange(0, .01);
 
     }
 
     public void intakeOpen() {
         servo1.setPosition(0);
+    }
+
+    public void armTeleOp(double speed, double distance) {
+        if (opMode.opModeIsActive()) {
+            setMotorMode(DcMotor.RunMode.RUN_USING_ENCODER);
+            int moveCounts = (int) (distance * COUNTS_PER_INCH);
+            armTarget = armMotor.getCurrentPosition() + moveCounts;
+            armMotor.setTargetPosition(armTarget);
+
+            setMotorMode(DcMotor.RunMode.RUN_TO_POSITION);
+            arm(speed, 0);
+        }
     }
 }
 

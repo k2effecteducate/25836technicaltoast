@@ -82,6 +82,13 @@ public class Movement {
         backRight.setPower(-speed);
         opMode.sleep(time);
     }
+    public void turnRight(double speed,long time){
+        frontLeft.setPower(-speed);
+        frontRight.setPower(speed);
+        backLeft.setPower(-speed);
+        backRight.setPower(speed);
+        opMode.sleep(time);
+    }
 
     public void backward(double speed, long time) {
         frontLeft.setPower(-speed);
