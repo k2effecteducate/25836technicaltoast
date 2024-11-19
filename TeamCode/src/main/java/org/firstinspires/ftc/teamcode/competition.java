@@ -6,6 +6,8 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.Servo;
 
 import org.firstinspires.ftc.robotcore.internal.camera.delegating.DelegatingCaptureSequence;
+import org.firstinspires.ftc.teamcode.robot.ArmServos;
+import org.firstinspires.ftc.teamcode.robot.Movement;
 
 
 @TeleOp(name = "competition ", group = "Linear OpMode")
@@ -38,7 +40,11 @@ public class competition extends LinearOpMode {
         backLeft.setDirection(DcMotor.Direction.REVERSE);
         //  servo2.setDirection(Servo.Direction.REVERSE);
 
+        Movement movement = new Movement(this);
+        ArmServos armServos = new ArmServos(this);
 
+        movement.init();
+        armServos.init();
         telemetry.addData("Initialized", "It is working");
         telemetry.update();
         // Wait for the game to start (driver presses PLAY)
@@ -47,16 +53,23 @@ public class competition extends LinearOpMode {
         while (opModeIsActive()) {
             telemetry.addData("on", "on");
             telemetry.update();
+            double reset = 0;
+
 
             if (gamepad2.a) {
                 armMotor.setPower(-1);
-
-            }  if (gamepad2.right_bumper) {
+                sleep(100000000);
+            }
+            if (gamepad2.right_bumper) {
                 servo2.setPosition(.5);
-
+            }
+            if (gamepad2.left_bumper) {
+                servo2.setPosition(reset);
+            }
                 double modifier = 1;
-                if (gamepad1.b)
+                if (gamepad1.b) {
                     modifier = 2;
+                }
 
 
 
@@ -68,13 +81,14 @@ public class competition extends LinearOpMode {
                 double MrSlideOut = gamepad2.left_trigger;
                 double MrSlideIn = -gamepad2.right_trigger;
 
+
                 backLeft.setPower((drive - strafe + turn) / modifier);
                 frontLeft.setPower((drive - strafe - turn) / modifier);
                 backRight.setPower((drive + strafe - turn) / modifier);
                 frontRight.setPower((drive + strafe + turn) / modifier);
                 servo1.setPosition(MrHand);
                 armMotor.setPower(MrArm);
-                servo2.setPosition(0);
+                servo2.setPosition(reset);
                 slideMotor.setPower(MrSlideIn);
                 slideMotor.setPower(MrSlideOut);
 
@@ -84,12 +98,9 @@ public class competition extends LinearOpMode {
                 // servo2.setPosition(MrSide);
 
 
-                }
-            }
         }
     }
-
-
+}
 
 
 

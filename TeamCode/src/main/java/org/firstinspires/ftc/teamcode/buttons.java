@@ -66,8 +66,7 @@ public class buttons extends LinearOpMode {
                 armMotor.setPower(8);
             } else {
                 double modifier = 1;
-                if (gamepad1.b)
-                    modifier = 2;
+                if (gamepad1.b) modifier = 2;
                 double drive = -gamepad1.left_stick_y;
                 double turn = gamepad1.left_stick_x;
                 double strafe = gamepad1.right_stick_x;

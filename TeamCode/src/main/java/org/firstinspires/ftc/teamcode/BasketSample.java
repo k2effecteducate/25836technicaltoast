@@ -47,13 +47,16 @@ public class BasketSample extends LinearOpMode {
         armServos.intakeClose();
         movement.turnRight(.4, 1700);
         movement.stopMotors();
-        movement.strafeRight(.4, 600);
-        movement.forwardDistance(.4, 1230);
-        movement.strafeRight(.4, 800);
-        movement.turnRight(.4, 500);
+        //line below time was 600
+        movement.strafeRight(.3, 800);
+        movement.forwardDistance(.3, 1350);
+        movement.strafeRight(.3, 800);
         movement.stopMotors();
+        movement.turnRight(.4, 1300);
+        movement.stopMotors();
+       // movement.forwardDistance(.3,350);
         // armServos.arm(.8,1500);
-        armServos.setArmPosition(.4, 1500, 0);
+        armServos.setArmPosition(.4, 1800, 0);
 
 
         telemetry.addData("Status", "Running");

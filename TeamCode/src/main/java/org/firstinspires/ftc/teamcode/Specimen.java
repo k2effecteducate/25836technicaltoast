@@ -40,7 +40,7 @@ public class Specimen extends LinearOpMode {
         armServos.arm(.89, 860);
         // armMotor.setPower(0);
         // arm(-.3,200);
-       armServos.armDistance(0,0);
+       armServos.arm(0,0);
         //servo2.setPosition(-.7);
        armServos.intakeOpen();
         sleep(1000);

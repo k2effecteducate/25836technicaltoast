@@ -135,7 +135,26 @@ public class Movement {
             setMotorMode(DcMotor.RunMode.RUN_USING_ENCODER);
         }
     }
+    public void strafeRightDistance(double speed, long distance) {
+        if (opMode.opModeIsActive()) {
+            int moveCounts = (int) (distance * COUNTS_PER_INCH);
+            frontLeftTarget = -frontLeft.getCurrentPosition() + moveCounts;
+            backLeftTarget = backLeft.getCurrentPosition() + moveCounts;
+            frontRightTarget = frontRight.getCurrentPosition() + moveCounts;
+            backRightTarget = -backRight.getCurrentPosition() + moveCounts;
+            frontLeft.setTargetPosition(frontLeftTarget);
+            frontRight.setTargetPosition(frontRightTarget);
+            backLeft.setTargetPosition(backLeftTarget);
+            backRight.setTargetPosition(backRightTarget);
 
+            setMotorMode(DcMotor.RunMode.RUN_TO_POSITION);
+            strafeRight(speed, 0);
+            while (opMode.opModeIsActive() && frontLeft.isBusy() && frontRight.isBusy() && backLeft.isBusy() && backRight.isBusy()) {
+            }
+            stopMotors();
+            setMotorMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        }
+    }
     public void backwardDistance(double speed, double distance) {
         if (opMode.opModeIsActive()) {
             int moveCounts = (int) (distance * COUNTS_PER_INCH);
