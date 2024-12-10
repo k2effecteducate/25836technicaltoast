@@ -8,6 +8,7 @@ import com.qualcomm.robotcore.hardware.Servo;
 
 import org.firstinspires.ftc.robotcore.internal.camera.delegating.DelegatingCaptureSequence;
 import org.firstinspires.ftc.teamcode.robot.ArmServos;
+import org.firstinspires.ftc.teamcode.robot.Basket;
 import org.firstinspires.ftc.teamcode.robot.Movement;
 import org.java_websocket.framing.ContinuousFrame;
 
@@ -16,34 +17,12 @@ import org.java_websocket.framing.ContinuousFrame;
 
 public class DriveTeleOp extends LinearOpMode {
 
-    private DcMotor frontRight;
-    private DcMotor frontLeft;
-    private DcMotor backRight;
-    private DcMotor backLeft;
-    private DcMotor armMotor;
-    private Servo servo2;
-    private Servo servo1;
-    private DcMotor slideMotor;
-    // private Servo servo3;
+
 
     @Override
     public void runOpMode() {
-        //    imu = hardwareMap.get(Gyroscope.class, "imu");
-        backRight = hardwareMap.get(DcMotor.class, "backRight");
-        backLeft = hardwareMap.get(DcMotor.class, "backLeft");
-        frontRight = hardwareMap.get(DcMotor.class, "frontRight");
-        frontLeft = hardwareMap.get(DcMotor.class, "frontLeft");
-        armMotor = hardwareMap.get(DcMotor.class, "armMotor");
-        servo1 = hardwareMap.get(Servo.class, "servo1");
-        slideMotor = hardwareMap.get(DcMotor.class, "slideMotor");
 
 
-        servo2 = hardwareMap.get(Servo.class, "servo2");
-        // servo3 = hardwareMap.get(Servo.class, "servo3");
-        double modifier = 1;
-
-        frontLeft.setDirection(DcMotor.Direction.REVERSE);
-        backLeft.setDirection(DcMotor.Direction.REVERSE);
 
         //  servo2.setDirection(Servo.Direction.REVERSE);
 
@@ -51,52 +30,99 @@ public class DriveTeleOp extends LinearOpMode {
         telemetry.update();
         Movement movement = new Movement(this);
         ArmServos armServos = new ArmServos(this);
+        Basket basket = new Basket(this);
 
         movement.init();
+        basket.init();
         armServos.init();
+        //  armServos.servo3.setPosition(0);
         // Wait for the game to start (driver presses PLAY)
         waitForStart();
 
         while (opModeIsActive()) {
-            telemetry.addData("on", "on");
-            telemetry.update();
-
-
-            if (gamepad2.a) {
-                armMotor.setPower(-1);
-                sleep(100000000);
-            }
-            if (gamepad2.right_bumper) {
-                servo2.setPosition(.5);
-            }
-            if (gamepad2.left_bumper) {
-                servo2.setPosition(-.5);
-            }
-            if (gamepad2.start) movement.stopMotors();
-            armServos.stopMotors();
-            if (gamepad1.b) {
-                modifier = 2;
-            }
+//            telemetry.addData("on", "on");
+//            telemetry.addData("touchSensor", armServos.slideTouch.getState());
+//            telemetry.addData("gamepad.2,y", gamepad2.y);
+//            telemetry.addData("d-pad_up", gamepad2.dpad_up);
+//            telemetry.addData("d-pad_down", gamepad2.dpad_down);
+//            telemetry.addData("d-pad_left", gamepad2.dpad_left);
+//            telemetry.addData("d-pad_right", gamepad2.dpad_right);
+//            telemetry.addData("slide", armServos.slideMotor.getCurrentPosition());
+//            telemetry.addData("armMotor", armServos.armMotor.getCurrentPosition());
+//            telemetry.addData("armStick", gamepad2.right_stick_y);
+            double modifier = 1;
             double drive = -gamepad1.left_stick_y;
             double turn = gamepad1.left_stick_x;
             double strafe = gamepad1.right_stick_x;
-            double MrArm = -gamepad2.right_stick_y;
             double MrHand = -gamepad2.left_stick_y;
-            double MrSlideOut = gamepad2.right_trigger;
-            double MrSlideIn = -gamepad2.left_trigger;
-            backLeft.setPower((drive - strafe + turn) / modifier);
-            frontLeft.setPower((drive - strafe - turn) / modifier);
-            backRight.setPower((drive + strafe - turn) / modifier);
-            frontRight.setPower((drive + strafe + turn) / modifier);
-            servo1.setPosition(MrHand);
-            armMotor.setPower(-gamepad2.right_stick_y);
-            slideMotor.setPower(-gamepad2.left_trigger);
-            slideMotor.setPower(gamepad2.right_trigger);
-            servo2.setPosition(0);
+            movement.backLeft.setPower((drive - strafe + turn) / modifier);
+            movement.frontLeft.setPower((drive - strafe - turn) / modifier);
+            movement.backRight.setPower((drive + strafe - turn) / modifier);
+            movement.frontRight.setPower((drive + strafe + turn) / modifier);
 
+            armServos.armMotor.setPower(gamepad2.right_stick_y);
+
+
+            //arm Motor
+            if (gamepad2.back) {
+                basket.servo3.setPosition(.75);
+                sleep(1000);
+                armServos.setArmPosition(1,-50000,0);
+                movement.forwardDistance(1,10000);
+                armServos.setArmPosition(1, 1000,1000000000);
+//                armServos.armMotor.setPower(-1);
+//                sleep(100000000);
+            } else {
+                armServos.armMotor.setPower(gamepad2.right_stick_y);
+            }
+            if (gamepad2.dpad_left) {
+                armServos.closeServoTurn();
+                basket.startSlide();
+                armServos.setArmPosition(.5, -1450, 1000);
+
+            }
+
+                //servos
+                if (gamepad2.right_bumper) {
+                    armServos.closeServoTurn();
+
+                }
+                if (gamepad2.left_bumper) {
+                    armServos.servo2.setPosition(0);
+                }
+
+            if (gamepad2.x) {
+                //basket
+                basket.servoBasketDrop();
+            } else {
+                basket.servoBasketNormal();
+            }
+
+                //Slide Motor
+                if (gamepad2.y) {
+                    basket.startSlide();
+                }
+
+                if (gamepad2.dpad_down) {
+                    basket.slideTeleOp(.7, -1200);
+
+                }
+                if (gamepad2.dpad_up) {
+                    basket.slideTeleOp(.7, 1550);
+
+
+                    //Drive
+                }
+                if (gamepad1.b) {
+                    modifier = 2;
+                }
+                armServos.servo1.setPosition(-gamepad2.left_stick_y);
+
+             //  telemetry.update();
+            }
         }
     }
-}
+
 
 
 

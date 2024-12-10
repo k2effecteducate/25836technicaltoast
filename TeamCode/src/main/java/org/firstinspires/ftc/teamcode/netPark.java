@@ -1,6 +1,5 @@
 package org.firstinspires.ftc.teamcode;
 
-import java.lang.Math;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 //import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
@@ -8,8 +7,8 @@ import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 //import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.Servo;
 
-@Autonomous (name = "auto", group="Linear OpMode")
-public class auto extends LinearOpMode {
+@Autonomous (name = "netPark", group="Linear OpMode")
+public class netPark extends LinearOpMode {
 
     private DcMotor frontRight;
     private DcMotor frontLeft;

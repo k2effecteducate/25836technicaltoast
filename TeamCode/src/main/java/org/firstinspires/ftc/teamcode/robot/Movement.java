@@ -6,10 +6,10 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 
 public class Movement {
     private LinearOpMode opMode;
-    private DcMotor frontRight;
-    private DcMotor frontLeft;
-    private DcMotor backRight;
-    private DcMotor backLeft;
+    public DcMotor frontRight;
+    public DcMotor frontLeft;
+    public DcMotor backRight;
+    public DcMotor backLeft;
 
 
     private int frontLeftTarget = 0;
@@ -48,6 +48,7 @@ public class Movement {
         frontRight.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         backLeft.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         backRight.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+
 
 
     }
@@ -138,14 +139,14 @@ public class Movement {
     public void strafeRightDistance(double speed, long distance) {
         if (opMode.opModeIsActive()) {
             int moveCounts = (int) (distance * COUNTS_PER_INCH);
-            frontLeftTarget = -frontLeft.getCurrentPosition() + moveCounts;
+            frontLeftTarget = frontLeft.getCurrentPosition() + moveCounts;
             backLeftTarget = backLeft.getCurrentPosition() + moveCounts;
             frontRightTarget = frontRight.getCurrentPosition() + moveCounts;
-            backRightTarget = -backRight.getCurrentPosition() + moveCounts;
-            frontLeft.setTargetPosition(frontLeftTarget);
+            backRightTarget = backRight.getCurrentPosition() + moveCounts;
+            frontLeft.setTargetPosition(-frontLeftTarget);
             frontRight.setTargetPosition(frontRightTarget);
             backLeft.setTargetPosition(backLeftTarget);
-            backRight.setTargetPosition(backRightTarget);
+            backRight.setTargetPosition(-backRightTarget);
 
             setMotorMode(DcMotor.RunMode.RUN_TO_POSITION);
             strafeRight(speed, 0);
@@ -158,14 +159,14 @@ public class Movement {
     public void backwardDistance(double speed, double distance) {
         if (opMode.opModeIsActive()) {
             int moveCounts = (int) (distance * COUNTS_PER_INCH);
-            frontLeftTarget = -frontLeft.getCurrentPosition() + moveCounts;
-            backLeftTarget = -backLeft.getCurrentPosition() + moveCounts;
-            frontRightTarget = -frontRight.getCurrentPosition() + moveCounts;
-            backRightTarget = -backRight.getCurrentPosition() + moveCounts;
-            frontLeft.setTargetPosition(frontLeftTarget);
-            frontRight.setTargetPosition(frontRightTarget);
-            backLeft.setTargetPosition(backLeftTarget);
-            backRight.setTargetPosition(backRightTarget);
+            frontLeftTarget = frontLeft.getCurrentPosition() + moveCounts;
+            backLeftTarget = backLeft.getCurrentPosition() + moveCounts;
+            frontRightTarget = frontRight.getCurrentPosition() + moveCounts;
+            backRightTarget = backRight.getCurrentPosition() + moveCounts;
+            frontLeft.setTargetPosition(-frontLeftTarget);
+            frontRight.setTargetPosition(-frontRightTarget);
+            backLeft.setTargetPosition(-backLeftTarget);
+            backRight.setTargetPosition(-backRightTarget);
 
             setMotorMode(DcMotor.RunMode.RUN_TO_POSITION);
             backward(speed, 0);
@@ -183,12 +184,12 @@ public class Movement {
         if (opMode.opModeIsActive()) {
             int moveCounts = (int) (distance * COUNTS_PER_INCH);
             frontLeftTarget = frontLeft.getCurrentPosition() + moveCounts;
-            backLeftTarget = -backLeft.getCurrentPosition() + moveCounts;
-            frontRightTarget = -frontRight.getCurrentPosition() + moveCounts;
+            backLeftTarget = backLeft.getCurrentPosition() + moveCounts;
+            frontRightTarget = frontRight.getCurrentPosition() + moveCounts;
             backRightTarget = backRight.getCurrentPosition() + moveCounts;
             frontLeft.setTargetPosition(frontLeftTarget);
-            frontRight.setTargetPosition(frontRightTarget);
-            backLeft.setTargetPosition(backLeftTarget);
+            frontRight.setTargetPosition(-frontRightTarget);
+            backLeft.setTargetPosition(-backLeftTarget);
             backRight.setTargetPosition(backRightTarget);
 
             setMotorMode(DcMotor.RunMode.RUN_TO_POSITION);

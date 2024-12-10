@@ -2,16 +2,21 @@ package org.firstinspires.ftc.teamcode.robot;
 
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.DigitalChannel;
 import com.qualcomm.robotcore.hardware.Servo;
 
 public class ArmServos {
     private LinearOpMode opMode;
-    private DcMotor armMotor;
+    public DcMotor armMotor;
     public Servo servo1;
     public Servo servo2;
+    public Servo servo3;
+    public DcMotor slideMotor;
+    public DigitalChannel slideTouch;
 
 
     private int armTarget = 0;
+    private int slideTarget = 0;
 
     static final double COUNTS_PER_MOTOR_REV = 537.7;
     static final double DRIVE_GEAR_REDUCTION = 1.0;
@@ -28,6 +33,12 @@ public class ArmServos {
         armMotor = opMode.hardwareMap.get(DcMotor.class, "armMotor");
         servo1 = opMode.hardwareMap.get(Servo.class, "servo1");
         servo2 = opMode.hardwareMap.get(Servo.class, "servo2");
+        slideMotor = opMode.hardwareMap.get(DcMotor.class, "slideMotor");
+        slideTouch = opMode.hardwareMap.get(DigitalChannel.class, "slideTouch");
+        servo3 = opMode.hardwareMap.get(Servo.class, "servo3");
+        slideTouch.setMode(DigitalChannel.Mode.INPUT);
+        slideMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        armMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
 
 
     }
@@ -37,13 +48,20 @@ public class ArmServos {
         opMode.sleep(time);
     }
 
+
+
     public void stopMotors() {
         armMotor.setPower(0);
+        slideMotor.setPower(0);
     }
 
-    public void setMotorMode(DcMotor.RunMode mode) {
+    public void setArmMotorMode(DcMotor.RunMode mode) {
         armMotor.setMode(mode);
     }
+    public void setSlideMotorMode(DcMotor.RunMode mode) {
+        slideMotor.setMode(mode);
+    }
+
 
     public void setArmPosition(double speed, double distance, long holdArmTime) {
         if (opMode.opModeIsActive()) {
@@ -52,7 +70,7 @@ public class ArmServos {
             armMotor.setTargetPosition(armTarget);
 
 
-            setMotorMode(DcMotor.RunMode.RUN_TO_POSITION);
+            setArmMotorMode(DcMotor.RunMode.RUN_TO_POSITION);
             arm(speed, 0);
             while (opMode.opModeIsActive() && armMotor.isBusy()) {
 
@@ -61,14 +79,14 @@ public class ArmServos {
             if (holdArmTime > 0) {
                 opMode.sleep(holdArmTime);
                 stopMotors();
-                setMotorMode(DcMotor.RunMode.RUN_USING_ENCODER);
+                setArmMotorMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
             }
         }
     }
 
     public void closeServoTurn() {
-        servo2.setPosition(.7);
+        servo2.setPosition(.65);
     }
 
     public void intakeClose() {
@@ -83,19 +101,36 @@ public class ArmServos {
     public void intakeOpen() {
         servo1.setPosition(0);
     }
+    public void lock(){
+        setArmMotorMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        setArmMotorMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        armMotor.setTargetPosition(0);
+        arm(.2,0);
+    }
+    public void unlock() {
+        setArmMotorMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+    }
 
     public void armTeleOp(double speed, double distance) {
         if (opMode.opModeIsActive()) {
-            setMotorMode(DcMotor.RunMode.RUN_USING_ENCODER);
+            setArmMotorMode(DcMotor.RunMode.RUN_USING_ENCODER);
             int moveCounts = (int) (distance * COUNTS_PER_INCH);
             armTarget = armMotor.getCurrentPosition() + moveCounts;
             armMotor.setTargetPosition(armTarget);
+            opMode.telemetry.addData("armMotorTarget",armTarget);
 
-            setMotorMode(DcMotor.RunMode.RUN_TO_POSITION);
+
+            setArmMotorMode(DcMotor.RunMode.RUN_TO_POSITION);
             arm(speed, 0);
         }
     }
-}
+
+
+
+
+    }
+
+
 
 
 
