@@ -41,7 +41,7 @@ public class DriveTeleOp extends LinearOpMode {
 
         while (opModeIsActive()) {
 //            telemetry.addData("on", "on");
-//            telemetry.addData("touchSensor", armServos.slideTouch.getState());
+       //     telemetry.addData("touchSensor", armServos.slideTouch.getState());
 //            telemetry.addData("gamepad.2,y", gamepad2.y);
 //            telemetry.addData("d-pad_up", gamepad2.dpad_up);
 //            telemetry.addData("d-pad_down", gamepad2.dpad_down);
@@ -50,7 +50,11 @@ public class DriveTeleOp extends LinearOpMode {
 //            telemetry.addData("slide", armServos.slideMotor.getCurrentPosition());
 //            telemetry.addData("armMotor", armServos.armMotor.getCurrentPosition());
 //            telemetry.addData("armStick", gamepad2.right_stick_y);
+
             double modifier = 1;
+            if (gamepad1.b) {
+                modifier = 2;
+            }
             double drive = -gamepad1.left_stick_y;
             double turn = gamepad1.left_stick_x;
             double strafe = gamepad1.right_stick_x;
@@ -59,16 +63,19 @@ public class DriveTeleOp extends LinearOpMode {
             movement.frontLeft.setPower((drive - strafe - turn) / modifier);
             movement.backRight.setPower((drive + strafe - turn) / modifier);
             movement.frontRight.setPower((drive + strafe + turn) / modifier);
-
             armServos.armMotor.setPower(gamepad2.right_stick_y);
 
 
             //arm Motor
             if (gamepad2.back) {
+                movement.backLeft.setPower((drive - strafe + turn) / modifier);
+                movement.frontLeft.setPower((drive - strafe - turn) / modifier);
+                movement.backRight.setPower((drive + strafe - turn) / modifier);
+                movement.frontRight.setPower((drive + strafe + turn) / modifier);
                 basket.servo3.setPosition(.75);
-                sleep(1000);
+                sleep(2000);
                 armServos.setArmPosition(1,-50000,0);
-                movement.forwardDistance(1,10000);
+               // movement.forwardDistance(1,10000);
                 armServos.setArmPosition(1, 1000,1000000000);
 //                armServos.armMotor.setPower(-1);
 //                sleep(100000000);
@@ -76,9 +83,15 @@ public class DriveTeleOp extends LinearOpMode {
                 armServos.armMotor.setPower(gamepad2.right_stick_y);
             }
             if (gamepad2.dpad_left) {
+                movement.backLeft.setPower((drive - strafe + turn) / modifier);
+                movement.frontLeft.setPower((drive - strafe - turn) / modifier);
+                movement.backRight.setPower((drive + strafe - turn) / modifier);
+                movement.frontRight.setPower((drive + strafe + turn) / modifier);
                 armServos.closeServoTurn();
                 basket.startSlide();
-                armServos.setArmPosition(.5, -1450, 1000);
+                armServos.setArmPosition(.5, -1555, 1000);
+
+
 
             }
 
@@ -103,8 +116,11 @@ public class DriveTeleOp extends LinearOpMode {
                     basket.startSlide();
                 }
 
-                if (gamepad2.dpad_down) {
-                    basket.slideTeleOp(.7, -1200);
+
+            if (gamepad2.dpad_down) {
+                  //  basket.slideTeleOp(.7, -1200);
+                    basket.closeSlideTouch();
+
 
                 }
                 if (gamepad2.dpad_up) {
@@ -113,12 +129,10 @@ public class DriveTeleOp extends LinearOpMode {
 
                     //Drive
                 }
-                if (gamepad1.b) {
-                    modifier = 2;
-                }
+
                 armServos.servo1.setPosition(-gamepad2.left_stick_y);
 
-             //  telemetry.update();
+               telemetry.update();
             }
         }
     }

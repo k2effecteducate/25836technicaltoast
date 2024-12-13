@@ -67,9 +67,14 @@ public class Basket {
 
 
     public void closeSlideTouch() {
-        if (slideTouch.getState() == true) {
-            slideMotor.setPower(-.5);
+        setSlideMotorMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        if (!slideTouch.getState()) {
+            opMode.telemetry.addData("closing", slideTouch.getState());
+            slideMotor.setPower(0);
+            return;
         }
+        opMode.telemetry.addData("down", slideTouch.getState());
+        slideMotor.setPower(-.5);
     }
         public void closeSlide () {
             slideMotor.setPower(-.7);
@@ -85,6 +90,21 @@ public class Basket {
 
             setSlideMotorMode(DcMotor.RunMode.RUN_TO_POSITION);
             slide(speed, 0);
+
+        }
+    }
+    public void slideAuto(double speed, double distance) {
+        if (opMode.opModeIsActive()) {
+            setSlideMotorMode(DcMotor.RunMode.RUN_USING_ENCODER);
+            int moveCounts = (int) (distance * COUNTS_PER_INCH);
+            slideTarget = slideMotor.getCurrentPosition() + moveCounts;
+            slideMotor.setTargetPosition(slideTarget);
+
+            setSlideMotorMode(DcMotor.RunMode.RUN_TO_POSITION);
+            slide(speed, 0);
+            while (opMode.opModeIsActive() && slideMotor.isBusy()) {
+
+            }
         }
     }
 
@@ -94,7 +114,7 @@ public class Basket {
     }
 
     public void highBasketSlide() {
-        slideTeleOp(.3, 5000);
+        slideAuto(.3, 5000);
 
 
     }

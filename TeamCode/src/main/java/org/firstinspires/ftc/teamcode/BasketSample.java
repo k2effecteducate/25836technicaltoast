@@ -30,12 +30,10 @@ public class BasketSample extends LinearOpMode {
         //basket drop
         armServos.closeServoTurn();
         movement.backwardDistance(.5, 150);
-        movement.strafeRightDistance(.5, 765);
-
+        movement.strafeRightDistance(.5, 795);
         movement.stopMotors();
-        basket.highBasketSlide();
-        sleep(8000);
-        movement.turnRight(-.3,400);
+        basket.slideAuto(.5,1750);
+        movement.turnRight(-.3,500);
         movement.stopMotors();
         basket.slideMotor.setPower(.2);
         basket.servoBasketDrop();
