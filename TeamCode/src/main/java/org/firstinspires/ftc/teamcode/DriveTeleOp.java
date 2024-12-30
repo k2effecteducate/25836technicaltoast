@@ -2,31 +2,33 @@ package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
-import com.qualcomm.robotcore.hardware.CRServo;
-import com.qualcomm.robotcore.hardware.DcMotor;
-import com.qualcomm.robotcore.hardware.Servo;
 
-import org.firstinspires.ftc.robotcore.internal.camera.delegating.DelegatingCaptureSequence;
 import org.firstinspires.ftc.teamcode.robot.ArmServos;
 import org.firstinspires.ftc.teamcode.robot.Basket;
 import org.firstinspires.ftc.teamcode.robot.Movement;
-import org.java_websocket.framing.ContinuousFrame;
 
 
 @TeleOp(name = "DriveTeleOp", group = "Linear OpMode")
 
 public class DriveTeleOp extends LinearOpMode {
 
+    public enum RobotState {
+        SAMPLE_TRANSFER,
+        SAMPLE_COLLECTION,
+        ARM_BACK,
+        ARM_HANG,
+        ARM_RESET,
+        SLIDE_UP,
+        SLIDE_DOWN,
+        FIX_IT
+    }
+
+    RobotState robotState = RobotState.ARM_BACK;
 
 
     @Override
     public void runOpMode() {
-
-
-
-        //  servo2.setDirection(Servo.Direction.REVERSE);
-
-        telemetry.addData("Initialized", "is a win");
+        telemetry.addData("Initialized", "Press Start");
         telemetry.update();
         Movement movement = new Movement(this);
         ArmServos armServos = new ArmServos(this);
@@ -35,13 +37,11 @@ public class DriveTeleOp extends LinearOpMode {
         movement.init();
         basket.init();
         armServos.init();
-        //  armServos.servo3.setPosition(0);
         // Wait for the game to start (driver presses PLAY)
         waitForStart();
-
         while (opModeIsActive()) {
 //            telemetry.addData("on", "on");
-       //     telemetry.addData("touchSensor", armServos.slideTouch.getState());
+            //     telemetry.addData("touchSensor", armServos.slideTouch.getState());
 //            telemetry.addData("gamepad.2,y", gamepad2.y);
 //            telemetry.addData("d-pad_up", gamepad2.dpad_up);
 //            telemetry.addData("d-pad_down", gamepad2.dpad_down);
@@ -50,92 +50,226 @@ public class DriveTeleOp extends LinearOpMode {
 //            telemetry.addData("slide", armServos.slideMotor.getCurrentPosition());
 //            telemetry.addData("armMotor", armServos.armMotor.getCurrentPosition());
 //            telemetry.addData("armStick", gamepad2.right_stick_y);
-
-            double modifier = 1;
-            if (gamepad1.b) {
-                modifier = 2;
-            }
-            double drive = -gamepad1.left_stick_y;
-            double turn = gamepad1.left_stick_x;
-            double strafe = gamepad1.right_stick_x;
-            double MrHand = -gamepad2.left_stick_y;
-            movement.backLeft.setPower((drive - strafe + turn) / modifier);
-            movement.frontLeft.setPower((drive - strafe - turn) / modifier);
-            movement.backRight.setPower((drive + strafe - turn) / modifier);
-            movement.frontRight.setPower((drive + strafe + turn) / modifier);
-            armServos.armMotor.setPower(gamepad2.right_stick_y);
-
-
-            //arm Motor
-            if (gamepad2.back) {
-                movement.backLeft.setPower((drive - strafe + turn) / modifier);
-                movement.frontLeft.setPower((drive - strafe - turn) / modifier);
-                movement.backRight.setPower((drive + strafe - turn) / modifier);
-                movement.frontRight.setPower((drive + strafe + turn) / modifier);
-                basket.servo3.setPosition(.75);
-                sleep(2000);
-                armServos.setArmPosition(1,-50000,0);
-               // movement.forwardDistance(1,10000);
-                armServos.setArmPosition(1, 1000,1000000000);
-//                armServos.armMotor.setPower(-1);
-//                sleep(100000000);
-            } else {
-                armServos.armMotor.setPower(gamepad2.right_stick_y);
-            }
-            if (gamepad2.dpad_left) {
-                movement.backLeft.setPower((drive - strafe + turn) / modifier);
-                movement.frontLeft.setPower((drive - strafe - turn) / modifier);
-                movement.backRight.setPower((drive + strafe - turn) / modifier);
-                movement.frontRight.setPower((drive + strafe + turn) / modifier);
-                armServos.closeServoTurn();
-                basket.startSlide();
-                armServos.setArmPosition(.5, -1555, 1000);
-
-
-
-            }
-
-                //servos
-                if (gamepad2.right_bumper) {
-                    armServos.closeServoTurn();
-
-                }
-                if (gamepad2.left_bumper) {
-                    armServos.servo2.setPosition(0);
-                }
-
-            if (gamepad2.x) {
-                //basket
+            if (gamepad2.b) {
                 basket.servoBasketDrop();
             } else {
                 basket.servoBasketNormal();
             }
-
-                //Slide Motor
-                if (gamepad2.y) {
-                    basket.startSlide();
-                }
+            movement.teleOpControls();
 
 
-            if (gamepad2.dpad_down) {
-                  //  basket.slideTeleOp(.7, -1200);
+            telemetry.addData("state", robotState);
+            switch (robotState) {
+                case FIX_IT:
+                    movement.teleOpControls();
+                    if (gamepad2.y) {
+                        robotState = RobotState.SAMPLE_COLLECTION;
+                    }
+                    if (gamepad2.x) {
+                        robotState = RobotState.SAMPLE_TRANSFER;
+                    }
+
+                    if (gamepad2.dpad_up) {
+                        robotState = RobotState.SLIDE_UP;
+                    }
+                    if (gamepad2.dpad_down) {
+                        robotState = RobotState.SLIDE_DOWN;
+                    }
+                    if (gamepad2.a) {
+                        robotState = RobotState.ARM_BACK;
+
+                    }
+
+                    break;
+                case SLIDE_DOWN:
                     basket.closeSlideTouch();
+                    movement.teleOpControls();
+                    if (gamepad2.y) {
+                        robotState = RobotState.SAMPLE_COLLECTION;
+                    }
+                    if (gamepad2.x) {
+                        robotState = RobotState.SAMPLE_TRANSFER;
+                    }
+                    if (gamepad2.a) {
+                        robotState = RobotState.ARM_HANG;
+                    }
+                    if (gamepad2.start) {
+                        robotState = RobotState.FIX_IT;
+                    }
+                    if (gamepad2.dpad_up) {
+                        robotState = RobotState.SLIDE_UP;
+                    }
+                    break;
+                case SLIDE_UP:
+                    basket.highBasketSlide();
+                    movement.teleOpControls();
+                    if (gamepad2.b) {
+                        basket.servoBasketDrop();
+                    } else {
+                        basket.servoBasketNormal();
+                    }
+                    if (gamepad2.y) {
+                        robotState = RobotState.SAMPLE_COLLECTION;
+                    }
+                    if (gamepad2.x) {
+                        robotState = RobotState.SAMPLE_TRANSFER;
+                    }
+                    if (gamepad2.a) {
+                        robotState = RobotState.ARM_HANG;
+                    }
+                    if (gamepad2.dpad_down) {
+                        robotState = RobotState.SLIDE_DOWN;
+                    }
+                    if (gamepad2.start) {
+                        robotState = RobotState.FIX_IT;
+                    }
+                    break;
+                case ARM_HANG:
+                    armServos.armHang();
+                    movement.teleOpControls();
+                    if (gamepad2.y) {
+                        robotState = RobotState.ARM_RESET;
+                    }
+                    if (gamepad2.a) {
+                        robotState = RobotState.ARM_BACK;
+                    }
+                    if (gamepad2.dpad_up) {
+                        robotState = RobotState.SLIDE_UP;
+                    }
+                    if (gamepad2.dpad_down) {
+                        robotState = RobotState.SLIDE_DOWN;
+                    }
+                    if (gamepad2.start) {
+                        robotState = RobotState.FIX_IT;
+                    }
+                    break;
 
-
-                }
-                if (gamepad2.dpad_up) {
-                    basket.slideTeleOp(.7, 1550);
-
-
-                    //Drive
-                }
-
-                armServos.servo1.setPosition(-gamepad2.left_stick_y);
-
-               telemetry.update();
+                case ARM_BACK:
+                    armServos.armBack();
+                    movement.teleOpControls();
+                    if (gamepad2.y) {
+                        robotState = RobotState.SAMPLE_COLLECTION;
+                    }
+                    if (gamepad2.x) {
+                        robotState = RobotState.SAMPLE_TRANSFER;
+                    }
+                    if (gamepad2.a) {
+                        robotState = RobotState.ARM_HANG;
+                    }
+                    if (gamepad2.dpad_up) {
+                        robotState = RobotState.SLIDE_UP;
+                    }
+                    if (gamepad2.dpad_down) {
+                        robotState = RobotState.SLIDE_DOWN;
+                    }
+                    if (gamepad2.start) {
+                        robotState = RobotState.FIX_IT;
+                    }
+                    break;
+                case SAMPLE_TRANSFER:
+                    armServos.closeServoTurn();
+                    basket.startSlidePID();
+                    armServos.transfer();
+                    movement.teleOpControls();
+                    if (gamepad2.a) {
+                        robotState = RobotState.ARM_BACK;
+                    }
+                    if (gamepad2.y) {
+                        robotState = RobotState.ARM_RESET;
+                    }
+                    if (gamepad2.dpad_up) {
+                        robotState = RobotState.SLIDE_UP;
+                    }
+                    if (gamepad2.dpad_down) {
+                        robotState = RobotState.SLIDE_DOWN;
+                    }
+                    if (gamepad2.start) {
+                        robotState = RobotState.FIX_IT;
+                    }
+                    break;
+                case SAMPLE_COLLECTION:
+                    armServos.openServoTurn();
+                    armServos.collection();
+                    movement.teleOpControls();
+                    if (gamepad2.x) {
+                        robotState = RobotState.SAMPLE_TRANSFER;
+                    }
+                    if (gamepad2.y) {
+                        robotState = RobotState.ARM_RESET;
+                    }
+                    if (gamepad2.dpad_up) {
+                        robotState = RobotState.SLIDE_UP;
+                    }
+                    if (gamepad2.dpad_down) {
+                        robotState = RobotState.SLIDE_DOWN;
+                    }
+                    if (gamepad2.start) {
+                        robotState = RobotState.FIX_IT;
+                    }
+                    if (gamepad2.a) {
+                        robotState = RobotState.ARM_BACK;
+                    }
+                    break;
+                case ARM_RESET:
+                    armServos.armReset();
+                    movement.teleOpControls();
+                    if (gamepad2.y) {
+                        robotState = RobotState.SAMPLE_COLLECTION;
+                    }
+                    if (gamepad2.x) {
+                        robotState = RobotState.SAMPLE_TRANSFER;
+                    }
+                    if (gamepad2.dpad_up) {
+                        robotState = RobotState.SLIDE_UP;
+                    }
+                    if (gamepad2.dpad_down) {
+                        robotState = RobotState.SLIDE_DOWN;
+                    }
+                    if (gamepad2.start) {
+                        robotState = RobotState.FIX_IT;
+                    }
+                    if (gamepad2.a) {
+                        robotState = RobotState.ARM_BACK;
+                    }
+                    break;
             }
+//
+            //Drive
+
+            // armServos.teleOpArmControls();
+            armServos.teleOpIntakeControls();
+            telemetry.addData("current position", basket.slideMotor.getCurrentPosition());
+            //arm Motor
+            if (gamepad2.back) {
+                movement.teleOpControls();
+                basket.servo3.setPosition(.75);
+            }
+//                sleep(2000);
+//                armServos.setArmPosition(1, -50000, 0);
+//                armServos.setArmPosition(1, 1000, 1000000000);
+            //    } else {
+            // armServos.teleOpArmControls();
+            // this is the position for transfer for encoder
+            // armServos.setArmPosition(.5, -1555, 1000);
+
+
+            //servos
+            if (gamepad2.right_bumper) {
+                armServos.closeServoTurn();
+            }
+            if (gamepad2.left_bumper) {
+                armServos.openServoTurn();
+            }
+            //basket
+
+
+            //Slide Motor
+
+            telemetry.update();
         }
     }
+}
+
 
 
 

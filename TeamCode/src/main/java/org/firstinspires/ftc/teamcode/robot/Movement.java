@@ -50,6 +50,21 @@ public class Movement {
         backRight.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
 
+    }
+
+    public void teleOpControls() {
+        double modifier = 1;
+        if (opMode.gamepad1.b) {
+            modifier = 2;
+        }
+        double drive = -opMode.gamepad1.left_stick_y;
+        double turn = opMode.gamepad1.left_stick_x;
+        double strafe = opMode.gamepad1.right_stick_x;
+        double MrHand = -opMode.gamepad2.left_stick_y;
+        backLeft.setPower((drive - strafe + turn) / modifier);
+        frontLeft.setPower((drive - strafe - turn) / modifier);
+        backRight.setPower((drive + strafe - turn) / modifier);
+        frontRight.setPower((drive + strafe + turn) / modifier);
 
     }
 
@@ -76,14 +91,16 @@ public class Movement {
         backRight.setPower(-speed);
         opMode.sleep(time);
     }
-    public void turnLeft(double speed,long time){
+
+    public void turnLeft(double speed, long time) {
         frontLeft.setPower(speed);
         frontRight.setPower(-speed);
         backLeft.setPower(speed);
         backRight.setPower(-speed);
         opMode.sleep(time);
     }
-    public void turnRight(double speed,long time){
+
+    public void turnRight(double speed, long time) {
         frontLeft.setPower(-speed);
         frontRight.setPower(speed);
         backLeft.setPower(-speed);
@@ -136,6 +153,7 @@ public class Movement {
             setMotorMode(DcMotor.RunMode.RUN_USING_ENCODER);
         }
     }
+
     public void strafeRightDistance(double speed, long distance) {
         if (opMode.opModeIsActive()) {
             int moveCounts = (int) (distance * COUNTS_PER_INCH);
@@ -156,6 +174,7 @@ public class Movement {
             setMotorMode(DcMotor.RunMode.RUN_USING_ENCODER);
         }
     }
+
     public void backwardDistance(double speed, double distance) {
         if (opMode.opModeIsActive()) {
             int moveCounts = (int) (distance * COUNTS_PER_INCH);
@@ -180,6 +199,7 @@ public class Movement {
 
         }
     }
+
     public void strafeLeftDistance(double speed, double distance) {
         if (opMode.opModeIsActive()) {
             int moveCounts = (int) (distance * COUNTS_PER_INCH);
@@ -202,7 +222,6 @@ public class Movement {
             setMotorMode(DcMotor.RunMode.RUN_USING_ENCODER);
         }
     }
-
 
 
 }
