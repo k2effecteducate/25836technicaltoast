@@ -138,7 +138,7 @@ public class ArmServos {
     }
 
     public void transfer() {
-        int targetPosition = 1900;
+        int targetPosition = 1800;
 
         double command = PIDArm.update(targetPosition, armMotor.getCurrentPosition());
         opMode.telemetry.addData("command", command);
@@ -176,7 +176,7 @@ public class ArmServos {
     }
 
     public void armHang() {
-        int targetPosition = 2600;
+        int targetPosition = 3000;
 
         double command = PIDArm.update(targetPosition, armMotor.getCurrentPosition());
         armMotor.setPower(command);

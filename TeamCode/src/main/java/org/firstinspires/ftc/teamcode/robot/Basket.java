@@ -58,7 +58,13 @@ public class Basket {
 
 
     public void servoBasketDrop() {
+        servo3.setDirection(Servo.Direction.REVERSE);
         servo3.setPosition(.5);
+
+    }
+
+    public void servoBasketHang() {
+        servo3.setPosition(-.9);
 
     }
 
