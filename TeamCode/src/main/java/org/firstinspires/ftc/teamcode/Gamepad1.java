@@ -23,7 +23,7 @@ public class Gamepad1 extends LinearOpMode {
     private Servo servo2;
     private Servo servo1;
     private DcMotor slideMotor;
-     private Servo servo3;
+    private Servo servo3;
 
     @Override
     public void runOpMode() {
@@ -38,7 +38,7 @@ public class Gamepad1 extends LinearOpMode {
 
 
         servo2 = hardwareMap.get(Servo.class, "servo2");
-         servo3 = hardwareMap.get(Servo.class, "servo3");
+        servo3 = hardwareMap.get(Servo.class, "servo3");
         Movement movement = new Movement(this);
         ArmServos armServos = new ArmServos(this);
 
@@ -46,7 +46,6 @@ public class Gamepad1 extends LinearOpMode {
         armServos.init();
         frontLeft.setDirection(DcMotor.Direction.REVERSE);
         backLeft.setDirection(DcMotor.Direction.REVERSE);
-
 
 
         telemetry.addData("Initialized", "is a win");
@@ -80,12 +79,12 @@ public class Gamepad1 extends LinearOpMode {
                 //open slide doesn't work
                 // armServos.openSlide();
                 // armServos.slide(.4,5000);
-                armServos.servo3.setPosition(.5);
+                //armServos.servo3.setPosition(.5);
 
             }
             if (gamepad1.y) {
                 // armServos.closeSlide();
-                armServos.servo3.setPosition(-1);
+                //    armServos.servo3.setPosition(-1);
             }
 
 

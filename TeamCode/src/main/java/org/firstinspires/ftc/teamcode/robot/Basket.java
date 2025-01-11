@@ -1,6 +1,7 @@
 package org.firstinspires.ftc.teamcode.robot;
 
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
+import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.DigitalChannel;
@@ -46,8 +47,7 @@ public class Basket {
         slideMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
 
 
-        PIDSlide = new PIDController(0.01, 0, 0);
-
+        PIDSlide = new PIDController(-0.01, -0, -0);
 
     }
 
@@ -58,18 +58,25 @@ public class Basket {
 
 
     public void servoBasketDrop() {
-        servo3.setDirection(Servo.Direction.REVERSE);
-        servo3.setPosition(.5);
+        // servo3.setDirection(Servo.Direction.REVERSE);
+        servo3.setPosition(.34);
 
     }
 
     public void servoBasketHang() {
-        servo3.setPosition(-.9);
+        servo3.setPosition(0);
+
 
     }
 
     public void servoBasketNormal() {
         servo3.setPosition(0);
+
+
+    }
+
+    public void disableServo() {
+        servo3.getController().pwmDisable();
 
     }
 
@@ -92,11 +99,16 @@ public class Basket {
         }
         opMode.telemetry.addData("down", slideTouch.getState());
 
-        slideMotor.setPower(-.7);
+        slideMotor.setPower(.7);
     }
 
-    public void startSlide() {
-        slideTeleOp(.3, 386);
+    public void SlidePID() {
+        int targetPosition = 3200;
+
+        double command = PIDSlide.update(targetPosition, slideMotor.getCurrentPosition());
+        opMode.telemetry.addData("command", command);
+
+        slideMotor.setPower(command);
     }
 
     public void slideTeleOp(double speed, double distance) {
@@ -129,20 +141,39 @@ public class Basket {
 
     public void startSlidePID() {
         //  slideTeleOp(.3, 386);
-        int targetPosition = 400;
+        int targetPosition = 60;
 
         double command = PIDSlide.update(targetPosition, slideMotor.getCurrentPosition());
         opMode.telemetry.addData("command", command);
         opMode.telemetry.addData("currentPosition", slideMotor.getCurrentPosition());
 
         slideMotor.setPower(command);
-        setSlideMotorMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        setSlideMotorMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
 
 
     }
 
     public void highBasketSlide() {
+
         int targetPosition = 3200;
+
+        double command = PIDSlide.update(targetPosition, slideMotor.getCurrentPosition());
+        opMode.telemetry.addData("command", command);
+
+        slideMotor.setPower(command);
+    }
+
+    public void transferSlide() {
+        int targetPosition = -200;
+
+        double command = PIDSlide.update(targetPosition, slideMotor.getCurrentPosition());
+        opMode.telemetry.addData("command", command);
+
+        slideMotor.setPower(command);
+    }
+
+    public void startSlide() {
+        int targetPosition = 400;
 
         double command = PIDSlide.update(targetPosition, slideMotor.getCurrentPosition());
         opMode.telemetry.addData("command", command);

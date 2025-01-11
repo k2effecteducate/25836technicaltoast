@@ -1,6 +1,7 @@
 package org.firstinspires.ftc.teamcode.robot;
 
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
+import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.DigitalChannel;
@@ -138,7 +139,7 @@ public class ArmServos {
     }
 
     public void transfer() {
-        int targetPosition = 1800;
+        int targetPosition = 1840;
 
         double command = PIDArm.update(targetPosition, armMotor.getCurrentPosition());
         opMode.telemetry.addData("command", command);
@@ -176,7 +177,7 @@ public class ArmServos {
     }
 
     public void armHang() {
-        int targetPosition = 3000;
+        int targetPosition = 3100;
 
         double command = PIDArm.update(targetPosition, armMotor.getCurrentPosition());
         armMotor.setPower(command);
