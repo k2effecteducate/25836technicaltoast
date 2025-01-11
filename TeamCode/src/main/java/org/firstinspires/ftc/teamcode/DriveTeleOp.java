@@ -285,6 +285,7 @@ public class DriveTeleOp extends LinearOpMode {
                 case HANG2:
                     basket.disableServo();
                     armServos.intakeClose();
+                    sleep(10);
                     armServos.armBack();
                     movement.teleOpControls();
 
