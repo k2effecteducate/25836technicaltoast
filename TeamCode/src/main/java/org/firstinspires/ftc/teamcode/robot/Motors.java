@@ -1,20 +1,21 @@
 package org.firstinspires.ftc.teamcode.robot;
 
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
-import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.DigitalChannel;
 import com.qualcomm.robotcore.hardware.Servo;
 
-public class ArmServos {
+public class Motors {
     private LinearOpMode opMode;
     public DcMotorEx armMotor;
     public Servo servo1;
     public Servo servo2;
     public Servo servo3;
-    public DcMotor slideMotor;
-    public DigitalChannel slideTouch;
+    public DcMotor slideMotor1;
+    public DcMotor slideMotor2;
+    public DigitalChannel slideTouch1;
+    public DigitalChannel slideTouch2;
     private PIDController PIDArm;
 
 
@@ -26,7 +27,7 @@ public class ArmServos {
     static final double WHEEL_DIAMETER_INCHES = 96;
     static final double COUNTS_PER_INCH = (COUNTS_PER_MOTOR_REV * DRIVE_GEAR_REDUCTION) / (WHEEL_DIAMETER_INCHES * 3.1415);
 
-    public ArmServos(LinearOpMode myOpMode) {
+    public Motors(LinearOpMode myOpMode) {
         opMode = myOpMode;
 
     }
@@ -37,11 +38,15 @@ public class ArmServos {
         armMotor = opMode.hardwareMap.get(DcMotorEx.class, "armMotor");
         servo1 = opMode.hardwareMap.get(Servo.class, "servo1");
         servo2 = opMode.hardwareMap.get(Servo.class, "servo2");
-        slideMotor = opMode.hardwareMap.get(DcMotor.class, "slideMotor");
-        slideTouch = opMode.hardwareMap.get(DigitalChannel.class, "slideTouch");
+        slideMotor1 = opMode.hardwareMap.get(DcMotor.class, "slideMotor1");
+        slideMotor2 = opMode.hardwareMap.get(DcMotor.class, "slideMotor2");
+        slideTouch1 = opMode.hardwareMap.get(DigitalChannel.class, "slideTouch1");
+        slideTouch2 = opMode.hardwareMap.get(DigitalChannel.class, "slideTouch1");
         servo3 = opMode.hardwareMap.get(Servo.class, "servo3");
-        slideTouch.setMode(DigitalChannel.Mode.INPUT);
-        slideMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        slideTouch1.setMode(DigitalChannel.Mode.INPUT);
+        slideTouch2.setMode(DigitalChannel.Mode.INPUT);
+        slideMotor1.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        slideMotor2.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         armMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         armMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         armMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
@@ -59,7 +64,7 @@ public class ArmServos {
 
     public void stopMotors() {
         armMotor.setPower(0);
-        slideMotor.setPower(0);
+        slideMotor1.setPower(0);
     }
 
     public void setArmMotorMode(DcMotor.RunMode mode) {
@@ -88,32 +93,14 @@ public class ArmServos {
         }
     }
 
-    public void closeServoTurn() {
-        servo2.setPosition(.65);
+    public void rightSlide(double speed, long time) {
+        slideMotor1.setPower(speed);
+        opMode.sleep(time);
     }
 
-    public void intakeClose() {
-        servo1.setPosition(1);
-    }
-
-    public void openServoTurn() {
-        servo2.setPosition(0);
-
-    }
-
-    public void intakeOpen() {
-        servo1.setPosition(0);
-    }
-
-    public void lock() {
-        setArmMotorMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        setArmMotorMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        armMotor.setTargetPosition(0);
-        arm(.2, 0);
-    }
-
-    public void unlock() {
-        setArmMotorMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+    public void leftslide(double speed, long time) {
+        slideMotor2.setPower(speed);
+        opMode.sleep(time);
     }
 
     public void armTeleOp(double speed, double distance) {
@@ -130,59 +117,9 @@ public class ArmServos {
         }
     }
 
-    public void teleOpArmControls() {
-        armMotor.setPower(opMode.gamepad2.right_stick_y);
-    }
 
-    public void teleOpIntakeControls() {
-        servo1.setPosition(-opMode.gamepad2.left_stick_y);
-    }
-
-    public void transfer() {
-        int targetPosition = 1840;
-
-        double command = PIDArm.update(targetPosition, armMotor.getCurrentPosition());
-        opMode.telemetry.addData("command", command);
-
-        armMotor.setPower(command);
-    }
-
-    public void armBack() {
-        int targetPosition = 55;
-
-        double command = PIDArm.update(targetPosition, armMotor.getCurrentPosition());
-        armMotor.setPower(command);
-        opMode.telemetry.addData("armMotorCurrentPosition", armMotor.getCurrentPosition());
-        opMode.telemetry.addData("armMotorCommand", command);
-
-
-    }
-
-    public void collection() {
-        int targetPosition = 4000;
-
-        double command = PIDArm.update(targetPosition, armMotor.getCurrentPosition());
-        armMotor.setPower(command);
-
-    }
-
-    public void armReset() {
-        opMode.telemetry.addData("armMotorCurrentPosition", armMotor.getCurrentPosition());
-
-        int targetPosition = 4700;
-
-        double command = PIDArm.update(targetPosition, armMotor.getCurrentPosition());
-        armMotor.setPower(command);
-        opMode.telemetry.addData("armMotorCommand", command);
-    }
-
-    public void armHang() {
-        int targetPosition = 3100;
-
-        double command = PIDArm.update(targetPosition, armMotor.getCurrentPosition());
-        armMotor.setPower(command);
-    }
 }
+
 
 
 

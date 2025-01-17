@@ -2,13 +2,12 @@ package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
-import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.Servo;
 
-import org.firstinspires.ftc.teamcode.robot.ArmServos;
+import org.firstinspires.ftc.teamcode.robot.Motors;
+import org.firstinspires.ftc.teamcode.robot.IntoTheDeep;
 import org.firstinspires.ftc.teamcode.robot.Movement;
-import org.java_websocket.framing.ContinuousFrame;
 
 
 @TeleOp(name = "Gamepad1", group = "Linear OpMode")
@@ -40,10 +39,12 @@ public class Gamepad1 extends LinearOpMode {
         servo2 = hardwareMap.get(Servo.class, "servo2");
         servo3 = hardwareMap.get(Servo.class, "servo3");
         Movement movement = new Movement(this);
-        ArmServos armServos = new ArmServos(this);
+        Motors motors = new Motors(this);
+        IntoTheDeep intoTheDeep = new IntoTheDeep(this);
 
         movement.init();
-        armServos.init();
+        motors.init();
+        intoTheDeep.init();
         frontLeft.setDirection(DcMotor.Direction.REVERSE);
         backLeft.setDirection(DcMotor.Direction.REVERSE);
 
@@ -65,7 +66,7 @@ public class Gamepad1 extends LinearOpMode {
             }
 
             if (gamepad1.right_bumper) {
-                armServos.closeServoTurn();
+                intoTheDeep.closeServoTurn();
                 //   }else
                 //  servo2.setPosition(0);
             }
@@ -77,14 +78,14 @@ public class Gamepad1 extends LinearOpMode {
 
             if (gamepad1.x) {
                 //open slide doesn't work
-                // armServos.openSlide();
-                // armServos.slide(.4,5000);
-                //armServos.servo3.setPosition(.5);
+                // motors.openSlide();
+                // motors.slide(.4,5000);
+                //motors.servo3.setPosition(.5);
 
             }
             if (gamepad1.y) {
-                // armServos.closeSlide();
-                //    armServos.servo3.setPosition(-1);
+                // motors.closeSlide();
+                //    motors.servo3.setPosition(-1);
             }
 
 

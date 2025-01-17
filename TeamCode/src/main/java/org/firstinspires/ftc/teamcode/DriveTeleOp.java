@@ -3,8 +3,9 @@ package org.firstinspires.ftc.teamcode;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
-import org.firstinspires.ftc.teamcode.robot.ArmServos;
-import org.firstinspires.ftc.teamcode.robot.Basket;
+import org.firstinspires.ftc.teamcode.robot.Motors;
+import org.firstinspires.ftc.teamcode.robot.Servos;
+import org.firstinspires.ftc.teamcode.robot.IntoTheDeep;
 import org.firstinspires.ftc.teamcode.robot.Movement;
 
 
@@ -32,12 +33,14 @@ public class DriveTeleOp extends LinearOpMode {
         telemetry.addData("Initialized", "Press Start");
         telemetry.update();
         Movement movement = new Movement(this);
-        ArmServos armServos = new ArmServos(this);
-        Basket basket = new Basket(this);
+        Motors motors = new Motors(this);
+        Servos servos = new Servos(this);
+        IntoTheDeep intoTheDeep = new IntoTheDeep(this);
 
         movement.init();
-        basket.init();
-        armServos.init();
+        servos.init();
+        motors.init();
+        intoTheDeep.init();
 
 
         // Wait for the game to start (driver presses PLAY)
@@ -45,36 +48,36 @@ public class DriveTeleOp extends LinearOpMode {
         while (opModeIsActive()) {
             //   telemetry.addData("servo3", basket.servo3.());
 //            telemetry.addData("on", "on");
-            //     telemetry.addData("touchSensor", armServos.slideTouch.getState());
+            //     telemetry.addData("touchSensor", motors.slideTouch.getState());
 //            telemetry.addData("gamepad.2,y", gamepad2.y);
 //            telemetry.addData("d-pad_up", gamepad2.dpad_up);
 //            telemetry.addData("d-pad_down", gamepad2.dpad_down);
 //            telemetry.addData("d-pad_left", gamepad2.dpad_left);
 //            telemetry.addData("d-pad_right", gamepad2.dpad_right);
-//            telemetry.addData("slide", armServos.slideMotor.getCurrentPosition());
-//            telemetry.addData("armMotor", armServos.armMotor.getCurrentPosition());
+//            telemetry.addData("slide", motors.slideMotor.getCurrentPosition());
+//            telemetry.addData("armMotor", motors.armMotor.getCurrentPosition());
 //            telemetry.addData("armStick", gamepad2.right_stick_y);
 
 
             movement.teleOpControls();
-            armServos.teleOpIntakeControls();
+            intoTheDeep.teleOpIntakeControls();
             if (gamepad2.b) {
-                armServos.intakeClose();
-                basket.servoBasketDrop();
+                intoTheDeep.intakeClose();
+                servos.servoBasketDrop();
                 sleep(100);
             } else {
-                basket.servoBasketNormal();
+                servos.servoBasketNormal();
             }
 
 
             telemetry.addData("state", robotState);
             switch (robotState) {
                 case FIX_IT:
-                    armServos.armMotor.setPower(0);
+                    motors.armMotor.setPower(0);
                     // basket.slideMotor.setPower(0);
-                    basket.servo3.setPosition(0);
-                    armServos.servo2.setPosition(0);
-                    armServos.servo1.setPosition(0);
+                    servos.servo3.setPosition(0);
+                    motors.servo2.setPosition(0);
+                    motors.servo1.setPosition(0);
                     movement.teleOpControls();
 
                     if (gamepad2.y) {
@@ -101,8 +104,8 @@ public class DriveTeleOp extends LinearOpMode {
 
                     break;
                 case SLIDE_DOWN:
-                    armServos.intakeClose();
-                    basket.closeSlideTouch();
+                    intoTheDeep.intakeClose();
+                    intoTheDeep.closeSlideTouch();
                     // basket.Slide();
                     movement.teleOpControls();
 
@@ -124,9 +127,9 @@ public class DriveTeleOp extends LinearOpMode {
 
                     break;
                 case SLIDE_UP:
-                    armServos.intakeClose();
+                    intoTheDeep.intakeClose();
 
-                    basket.highBasketSlide();
+                    intoTheDeep.highBasketSlide();
                     movement.teleOpControls();
 
                     if (gamepad2.y) {
@@ -148,8 +151,8 @@ public class DriveTeleOp extends LinearOpMode {
                     break;
                 case ARM_HANG:
                     //  basket.servoBasketHang();
-                    armServos.armHang();
-                    basket.disableServo();
+                    intoTheDeep.armHang();
+                    servos.disableServo3();
                     movement.teleOpControls();
                     if (gamepad2.dpad_right) {
                         robotState = RobotState.HANG2;
@@ -173,8 +176,8 @@ public class DriveTeleOp extends LinearOpMode {
                     break;
 
                 case ARM_BACK:
-                    armServos.intakeClose();
-                    armServos.armBack();
+                    intoTheDeep.intakeClose();
+                    intoTheDeep.armBack();
                     movement.teleOpControls();
 
                     if (gamepad2.y) {
@@ -201,10 +204,10 @@ public class DriveTeleOp extends LinearOpMode {
 
                     break;
                 case SAMPLE_TRANSFER:
-                    armServos.closeServoTurn();
-                    basket.startSlide();
+                    intoTheDeep.closeServoTurn();
+                    intoTheDeep.startSlide();
                     //   basket.transferSlide();
-                    armServos.transfer();
+                    intoTheDeep.transfer();
                     movement.teleOpControls();
 
                     if (gamepad2.a) {
@@ -228,8 +231,8 @@ public class DriveTeleOp extends LinearOpMode {
 
                     break;
                 case SAMPLE_COLLECTION:
-                    armServos.openServoTurn();
-                    armServos.collection();
+                    intoTheDeep.openServoTurn();
+                    intoTheDeep.collection();
                     movement.teleOpControls();
 
                     if (gamepad2.x) {
@@ -256,7 +259,7 @@ public class DriveTeleOp extends LinearOpMode {
 
                     break;
                 case ARM_RESET:
-                    armServos.armReset();
+                    intoTheDeep.armReset();
                     movement.teleOpControls();
 
                     if (gamepad2.y) {
@@ -283,10 +286,10 @@ public class DriveTeleOp extends LinearOpMode {
 
                     break;
                 case HANG2:
-                    basket.disableServo();
-                    armServos.intakeClose();
+                    servos.disableServo3();
+                    intoTheDeep.intakeClose();
                     sleep(10);
-                    armServos.armBack();
+                    intoTheDeep.armBack();
                     movement.teleOpControls();
 
                     if (gamepad2.y) {
@@ -344,10 +347,10 @@ public class DriveTeleOp extends LinearOpMode {
 
 
             if (gamepad2.right_bumper) {
-                armServos.closeServoTurn();
+                intoTheDeep.closeServoTurn();
             }
             if (gamepad2.left_bumper) {
-                armServos.openServoTurn();
+                intoTheDeep.openServoTurn();
             }
             telemetry.update();
         }

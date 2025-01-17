@@ -1,45 +1,40 @@
 package org.firstinspires.ftc.teamcode.robot;
-import com.qualcomm.robotcore.hardware.ColorSensor;
+
 import com.qualcomm.robotcore.hardware.DigitalChannel;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
-import com.qualcomm.robotcore.hardware.DistanceSensor;
-import com.qualcomm.robotcore.hardware.Gamepad;
-import com.qualcomm.robotcore.hardware.IMU;
-
 public class Sensors {
     private LinearOpMode opMode;
-    public DigitalChannel slideTouch;
-    public IMU imu;
-    public ColorSensor colorSensor;
-   // public DistanceSensor distanceSensor;
+    public DigitalChannel slideTouch1;
+    public DigitalChannel slideTouch2;
+    //public IMU imu;
+    //public ColorSensor colorSensor;
+    public DigitalChannel distanceSensor;
 
 
     public Sensors(LinearOpMode myOpMode) {
         opMode = myOpMode;
     }
+
     public void init() {
-        imu = opMode.hardwareMap.get(IMU.class, "imu");
-        slideTouch = opMode.hardwareMap.get(DigitalChannel.class, "slideTouch");
-        slideTouch.setMode(DigitalChannel.Mode.INPUT);
-        colorSensor = opMode.hardwareMap.get(ColorSensor.class,"color");
-       // distanceSensor = opMode.hardwareMap.get(DistanceSensor.class,"distance");
+        //  imu = opMode.hardwareMap.get(IMU.class, "imu");
+        slideTouch1 = opMode.hardwareMap.get(DigitalChannel.class, "slideTouch1");
+        slideTouch1.setMode(DigitalChannel.Mode.INPUT);
+        slideTouch2 = opMode.hardwareMap.get(DigitalChannel.class, "slideTouch2");
+        slideTouch2.setMode(DigitalChannel.Mode.INPUT);
+        //  colorSensor = opMode.hardwareMap.get(ColorSensor.class,"color");
+        distanceSensor = opMode.hardwareMap.get(DigitalChannel.class, "distance");
+        distanceSensor.setMode(DigitalChannel.Mode.INPUT);
 
+    }
 
+    public boolean isObjectDetected() {
 
-        }
-
-        public void colorBlue(){
-
-            // a way to read blue sample
-
-
-        }
-        public  void colorRed(){
-
-        }
+        return distanceSensor.getState();
 
 
     }
+
+}
 
 
