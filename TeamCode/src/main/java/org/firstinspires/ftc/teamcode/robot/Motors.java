@@ -61,10 +61,10 @@ public class Motors {
         opMode.sleep(time);
     }
 
-
     public void stopMotors() {
         armMotor.setPower(0);
         slideMotor1.setPower(0);
+        slideMotor2.setPower(0);
     }
 
     public void setArmMotorMode(DcMotor.RunMode mode) {
@@ -117,6 +117,22 @@ public class Motors {
         }
     }
 
+    public void closeSlideTouch() {
+        if (!slideTouch1.getState()) {
+            opMode.telemetry.addData("closing", slideTouch1.getState());
+            slideMotor1.setPower(0);
+            stopMotors();
+            return;
+        }
+        opMode.telemetry.addData("down", slideTouch1.getState());
+
+        slideMotor1.setPower(.7);
+    }
+
+    public void setSlideMotorMode(DcMotor.RunMode mode) {
+        slideMotor1.setMode(mode);
+        slideMotor2.setMode(mode);
+    }
 
 }
 

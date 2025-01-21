@@ -5,7 +5,7 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.Servo;
 
-import org.firstinspires.ftc.teamcode.robot.Basket;
+//import org.firstinspires.ftc.teamcode.robot.Basket;
 import org.firstinspires.ftc.teamcode.robot.IntoTheDeep;
 import org.firstinspires.ftc.teamcode.robot.Motors;
 import org.firstinspires.ftc.teamcode.robot.Movement;
@@ -33,11 +33,11 @@ public class competition extends LinearOpMode {
         telemetry.update();
         Movement movement = new Movement(this);
         Motors motors = new Motors(this);
-        Basket basket = new Basket(this);
+        //   Basket basket = new Basket(this);
         IntoTheDeep intoTheDeep = new IntoTheDeep(this);
 
         movement.init();
-        basket.init();
+        //   basket.init();
         motors.init();
         intoTheDeep.init();
 

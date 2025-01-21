@@ -4,6 +4,7 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
 import org.firstinspires.ftc.teamcode.robot.Motors;
+import org.firstinspires.ftc.teamcode.robot.Sensors;
 import org.firstinspires.ftc.teamcode.robot.Servos;
 import org.firstinspires.ftc.teamcode.robot.IntoTheDeep;
 import org.firstinspires.ftc.teamcode.robot.Movement;
@@ -36,11 +37,13 @@ public class DriveTeleOp extends LinearOpMode {
         Motors motors = new Motors(this);
         Servos servos = new Servos(this);
         IntoTheDeep intoTheDeep = new IntoTheDeep(this);
+        Sensors sensors = new Sensors(this);
 
         movement.init();
         servos.init();
         motors.init();
         intoTheDeep.init();
+        sensors.init();
 
 
         // Wait for the game to start (driver presses PLAY)
@@ -61,6 +64,7 @@ public class DriveTeleOp extends LinearOpMode {
 
             movement.teleOpControls();
             intoTheDeep.teleOpIntakeControls();
+            telemetry.addData("Distance", sensors.isObjectDetected());
             if (gamepad2.b) {
                 intoTheDeep.intakeClose();
                 servos.servoBasketDrop();
@@ -105,7 +109,7 @@ public class DriveTeleOp extends LinearOpMode {
                     break;
                 case SLIDE_DOWN:
                     intoTheDeep.intakeClose();
-                    intoTheDeep.closeSlideTouch();
+                    motors.closeSlideTouch();
                     // basket.Slide();
                     movement.teleOpControls();
 

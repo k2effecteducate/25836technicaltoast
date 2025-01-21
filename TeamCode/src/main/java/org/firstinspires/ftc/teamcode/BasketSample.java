@@ -41,7 +41,7 @@ public class BasketSample extends LinearOpMode {
         servos.servoBasketDrop();
         sleep(1000);
         servos.servoBasketNormal();
-        intoTheDeep.closeSlideTouch();
+        motors.closeSlideTouch();
         sleep(1000);
         movement.forwardDistance(.3, 500);
 

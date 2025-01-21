@@ -29,6 +29,11 @@ public class IntoTheDeep {
     static final double COUNTS_PER_INCH = (COUNTS_PER_MOTOR_REV * DRIVE_GEAR_REDUCTION) / (WHEEL_DIAMETER_INCHES * 3.1415);
     private PIDController PIDSlide1;
     private PIDController PIDSlide2;
+    public Motors motors;
+    public Movement movement;
+    public Servos servos;
+    public Sensors sensors;
+
 
     public IntoTheDeep(LinearOpMode myOpMode) {
         opMode = myOpMode;
@@ -57,22 +62,20 @@ public class IntoTheDeep {
         PIDArm = new PIDController(.01, 0, .03);
         PIDSlide1 = new PIDController(-0.01, -0, -0);
         PIDSlide2 = new PIDController(-0.01, -0, -0);
+        motors = new Motors(opMode);
+        movement = new Movement(opMode);
+        servos = new Servos(opMode);
+        sensors = new Sensors(opMode);
+        servos.init();
+        motors.init();
+        movement.init();
+        sensors.init();
 
 
     }
 
-    public void rightSlide(double speed, long time) {
-        slideMotor1.setPower(speed);
-        opMode.sleep(time);
-    }
 
-    public void leftslide(double speed, long time) {
-        slideMotor2.setPower(speed);
-        opMode.sleep(time);
-    }
-
-
-    public void SlidePIDTogether() {
+    public void slidePIDTogether() {
         int targetPosition = 100;
 
         double command = PIDSlide1.update(targetPosition, slideMotor1.getCurrentPosition());
@@ -81,17 +84,17 @@ public class IntoTheDeep {
         slideMotor2.setPower(command1);
     }
 
-    public void SlideInTouch() {
+    public void slideInTouch() {
         if (!slideTouch2.getState()) {
             opMode.telemetry.addData("closing2", slideTouch2.getState());
             slideMotor2.setPower(0);
-            stopMotors();
+            motors.stopMotors();
             return;
         }
         if (!slideTouch1.getState()) {
             opMode.telemetry.addData("closing1", slideTouch1.getState());
             slideMotor1.setPower(0);
-            stopMotors();
+            motors.stopMotors();
             return;
         }
         opMode.telemetry.addData("down1", slideTouch1.getState());
@@ -111,22 +114,6 @@ public class IntoTheDeep {
     }
 
 
-    public void stopMotors() {
-        armMotor.setPower(0);
-        slideMotor1.setPower(0);
-        slideMotor2.setPower(0);
-    }
-
-    public void arm(double speed, long time) {
-        armMotor.setPower(speed);
-        opMode.sleep(time);
-
-    }
-
-    public void setArmMotorMode(DcMotor.RunMode mode) {
-        armMotor.setMode(mode);
-    }
-
     public void closeServoTurn() {
         servo2.setPosition(.65);
     }
@@ -145,14 +132,14 @@ public class IntoTheDeep {
     }
 
     public void lock() {
-        setArmMotorMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        setArmMotorMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        motors.setArmMotorMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        motors.setArmMotorMode(DcMotor.RunMode.RUN_USING_ENCODER);
         armMotor.setTargetPosition(0);
-        arm(.2, 0);
+        motors.arm(.2, 0);
     }
 
     public void unlock() {
-        setArmMotorMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        motors.setArmMotorMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
     }
 
     public void transfer() {
@@ -205,24 +192,6 @@ public class IntoTheDeep {
     }
 
 
-    public void setSlideMotorMode(DcMotor.RunMode mode) {
-        slideMotor1.setMode(mode);
-        slideMotor2.setMode(mode);
-    }
-
-
-    public void closeSlideTouch() {
-        if (!slideTouch1.getState()) {
-            opMode.telemetry.addData("closing", slideTouch1.getState());
-            slideMotor1.setPower(0);
-            stopMotors();
-            return;
-        }
-        opMode.telemetry.addData("down", slideTouch1.getState());
-
-        slideMotor1.setPower(.7);
-    }
-
     public void SlidePID() {
         int targetPosition = 3200;
 
@@ -234,26 +203,26 @@ public class IntoTheDeep {
 
     public void slideTeleOp(double speed, double distance) {
         if (opMode.opModeIsActive()) {
-            setSlideMotorMode(DcMotor.RunMode.RUN_USING_ENCODER);
+            motors.setSlideMotorMode(DcMotor.RunMode.RUN_USING_ENCODER);
             int moveCounts = (int) (distance * COUNTS_PER_INCH);
             slideTarget = slideMotor1.getCurrentPosition() + moveCounts;
             slideMotor1.setTargetPosition(slideTarget);
 
-            setSlideMotorMode(DcMotor.RunMode.RUN_TO_POSITION);
-            rightSlide(speed, 0);
+            motors.setSlideMotorMode(DcMotor.RunMode.RUN_TO_POSITION);
+            motors.rightSlide(speed, 0);
 
         }
     }
 
     public void slideAuto(double speed, double distance) {
         if (opMode.opModeIsActive()) {
-            setSlideMotorMode(DcMotor.RunMode.RUN_USING_ENCODER);
+            motors.setSlideMotorMode(DcMotor.RunMode.RUN_USING_ENCODER);
             int moveCounts = (int) (distance * COUNTS_PER_INCH);
             slideTarget = slideMotor1.getCurrentPosition() + moveCounts;
             slideMotor1.setTargetPosition(slideTarget);
 
-            setSlideMotorMode(DcMotor.RunMode.RUN_TO_POSITION);
-            rightSlide(speed, 0);
+            motors.setSlideMotorMode(DcMotor.RunMode.RUN_TO_POSITION);
+            motors.rightSlide(speed, 0);
             while (opMode.opModeIsActive() && slideMotor1.isBusy()) {
 
             }
@@ -269,7 +238,7 @@ public class IntoTheDeep {
         opMode.telemetry.addData("currentPosition", slideMotor1.getCurrentPosition());
 
         slideMotor1.setPower(command);
-        setSlideMotorMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        motors.setSlideMotorMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
 
 
     }
