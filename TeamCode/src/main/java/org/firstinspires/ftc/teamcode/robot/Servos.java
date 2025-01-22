@@ -1,6 +1,7 @@
 package org.firstinspires.ftc.teamcode.robot;
 
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
+import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.DigitalChannel;
@@ -10,9 +11,9 @@ public class Servos {
     private LinearOpMode opMode;
 
     public Servo servo1;
-    public Servo servo2;
-    public Servo servo3;
-    public Servo servo4;
+    public CRServo servo2;
+    // public Servo servo3;
+    //public Servo servo4;
 
 
     public Servos(LinearOpMode myOpMode) {
@@ -24,9 +25,9 @@ public class Servos {
         //    imu = hardwareMap.get(Gyroscope.class, "imu");
 
         servo1 = opMode.hardwareMap.get(Servo.class, "servo1");
-        servo2 = opMode.hardwareMap.get(Servo.class, "servo2");
-        servo3 = opMode.hardwareMap.get(Servo.class, "servo3");
-        servo4 = opMode.hardwareMap.get(Servo.class, "servo4");
+        servo2 = opMode.hardwareMap.get(CRServo.class, "servo2");
+        //  servo3 = opMode.hardwareMap.get(Servo.class, "servo3");
+        // servo4 = opMode.hardwareMap.get(Servo.class, "servo4");
 
 
     }
@@ -34,24 +35,24 @@ public class Servos {
 
     public void servoBasketDrop() {
         // servo3.setDirection(Servo.Direction.REVERSE);
-        servo3.setPosition(.34);
+        // servo3.setPosition(.34);
 
     }
 
     public void servo3Zero() {
-        servo3.setPosition(0);
+        // servo3.setPosition(0);
 
 
     }
 
     public void servo2Zero() {
-        servo2.setPosition(0);
+        //   servo2.setPosition(0);
 
 
     }
 
     public void servo4Zero() {
-        servo4.setPosition(0);
+        //    servo4.setPosition(0);
 
 
     }
@@ -64,13 +65,13 @@ public class Servos {
 
 
     public void servoBasketNormal() {
-        servo3.setPosition(0);
+        //   servo3.setPosition(0);
 
 
     }
 
     public void disableServo3() {
-        servo3.getController().pwmDisable();
+        //  servo3.getController().pwmDisable();
 
     }
 
@@ -85,7 +86,7 @@ public class Servos {
     }
 
     public void disableServo4() {
-        servo4.getController().pwmDisable();
+        //  servo4.getController().pwmDisable();
 
     }
 }

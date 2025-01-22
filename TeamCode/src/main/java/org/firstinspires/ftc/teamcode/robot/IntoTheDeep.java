@@ -13,13 +13,13 @@ public class IntoTheDeep {
     private LinearOpMode opMode;
     public DcMotorEx armMotor;
     public Servo servo1;
-    public Servo servo2;
-    public Servo servo3;
-    public CRServo servo4;
+    public CRServo servo2;
+    // public Servo servo3;
+    // public CRServo servo4;
     public DcMotor slideMotor1;
-    public DcMotor slideMotor2;
+    //  public DcMotor slideMotor2;
     public DigitalChannel slideTouch1;
-    public DigitalChannel slideTouch2;
+    //    public DigitalChannel slideTouch2;
     private PIDController PIDArm;
     private int armTarget = 0;
     private int slideTarget = 0;
@@ -28,7 +28,7 @@ public class IntoTheDeep {
     static final double WHEEL_DIAMETER_INCHES = 96;
     static final double COUNTS_PER_INCH = (COUNTS_PER_MOTOR_REV * DRIVE_GEAR_REDUCTION) / (WHEEL_DIAMETER_INCHES * 3.1415);
     private PIDController PIDSlide1;
-    private PIDController PIDSlide2;
+    // private PIDController PIDSlide2;
     public Motors motors;
     public Movement movement;
     public Servos servos;
@@ -43,25 +43,25 @@ public class IntoTheDeep {
 
     public void init() {
         armMotor = opMode.hardwareMap.get(DcMotorEx.class, "armMotor");
-        servo4 = opMode.hardwareMap.get(CRServo.class, "servo4");
+        //servo4 = opMode.hardwareMap.get(CRServo.class, "servo4");
         servo1 = opMode.hardwareMap.get(Servo.class, "servo1");
-        servo2 = opMode.hardwareMap.get(Servo.class, "servo2");
+        servo2 = opMode.hardwareMap.get(CRServo.class, "servo2");
         slideMotor1 = opMode.hardwareMap.get(DcMotor.class, "slideMotor1");
-        slideMotor2 = opMode.hardwareMap.get(DcMotor.class, "slideMotor2");
+        // slideMotor2 = opMode.hardwareMap.get(DcMotor.class, "slideMotor2");
         slideTouch1 = opMode.hardwareMap.get(DigitalChannel.class, "slideTouch1");
-        slideTouch2 = opMode.hardwareMap.get(DigitalChannel.class, "slideTouch2");
-        servo3 = opMode.hardwareMap.get(Servo.class, "servo3");
+        //  slideTouch2 = opMode.hardwareMap.get(DigitalChannel.class, "slideTouch2");
+        // servo3 = opMode.hardwareMap.get(Servo.class, "servo3");
         slideTouch1.setMode(DigitalChannel.Mode.INPUT);
-        slideTouch2.setMode(DigitalChannel.Mode.INPUT);
+        // slideTouch2.setMode(DigitalChannel.Mode.INPUT);
         slideMotor1.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        slideMotor2.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        //  slideMotor2.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         armMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         armMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         armMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
 
         PIDArm = new PIDController(.01, 0, .03);
         PIDSlide1 = new PIDController(-0.01, -0, -0);
-        PIDSlide2 = new PIDController(-0.01, -0, -0);
+        // PIDSlide2 = new PIDController(-0.01, -0, -0);
         motors = new Motors(opMode);
         movement = new Movement(opMode);
         servos = new Servos(opMode);
@@ -74,23 +74,40 @@ public class IntoTheDeep {
 
     }
 
+    public void sensorCollect() {
+        servo2.setPower(1);
+        if (sensors.isObjectDetected()) {
+            servo2.setPower(0);
+        }
+    }
+
+    public void straitArm() {
+        int targetPosition = 300;
+
+        double command = PIDArm.update(targetPosition, armMotor.getCurrentPosition());
+        //   double command1 = PIDSlide2.update(targetPosition, slideMotor2.getCurrentPosition());
+        armMotor.setPower(command);
+    }
+
+    public void armUp() {
+        int targetPosition = 900;
+
+        double command = PIDArm.update(targetPosition, armMotor.getCurrentPosition());
+
+        armMotor.setPower(command);
+    }
+
 
     public void slidePIDTogether() {
         int targetPosition = 100;
 
         double command = PIDSlide1.update(targetPosition, slideMotor1.getCurrentPosition());
-        double command1 = PIDSlide2.update(targetPosition, slideMotor2.getCurrentPosition());
+        //   double command1 = PIDSlide2.update(targetPosition, slideMotor2.getCurrentPosition());
         slideMotor1.setPower(command);
-        slideMotor2.setPower(command1);
+        // slideMotor2.setPower(command1);
     }
 
     public void slideInTouch() {
-        if (!slideTouch2.getState()) {
-            opMode.telemetry.addData("closing2", slideTouch2.getState());
-            slideMotor2.setPower(0);
-            motors.stopMotors();
-            return;
-        }
         if (!slideTouch1.getState()) {
             opMode.telemetry.addData("closing1", slideTouch1.getState());
             slideMotor1.setPower(0);
@@ -100,30 +117,30 @@ public class IntoTheDeep {
         opMode.telemetry.addData("down1", slideTouch1.getState());
 
         slideMotor1.setPower(.7);
-        slideMotor2.setPower(.7);
+
 
     }
 
-    public void SlidePIDOut() {
+    public void slidePIDOut() {
         int targetPosition = 3200;
 
         double command = PIDSlide1.update(targetPosition, slideMotor1.getCurrentPosition());
-        double command1 = PIDSlide2.update(targetPosition, slideMotor2.getCurrentPosition());
+        //  double command1 = PIDSlide2.update(targetPosition, slideMotor2.getCurrentPosition());
         slideMotor1.setPower(command);
-        slideMotor2.setPower(command1);
+        // slideMotor2.setPower(command1);
     }
 
 
     public void closeServoTurn() {
-        servo2.setPosition(.65);
+        servo2.setPower(.65);
     }
 
     public void intakeClose() {
-        servo1.setPosition(1);
+        servo1.setPosition(0);
     }
 
     public void openServoTurn() {
-        servo2.setPosition(0);
+        servo2.setPower(0);
 
     }
 

@@ -9,6 +9,7 @@ import com.qualcomm.robotcore.hardware.Servo;
 import org.firstinspires.ftc.teamcode.robot.IntoTheDeep;
 import org.firstinspires.ftc.teamcode.robot.Motors;
 import org.firstinspires.ftc.teamcode.robot.Movement;
+import org.firstinspires.ftc.teamcode.robot.Servos;
 
 
 @TeleOp(name = "competition ", group = "Linear OpMode")
@@ -16,13 +17,7 @@ import org.firstinspires.ftc.teamcode.robot.Movement;
 public class competition extends LinearOpMode {
 
     public enum RobotState {
-        SLIDE_DOWN,
-        COLLECTION,
-        ARM_UP,
-        ARM_DOWN,
-        SLIDE_UP,
-        INTAKE_DUMP,
-        INTAKE_IN
+        SLIDE_DOWN, COLLECTION, ARM_UP, ARM_DOWN, SLIDE_UP, INTAKE_DUMP, INTAKE_IN, SLIDE_IN, SLIDE_OUT
     }
 
     competition.RobotState robotState = RobotState.INTAKE_IN;
@@ -33,46 +28,140 @@ public class competition extends LinearOpMode {
         telemetry.update();
         Movement movement = new Movement(this);
         Motors motors = new Motors(this);
-        //   Basket basket = new Basket(this);
+        Servos servos = new Servos(this);
         IntoTheDeep intoTheDeep = new IntoTheDeep(this);
 
         movement.init();
-        //   basket.init();
+        servos.init();
         motors.init();
         intoTheDeep.init();
 
 
         // Wait for the game to start (driver presses PLAY)
+
         waitForStart();
         while (opModeIsActive()) {
-            //   telemetry.addData("servo3", basket.servo3.());
-//            telemetry.addData("on", "on");
-            //     telemetry.addData("touchSensor", motors.slideTouch.getState());
-//            telemetry.addData("gamepad.2,y", gamepad2.y);
-//            telemetry.addData("d-pad_up", gamepad2.dpad_up);
-//            telemetry.addData("d-pad_down", gamepad2.dpad_down);
-//            telemetry.addData("d-pad_left", gamepad2.dpad_left);
-//            telemetry.addData("d-pad_right", gamepad2.dpad_right);
-//            telemetry.addData("slide", motors.slideMotor.getCurrentPosition());
-//            telemetry.addData("armMotor", motors.armMotor.getCurrentPosition());
-//            telemetry.addData("armStick", gamepad2.right_stick_y);
-
-
-            movement.teleOpControls();
-            intoTheDeep.teleOpIntakeControls();
-
-
+            telemetry.addData("servo2", servos.servo1.getPosition());
             telemetry.addData("state", robotState);
+            movement.teleOpControls();
             switch (robotState) {
                 case INTAKE_IN:
-                    break;
-                case SLIDE_UP:
-                    intoTheDeep.highBasketSlide();
+                    intoTheDeep.intakeClose();
+                    intoTheDeep.straitArm();
+
+                    if (gamepad2.a) {
+                        robotState = RobotState.SLIDE_OUT;
+                    }
+                    if (gamepad2.x) {
+                        robotState = RobotState.SLIDE_IN;
+                    }
+                    if (gamepad2.dpad_up) {
+                        robotState = RobotState.ARM_UP;
+                    }
+                    if (gamepad2.dpad_down) {
+                        robotState = RobotState.ARM_DOWN;
+                    }
+
                     break;
 
+                case SLIDE_IN:
+                    intoTheDeep.slideInTouch();
+                    intoTheDeep.straitArm();
+                    if (gamepad2.dpad_up) {
+                        robotState = RobotState.ARM_UP;
+                    }
+                    if (gamepad2.y) {
+                        robotState = RobotState.SLIDE_OUT;
+                    }
+                    if (gamepad2.left_bumper) {
+                        robotState = RobotState.INTAKE_IN;
+                    }
+                    if (gamepad2.right_bumper) {
+                        robotState = RobotState.COLLECTION;
+                    }
+
+                    break;
+
+                case SLIDE_OUT:
+                    intoTheDeep.slidePIDOut();
+                    intoTheDeep.straitArm();
+                    if (gamepad2.a) {
+                        robotState = RobotState.SLIDE_IN;
+                    }
+                    if (gamepad2.left_bumper) {
+                        robotState = RobotState.INTAKE_IN;
+                    }
+                    if (gamepad2.dpad_down) {
+                        robotState = RobotState.ARM_DOWN;
+                    }
+                    if (gamepad2.dpad_right) {
+                        robotState = RobotState.INTAKE_DUMP;
+                    }
+                    if (gamepad2.right_bumper) {
+                        robotState = RobotState.COLLECTION;
+                    }
+                    break;
+                case COLLECTION:
+                    intoTheDeep.slidePIDOut();
+                    intoTheDeep.sensorCollect();
+                    if (gamepad2.a) {
+                        robotState = RobotState.SLIDE_IN;
+                    }
+                    if (gamepad2.left_bumper) {
+                        robotState = RobotState.INTAKE_IN;
+                    }
+                    if (gamepad2.dpad_down) {
+                        robotState = RobotState.ARM_DOWN;
+                    }
+                    if (gamepad2.dpad_right) {
+                        robotState = RobotState.INTAKE_DUMP;
+                    }
+
+                    break;
+                case ARM_UP:
+                    intoTheDeep.armUp();
+
+                    if (gamepad2.a) {
+                        robotState = RobotState.SLIDE_IN;
+                    }
+                    if (gamepad2.left_bumper) {
+                        robotState = RobotState.INTAKE_IN;
+                    }
+                    if (gamepad2.dpad_down) {
+                        robotState = RobotState.ARM_DOWN;
+                    }
+                    if (gamepad2.dpad_right) {
+                        robotState = RobotState.INTAKE_DUMP;
+                    }
+                    if (gamepad2.right_bumper) {
+                        robotState = RobotState.COLLECTION;
+                    }
+                    break;
+                case SLIDE_UP:
+                    intoTheDeep.armUp();
+                    intoTheDeep.slidePIDOut();
+
+                    if (gamepad2.a) {
+                        robotState = RobotState.SLIDE_IN;
+                    }
+                    if (gamepad2.left_bumper) {
+                        robotState = RobotState.INTAKE_IN;
+                    }
+                    if (gamepad2.dpad_down) {
+                        robotState = RobotState.ARM_DOWN;
+                    }
+                    if (gamepad2.dpad_right) {
+                        robotState = RobotState.INTAKE_DUMP;
+                    }
+                    if (gamepad2.right_bumper) {
+                        robotState = RobotState.COLLECTION;
+                    }
+
+                    break;
 
             }
         }
+        telemetry.update();
     }
 }
 
