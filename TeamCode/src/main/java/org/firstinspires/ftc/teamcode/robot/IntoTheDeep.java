@@ -75,14 +75,16 @@ public class IntoTheDeep {
     }
 
     public void sensorCollect() {
-        servo2.setPower(1);
+
         if (sensors.isObjectDetected()) {
             servo2.setPower(0);
+            return;
         }
+        servo2.setPower(1);
     }
 
     public void straitArm() {
-        int targetPosition = 300;
+        int targetPosition = 100;
 
         double command = PIDArm.update(targetPosition, armMotor.getCurrentPosition());
         //   double command1 = PIDSlide2.update(targetPosition, slideMotor2.getCurrentPosition());
@@ -90,27 +92,16 @@ public class IntoTheDeep {
     }
 
     public void armUp() {
-        int targetPosition = 900;
+        int targetPosition = 3000;
 
         double command = PIDArm.update(targetPosition, armMotor.getCurrentPosition());
 
         armMotor.setPower(command);
     }
 
-
-    public void slidePIDTogether() {
-        int targetPosition = 100;
-
-        double command = PIDSlide1.update(targetPosition, slideMotor1.getCurrentPosition());
-        //   double command1 = PIDSlide2.update(targetPosition, slideMotor2.getCurrentPosition());
-        slideMotor1.setPower(command);
-        // slideMotor2.setPower(command1);
-    }
-
     public void slideInTouch() {
         if (!slideTouch1.getState()) {
             opMode.telemetry.addData("closing1", slideTouch1.getState());
-            slideMotor1.setPower(0);
             motors.stopMotors();
             return;
         }
@@ -122,7 +113,16 @@ public class IntoTheDeep {
     }
 
     public void slidePIDOut() {
-        int targetPosition = 3200;
+        int targetPosition = 2000;
+
+        double command = PIDSlide1.update(targetPosition, slideMotor1.getCurrentPosition());
+        //  double command1 = PIDSlide2.update(targetPosition, slideMotor2.getCurrentPosition());
+        slideMotor1.setPower(command);
+        // slideMotor2.setPower(command1);
+    }
+
+    public void slidePIDUp() {
+        int targetPosition = 4000;
 
         double command = PIDSlide1.update(targetPosition, slideMotor1.getCurrentPosition());
         //  double command1 = PIDSlide2.update(targetPosition, slideMotor2.getCurrentPosition());
@@ -131,78 +131,97 @@ public class IntoTheDeep {
     }
 
 
-    public void closeServoTurn() {
+    public void servo2SpinClockwise() {
         servo2.setPower(.65);
+        //  opMode.sleep(10);
+    }
+
+    public void servo2SpinCounterClockwise() {
+        servo2.setPower(-.65);
+        //  opMode.sleep(10);
+    }
+
+    public void servo2StopSpinning() {
+        servo2.setPower(0);
     }
 
     public void intakeClose() {
-        servo1.setPosition(0);
+        servo1.setPosition(1);
     }
 
-    public void openServoTurn() {
+    public void openServo() {
         servo2.setPower(0);
 
     }
 
+    public void intakeCollect() {
+        servos.servo1.setPosition(.4);
+    }
+
+    public void intakeDump() {
+        servos.servo1.setPosition(.5);
+    }
+
     public void intakeOpen() {
-        servo1.setPosition(0);
+        // servo1.setDirection(Servo.Direction.REVERSE);
+        servo1.setPosition(.5);
     }
-
-    public void lock() {
-        motors.setArmMotorMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        motors.setArmMotorMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        armMotor.setTargetPosition(0);
-        motors.arm(.2, 0);
-    }
-
-    public void unlock() {
-        motors.setArmMotorMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-    }
-
-    public void transfer() {
-        int targetPosition = 1840;
-
-        double command = PIDArm.update(targetPosition, armMotor.getCurrentPosition());
-        opMode.telemetry.addData("command", command);
-
-        armMotor.setPower(command);
-    }
-
-    public void armBack() {
-        int targetPosition = 55;
-
-        double command = PIDArm.update(targetPosition, armMotor.getCurrentPosition());
-        armMotor.setPower(command);
-        opMode.telemetry.addData("armMotorCurrentPosition", armMotor.getCurrentPosition());
-        opMode.telemetry.addData("armMotorCommand", command);
-
-
-    }
-
-    public void collection() {
-        int targetPosition = 4000;
-
-        double command = PIDArm.update(targetPosition, armMotor.getCurrentPosition());
-        armMotor.setPower(command);
-
-    }
-
-    public void armReset() {
-        opMode.telemetry.addData("armMotorCurrentPosition", armMotor.getCurrentPosition());
-
-        int targetPosition = 4700;
-
-        double command = PIDArm.update(targetPosition, armMotor.getCurrentPosition());
-        armMotor.setPower(command);
-        opMode.telemetry.addData("armMotorCommand", command);
-    }
-
-    public void armHang() {
-        int targetPosition = 3100;
-
-        double command = PIDArm.update(targetPosition, armMotor.getCurrentPosition());
-        armMotor.setPower(command);
-    }
+//
+//    public void lock() {
+//        motors.setArmMotorMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+//        motors.setArmMotorMode(DcMotor.RunMode.RUN_USING_ENCODER);
+//        armMotor.setTargetPosition(0);
+//        motors.arm(.2, 0);
+//    }
+//
+//    public void unlock() {
+//        motors.setArmMotorMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+//    }
+//
+//    public void transfer() {
+//        int targetPosition = 1840;
+//
+//        double command = PIDArm.update(targetPosition, armMotor.getCurrentPosition());
+//        opMode.telemetry.addData("command", command);
+//
+//        armMotor.setPower(command);
+//    }
+//
+//    public void armBack() {
+//        int targetPosition = 55;
+//
+//        double command = PIDArm.update(targetPosition, armMotor.getCurrentPosition());
+//        armMotor.setPower(command);
+//        opMode.telemetry.addData("armMotorCurrentPosition", armMotor.getCurrentPosition());
+//        opMode.telemetry.addData("armMotorCommand", command);
+//
+//
+//    }
+//
+//    public void collection() {
+//        int targetPosition = 4000;
+//
+//        double command = PIDArm.update(targetPosition, armMotor.getCurrentPosition());
+//        armMotor.setPower(command);
+//
+//    }
+//
+//    public void armReset() {
+//        opMode.telemetry.addData("armMotorCurrentPosition", armMotor.getCurrentPosition());
+//
+//        int targetPosition = 4700;
+//
+//        double command = PIDArm.update(targetPosition, armMotor.getCurrentPosition());
+//        armMotor.setPower(command);
+//        opMode.telemetry.addData("armMotorCommand", command);
+//    }
+//
+//    public void armHang() {
+//        int targetPosition = 3100;
+//
+//        double command = PIDArm.update(targetPosition, armMotor.getCurrentPosition());
+//        armMotor.setPower(command);
+//    }
 
     public void teleOpIntakeControls() {
         servo1.setPosition(-opMode.gamepad2.left_stick_y);
@@ -259,35 +278,36 @@ public class IntoTheDeep {
 
 
     }
-
-    public void highBasketSlide() {
-
-        int targetPosition = 3200;
-
-        double command = PIDSlide1.update(targetPosition, slideMotor1.getCurrentPosition());
-        opMode.telemetry.addData("command", command);
-
-        slideMotor1.setPower(command);
-    }
-
-    public void transferSlide() {
-        int targetPosition = -200;
-
-        double command = PIDSlide1.update(targetPosition, slideMotor1.getCurrentPosition());
-        opMode.telemetry.addData("command", command);
-
-        slideMotor1.setPower(command);
-    }
-
-    public void startSlide() {
-        int targetPosition = 400;
-
-        double command = PIDSlide1.update(targetPosition, slideMotor1.getCurrentPosition());
-        opMode.telemetry.addData("command", command);
-
-        slideMotor1.setPower(command);
-    }
 }
+
+//    public void highBasketSlide() {
+//
+//        int targetPosition = 3200;
+//
+//        double command = PIDSlide1.update(targetPosition, slideMotor1.getCurrentPosition());
+//        opMode.telemetry.addData("command", command);
+//
+//        slideMotor1.setPower(command);
+//    }
+//
+//    public void transferSlide() {
+//        int targetPosition = -200;
+//
+//        double command = PIDSlide1.update(targetPosition, slideMotor1.getCurrentPosition());
+//        opMode.telemetry.addData("command", command);
+//
+//        slideMotor1.setPower(command);
+//    }
+//
+//    public void startSlide() {
+//        int targetPosition = 400;
+//
+//        double command = PIDSlide1.update(targetPosition, slideMotor1.getCurrentPosition());
+//        opMode.telemetry.addData("command", command);
+//
+//        slideMotor1.setPower(command);
+//    }
+//}
 
 
 

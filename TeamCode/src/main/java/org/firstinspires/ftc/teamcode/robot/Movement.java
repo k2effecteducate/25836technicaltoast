@@ -10,6 +10,10 @@ public class Movement {
     public DcMotor frontLeft;
     public DcMotor backRight;
     public DcMotor backLeft;
+    public PIDController PIDfrontLeft;
+    public PIDController PIDfrontRight;
+    public PIDController PIDBackLeft;
+    public PIDController PIDBackRight;
 
 
     private int frontLeftTarget = 0;
@@ -48,6 +52,10 @@ public class Movement {
         frontRight.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         backLeft.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         backRight.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        PIDfrontLeft = new PIDController(.01, 0, .03);
+        PIDfrontRight = new PIDController(-0.01, -0, -0);
+        PIDBackLeft = new PIDController(.01, 0, .03);
+        PIDBackRight = new PIDController(-0.01, -0, -0);
 
 
     }

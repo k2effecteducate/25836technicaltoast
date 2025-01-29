@@ -22,7 +22,7 @@ public class BasketSampleNo2 extends LinearOpMode {
         motors.init();
         servos.init();
         intoTheDeep.init();
-        intoTheDeep.closeServoTurn();
+        // intoTheDeep.closeServoTurn();
         intoTheDeep.intakeClose();
         servos.servoBasketNormal();
         telemetry.addData("Initialized", "is a win");
@@ -30,7 +30,7 @@ public class BasketSampleNo2 extends LinearOpMode {
         // wait for start
         waitForStart();
         servos.servoBasketNormal();
-        intoTheDeep.closeServoTurn();
+        // intoTheDeep.closeServoTurn();
         movement.backwardDistance(.5, 150);
         movement.strafeRightDistance(.5, 800);
         intoTheDeep.SlidePID();

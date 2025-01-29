@@ -30,7 +30,7 @@ public class Sensors {
 
     public boolean isObjectDetected() {
 
-        return distanceSensor.getState();
+        return !distanceSensor.getState();
 
 
     }

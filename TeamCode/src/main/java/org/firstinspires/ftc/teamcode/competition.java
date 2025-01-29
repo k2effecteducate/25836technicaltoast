@@ -9,6 +9,7 @@ import com.qualcomm.robotcore.hardware.Servo;
 import org.firstinspires.ftc.teamcode.robot.IntoTheDeep;
 import org.firstinspires.ftc.teamcode.robot.Motors;
 import org.firstinspires.ftc.teamcode.robot.Movement;
+import org.firstinspires.ftc.teamcode.robot.Sensors;
 import org.firstinspires.ftc.teamcode.robot.Servos;
 
 
@@ -17,7 +18,7 @@ import org.firstinspires.ftc.teamcode.robot.Servos;
 public class competition extends LinearOpMode {
 
     public enum RobotState {
-        SLIDE_DOWN, COLLECTION, ARM_UP, ARM_DOWN, SLIDE_UP, INTAKE_DUMP, INTAKE_IN, SLIDE_IN, SLIDE_OUT
+        COLLECTION, ARM_UP, INTAKE_DUMP, INTAKE_IN, SLIDE_IN, SLIDE_OUT, INTAKE_OUT, INTAKE_RESET
     }
 
     competition.RobotState robotState = RobotState.INTAKE_IN;
@@ -30,11 +31,13 @@ public class competition extends LinearOpMode {
         Motors motors = new Motors(this);
         Servos servos = new Servos(this);
         IntoTheDeep intoTheDeep = new IntoTheDeep(this);
+        Sensors sensors = new Sensors(this);
 
         movement.init();
         servos.init();
         motors.init();
         intoTheDeep.init();
+        sensors.init();
 
 
         // Wait for the game to start (driver presses PLAY)
@@ -48,121 +51,177 @@ public class competition extends LinearOpMode {
                 case INTAKE_IN:
                     intoTheDeep.intakeClose();
                     intoTheDeep.straitArm();
+                    intoTheDeep.servo2StopSpinning();
 
-                    if (gamepad2.a) {
+
+                    if (gamepad2.y) {
                         robotState = RobotState.SLIDE_OUT;
                     }
-                    if (gamepad2.x) {
+                    if (gamepad2.a) {
                         robotState = RobotState.SLIDE_IN;
                     }
                     if (gamepad2.dpad_up) {
                         robotState = RobotState.ARM_UP;
                     }
-                    if (gamepad2.dpad_down) {
-                        robotState = RobotState.ARM_DOWN;
-                    }
+
 
                     break;
 
                 case SLIDE_IN:
+                    intoTheDeep.intakeOpen();
                     intoTheDeep.slideInTouch();
-                    intoTheDeep.straitArm();
+                    // intoTheDeep.straitArm();
+                    intoTheDeep.servo2StopSpinning();
                     if (gamepad2.dpad_up) {
                         robotState = RobotState.ARM_UP;
                     }
                     if (gamepad2.y) {
                         robotState = RobotState.SLIDE_OUT;
                     }
-                    if (gamepad2.left_bumper) {
+                    if (gamepad2.dpad_down) {
                         robotState = RobotState.INTAKE_IN;
                     }
-                    if (gamepad2.right_bumper) {
-                        robotState = RobotState.COLLECTION;
+                    if (gamepad2.dpad_left) {
+                        robotState = RobotState.INTAKE_OUT;
                     }
 
                     break;
 
                 case SLIDE_OUT:
                     intoTheDeep.slidePIDOut();
-                    intoTheDeep.straitArm();
+                    intoTheDeep.intakeOpen();
+                    intoTheDeep.servo2StopSpinning();
+                    //intoTheDeep.intakeOpen();
                     if (gamepad2.a) {
                         robotState = RobotState.SLIDE_IN;
                     }
-                    if (gamepad2.left_bumper) {
+                    if (gamepad2.dpad_down) {
                         robotState = RobotState.INTAKE_IN;
                     }
-                    if (gamepad2.dpad_down) {
-                        robotState = RobotState.ARM_DOWN;
-                    }
+
                     if (gamepad2.dpad_right) {
                         robotState = RobotState.INTAKE_DUMP;
                     }
                     if (gamepad2.right_bumper) {
                         robotState = RobotState.COLLECTION;
+                    }
+                    if (gamepad2.y) {
+                        robotState = RobotState.COLLECTION;
+                    }
+                    if (gamepad2.dpad_left) {
+                        robotState = RobotState.INTAKE_OUT;
                     }
                     break;
                 case COLLECTION:
+                    // intoTheDeep.straitArm();
                     intoTheDeep.slidePIDOut();
+                    intoTheDeep.intakeCollect();
                     intoTheDeep.sensorCollect();
+                    if (sensors.isObjectDetected()) {
+                        sleep(100);
+                        robotState = RobotState.SLIDE_IN;
+                    }
                     if (gamepad2.a) {
                         robotState = RobotState.SLIDE_IN;
                     }
-                    if (gamepad2.left_bumper) {
-                        robotState = RobotState.INTAKE_IN;
-                    }
                     if (gamepad2.dpad_down) {
-                        robotState = RobotState.ARM_DOWN;
+                        robotState = RobotState.INTAKE_IN;
                     }
                     if (gamepad2.dpad_right) {
                         robotState = RobotState.INTAKE_DUMP;
                     }
-
+                    if (gamepad2.y) {
+                        robotState = RobotState.SLIDE_OUT;
+                    }
+                    if (gamepad2.dpad_left) {
+                        robotState = RobotState.INTAKE_OUT;
+                    }
                     break;
                 case ARM_UP:
                     intoTheDeep.armUp();
-
+                    intoTheDeep.slidePIDUp();
+                    intoTheDeep.servo1.setPosition(0);
+                    intoTheDeep.servo2StopSpinning();
                     if (gamepad2.a) {
                         robotState = RobotState.SLIDE_IN;
                     }
-                    if (gamepad2.left_bumper) {
-                        robotState = RobotState.INTAKE_IN;
+                    if (gamepad2.dpad_left) {
+                        robotState = RobotState.INTAKE_OUT;
                     }
-                    if (gamepad2.dpad_down) {
-                        robotState = RobotState.ARM_DOWN;
-                    }
+
                     if (gamepad2.dpad_right) {
                         robotState = RobotState.INTAKE_DUMP;
                     }
-                    if (gamepad2.right_bumper) {
-                        robotState = RobotState.COLLECTION;
+                    if (gamepad2.x) {
+                        robotState = RobotState.INTAKE_RESET;
+                    }
+                    if (gamepad2.y) {
+                        robotState = RobotState.SLIDE_OUT;
                     }
                     break;
-                case SLIDE_UP:
+                case INTAKE_DUMP:
+                    intoTheDeep.slidePIDUp();
                     intoTheDeep.armUp();
-                    intoTheDeep.slidePIDOut();
-
+                    intoTheDeep.intakeDump();
+                    intoTheDeep.servo2SpinClockwise();
+                    if (gamepad2.dpad_left) {
+                        robotState = RobotState.INTAKE_OUT;
+                    }
                     if (gamepad2.a) {
                         robotState = RobotState.SLIDE_IN;
                     }
-                    if (gamepad2.left_bumper) {
-                        robotState = RobotState.INTAKE_IN;
+                    if (gamepad2.x) {
+                        robotState = RobotState.INTAKE_RESET;
+                    }
+                    if (gamepad2.y) {
+                        robotState = RobotState.SLIDE_OUT;
                     }
                     if (gamepad2.dpad_down) {
-                        robotState = RobotState.ARM_DOWN;
+                        robotState = RobotState.INTAKE_IN;
+                    }
+                    break;
+                case INTAKE_OUT:
+                    intoTheDeep.slidePIDUp();
+                    intoTheDeep.armUp();
+                    intoTheDeep.servo2SpinCounterClockwise();
+                    intoTheDeep.intakeDump();
+                    if (gamepad2.a) {
+                        robotState = RobotState.SLIDE_IN;
+                    }
+                    if (gamepad2.x) {
+                        robotState = RobotState.INTAKE_RESET;
                     }
                     if (gamepad2.dpad_right) {
                         robotState = RobotState.INTAKE_DUMP;
                     }
-                    if (gamepad2.right_bumper) {
-                        robotState = RobotState.COLLECTION;
+                    if (gamepad2.dpad_down) {
+                        robotState = RobotState.INTAKE_IN;
                     }
 
                     break;
+                case INTAKE_RESET:
+                    intoTheDeep.servo2StopSpinning();
+                    intoTheDeep.openServo();
+                    if (gamepad2.a) {
+                        robotState = RobotState.SLIDE_IN;
+                    }
+                    if (gamepad2.dpad_left) {
+                        robotState = RobotState.INTAKE_OUT;
+                    }
+
+                    if (gamepad2.dpad_right) {
+                        robotState = RobotState.INTAKE_DUMP;
+                    }
+
+                    if (gamepad2.y) {
+                        robotState = RobotState.SLIDE_OUT;
+                    }
+                    break;
+
 
             }
+            telemetry.update();
         }
-        telemetry.update();
     }
 }
-
 

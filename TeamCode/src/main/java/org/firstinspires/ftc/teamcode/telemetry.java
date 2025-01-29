@@ -3,6 +3,7 @@ package org.firstinspires.ftc.teamcode;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
+import org.firstinspires.ftc.teamcode.robot.Motors;
 import org.firstinspires.ftc.teamcode.robot.Sensors;
 
 
@@ -16,14 +17,14 @@ public class telemetry extends LinearOpMode {
         telemetry.addData("Initialized", "Press Start");
         telemetry.update();
         // Movement movement = new Movement(this);
-        //  Motors motors = new Motors(this);
+        Motors motors = new Motors(this);
         // Servos servos = new Servos(this);
         //  IntoTheDeep intoTheDeep = new IntoTheDeep(this);
         Sensors sensors = new Sensors(this);
 
         //  movement.init();
         //  servos.init();
-        //  motors.init();
+        motors.init();
         // intoTheDeep.init();
         sensors.init();
 
@@ -33,7 +34,7 @@ public class telemetry extends LinearOpMode {
         while (opModeIsActive()) {
             //   telemetry.addData("servo3", basket.servo3.());
 //            telemetry.addData("on", "on");
-            //     telemetry.addData("touchSensor", motors.slideTouch.getState());
+            telemetry.addData("touchSensor", motors.slideTouch1.getState());
 //            telemetry.addData("gamepad.2,y", gamepad2.y);
 //            telemetry.addData("d-pad_up", gamepad2.dpad_up);
 //            telemetry.addData("d-pad_down", gamepad2.dpad_down);

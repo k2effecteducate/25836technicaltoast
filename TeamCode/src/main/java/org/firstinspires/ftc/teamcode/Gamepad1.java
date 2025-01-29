@@ -66,7 +66,7 @@ public class Gamepad1 extends LinearOpMode {
             }
 
             if (gamepad1.right_bumper) {
-                intoTheDeep.closeServoTurn();
+                // intoTheDeep.closeServoTurn();
                 //   }else
                 //  servo2.setPosition(0);
             }
