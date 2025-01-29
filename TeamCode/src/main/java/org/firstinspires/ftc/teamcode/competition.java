@@ -177,7 +177,7 @@ public class competition extends LinearOpMode {
                         robotState = RobotState.SLIDE_OUT;
                     }
                     if (gamepad2.dpad_down) {
-                        robotState = RobotState.INTAKE_IN;
+                        robotState = RobotState.SLIDE_IN;
                     }
                     break;
                 case INTAKE_OUT:
@@ -195,7 +195,7 @@ public class competition extends LinearOpMode {
                         robotState = RobotState.INTAKE_DUMP;
                     }
                     if (gamepad2.dpad_down) {
-                        robotState = RobotState.INTAKE_IN;
+                        robotState = RobotState.SLIDE_IN;
                     }
 
                     break;

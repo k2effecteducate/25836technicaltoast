@@ -150,7 +150,7 @@ public class IntoTheDeep {
     }
 
     public void openServo() {
-        servo2.setPower(0);
+        servo1.setPosition(.1);
 
     }
 
