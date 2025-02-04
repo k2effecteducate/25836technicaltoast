@@ -132,6 +132,7 @@ public class competition extends LinearOpMode {
                     }
                     break;
                 case ARM_UP:
+
                     if (gamepad2.a) {
                         robotState = RobotState.SLIDE_IN_A;
                     }
