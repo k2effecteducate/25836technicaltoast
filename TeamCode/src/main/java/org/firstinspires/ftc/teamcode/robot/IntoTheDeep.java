@@ -91,6 +91,7 @@ public class IntoTheDeep {
         armMotor.setPower(command);
     }
 
+
     public void armUp() {
         int targetPosition = 3000;
 
@@ -98,6 +99,11 @@ public class IntoTheDeep {
 
         armMotor.setPower(command);
     }
+
+    public boolean isArmUp() {
+        return armMotor.getCurrentPosition() == 3000;
+    }
+
 
     public void slideInTouch() {
         if (!slideTouch1.getState()) {

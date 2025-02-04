@@ -32,17 +32,16 @@ public class telemetry extends LinearOpMode {
         // Wait for the game to start (driver presses PLAY)
         waitForStart();
         while (opModeIsActive()) {
-            //   telemetry.addData("servo3", basket.servo3.());
-//            telemetry.addData("on", "on");
+
+            telemetry.addData("on", "on");
             telemetry.addData("touchSensor", motors.slideTouch1.getState());
-//            telemetry.addData("gamepad.2,y", gamepad2.y);
-//            telemetry.addData("d-pad_up", gamepad2.dpad_up);
-//            telemetry.addData("d-pad_down", gamepad2.dpad_down);
-//            telemetry.addData("d-pad_left", gamepad2.dpad_left);
-//            telemetry.addData("d-pad_right", gamepad2.dpad_right);
-//            telemetry.addData("slide", motors.slideMotor.getCurrentPosition());
-//            telemetry.addData("armMotor", motors.armMotor.getCurrentPosition());
-//            telemetry.addData("armStick", gamepad2.right_stick_y);
+            telemetry.addData("gamepad.2,y", gamepad2.y);
+            telemetry.addData("d-pad_up", gamepad2.dpad_up);
+            telemetry.addData("d-pad_down", gamepad2.dpad_down);
+            telemetry.addData("d-pad_left", gamepad2.dpad_left);
+            telemetry.addData("d-pad_right", gamepad2.dpad_right);
+            telemetry.addData("slide", motors.slideMotor1.getCurrentPosition());
+            telemetry.addData("armMotor", motors.armMotor.getCurrentPosition());
             telemetry.addData("Distance", sensors.isObjectDetected());
             telemetry.update();
         }

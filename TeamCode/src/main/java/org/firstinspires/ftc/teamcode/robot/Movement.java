@@ -3,17 +3,18 @@ package org.firstinspires.ftc.teamcode.robot;
 
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.DcMotorEx;
 
 public class Movement {
     private LinearOpMode opMode;
-    public DcMotor frontRight;
-    public DcMotor frontLeft;
-    public DcMotor backRight;
-    public DcMotor backLeft;
-    public PIDController PIDfrontLeft;
-    public PIDController PIDfrontRight;
-    public PIDController PIDBackLeft;
-    public PIDController PIDBackRight;
+    public DcMotorEx frontRight;
+    public DcMotorEx frontLeft;
+    public DcMotorEx backRight;
+    public DcMotorEx backLeft;
+    private PIDController PIDfrontLeft;
+    private PIDController PIDfrontRight;
+    private PIDController PIDBackLeft;
+    private PIDController PIDBackRight;
 
 
     private int frontLeftTarget = 0;
@@ -33,10 +34,10 @@ public class Movement {
 
     public void init() {
         //    imu = hardwareMap.get(Gyroscope.class, "imu");
-        backRight = opMode.hardwareMap.get(DcMotor.class, "backRight");
-        backLeft = opMode.hardwareMap.get(DcMotor.class, "backLeft");
-        frontRight = opMode.hardwareMap.get(DcMotor.class, "frontRight");
-        frontLeft = opMode.hardwareMap.get(DcMotor.class, "frontLeft");
+        backRight = opMode.hardwareMap.get(DcMotorEx.class, "backRight");
+        backLeft = opMode.hardwareMap.get(DcMotorEx.class, "backLeft");
+        frontRight = opMode.hardwareMap.get(DcMotorEx.class, "frontRight");
+        frontLeft = opMode.hardwareMap.get(DcMotorEx.class, "frontLeft");
 
         frontLeft.setDirection(DcMotor.Direction.REVERSE);
         backLeft.setDirection(DcMotor.Direction.REVERSE);
@@ -52,15 +53,46 @@ public class Movement {
         frontRight.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         backLeft.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         backRight.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        PIDfrontLeft = new PIDController(.01, 0, .03);
-        PIDfrontRight = new PIDController(-0.01, -0, -0);
-        PIDBackLeft = new PIDController(.01, 0, .03);
-        PIDBackRight = new PIDController(-0.01, -0, -0);
+        PIDfrontLeft = new PIDController(1, 0, 0);
+        PIDfrontRight = new PIDController(1, 0, 0);
+        PIDBackLeft = new PIDController(1, 0, 0);
+        PIDBackRight = new PIDController(1, 0, 0);
 
 
     }
 
+    public void teleOpControls1() {
+        double modifier = 1;
+        if (opMode.gamepad1.b) {
+            modifier = 2; // Enable fast mode when button B is pressed
+        }
+
+        // Get joystick inputs
+        double drive = -opMode.gamepad1.left_stick_y;  // Forward and backward movement
+        double turn = opMode.gamepad1.left_stick_x;   // Turning (rotation)
+        double strafe = opMode.gamepad1.right_stick_x; // Strafing (sideways movement)
+
+        // PID calculations for forward movement
+        double forwardTarget = drive * 1000;  // Example scale for target position
+        double forwardPID = PIDfrontLeft.update(forwardTarget, frontLeft.getCurrentPosition());
+
+        // PID calculations for strafing
+        double strafeTarget = strafe * 1000;  // Example scale for target position
+        double strafePID = PIDfrontRight.update(strafeTarget, frontRight.getCurrentPosition());
+
+        // PID calculations for turning
+        double turnTarget = turn * 1000;  // Example scale for target angle
+        double turnPID = PIDBackLeft.update(turnTarget, backLeft.getCurrentPosition());
+
+        // Set motor powers based on PID output
+        backLeft.setPower((forwardPID - strafePID + turnPID) / modifier);
+        frontLeft.setPower((forwardPID - strafePID - turnPID) / modifier);
+        backRight.setPower((forwardPID + strafePID - turnPID) / modifier);
+        frontRight.setPower((forwardPID + strafePID + turnPID) / modifier);
+    }
+
     public void teleOpControls() {
+
         double modifier = 1;
         if (opMode.gamepad1.b) {
             modifier = 2;
@@ -74,6 +106,47 @@ public class Movement {
         backRight.setPower((drive + strafe - turn) / modifier);
         frontRight.setPower((drive + strafe + turn) / modifier);
 
+    }
+
+    public void PIDForward() {
+        int targetPosition = 1;
+        double command3 = PIDfrontLeft.update(targetPosition, frontLeft.getCurrentPosition());
+        double command2 = PIDBackRight.update(targetPosition, backRight.getCurrentPosition());
+        double command1 = PIDBackLeft.update(targetPosition, backLeft.getCurrentPosition());
+        double command = PIDfrontRight.update(targetPosition, frontRight.getCurrentPosition());
+        frontRight.setPower(command);
+        backLeft.setPower(command1);
+        backRight.setPower(command2);
+        frontLeft.setPower(command3);
+
+
+    }
+
+    public void PIDStrafeLeft() {
+        int targetPosition1 = 1;
+        int targetPosition = -1;
+        double command3 = PIDfrontLeft.update(targetPosition1, frontLeft.getCurrentPosition());
+        double command2 = PIDBackRight.update(targetPosition1, backRight.getCurrentPosition());
+        double command1 = PIDBackLeft.update(targetPosition, backLeft.getCurrentPosition());
+        double command = PIDfrontRight.update(targetPosition, frontRight.getCurrentPosition());
+        frontRight.setPower(command);
+        backLeft.setPower(command1);
+        backRight.setPower(command2);
+        frontLeft.setPower(command3);
+
+    }
+
+    public void PIDTurnLeft() {
+        int targetPosition1 = 1;
+        int targetPosition = -1;
+        double command3 = PIDfrontLeft.update(targetPosition1, frontLeft.getCurrentPosition());
+        double command2 = PIDBackRight.update(targetPosition, backRight.getCurrentPosition());
+        double command1 = PIDBackLeft.update(targetPosition1, backLeft.getCurrentPosition());
+        double command = PIDfrontRight.update(targetPosition, frontRight.getCurrentPosition());
+        frontRight.setPower(command);
+        backLeft.setPower(command1);
+        backRight.setPower(command2);
+        frontLeft.setPower(command3);
     }
 
     public void forward(double speed, long time) {
