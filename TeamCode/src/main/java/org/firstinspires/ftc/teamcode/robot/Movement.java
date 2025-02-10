@@ -244,9 +244,9 @@ public class Movement {
             frontRightTarget = frontRight.getCurrentPosition() + moveCounts;
             backRightTarget = backRight.getCurrentPosition() + moveCounts;
             frontLeft.setTargetPosition(frontLeftTarget);
-            frontRight.setTargetPosition(frontRightTarget);
+            frontRight.setTargetPosition(-frontRightTarget);
             backLeft.setTargetPosition(backLeftTarget);
-            backRight.setTargetPosition(backRightTarget);
+            backRight.setTargetPosition(-backRightTarget);
             setMotorMode(DcMotor.RunMode.RUN_TO_POSITION);
             turnLeft(speed, 0);
             while (opMode.opModeIsActive() && frontLeft.isBusy() && frontRight.isBusy() && backLeft.isBusy() && backRight.isBusy()) {

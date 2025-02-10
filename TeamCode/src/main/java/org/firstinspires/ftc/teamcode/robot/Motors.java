@@ -94,6 +94,21 @@ public class Motors {
         }
     }
 
+    public void setSlidePosition(double speed, double distance) {
+        if (opMode.opModeIsActive()) {
+            setSlideMotorMode(DcMotor.RunMode.RUN_USING_ENCODER);
+            int moveCounts = (int) (distance * COUNTS_PER_INCH);
+            slideTarget = slideMotor1.getCurrentPosition() + moveCounts;
+            slideMotor1.setTargetPosition(slideTarget);
+
+
+            setArmMotorMode(DcMotor.RunMode.RUN_TO_POSITION);
+            rightSlide(speed, 0);
+
+
+        }
+    }
+
     public void rightSlide(double speed, long time) {
         slideMotor1.setPower(speed);
         opMode.sleep(time);

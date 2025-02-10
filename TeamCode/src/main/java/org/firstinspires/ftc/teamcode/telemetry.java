@@ -43,6 +43,9 @@ public class telemetry extends LinearOpMode {
             telemetry.addData("slide", motors.slideMotor1.getCurrentPosition());
             telemetry.addData("armMotor", motors.armMotor.getCurrentPosition());
             telemetry.addData("Distance", sensors.isObjectDetected());
+            telemetry.addData("gamepad.2,x", gamepad2.x);
+            telemetry.addData("gamepad.2,b", gamepad2.b);
+            telemetry.addData("gamepad.2,a", gamepad2.a);
             telemetry.update();
         }
     }

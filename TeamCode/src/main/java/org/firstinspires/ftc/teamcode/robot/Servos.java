@@ -12,7 +12,7 @@ public class Servos {
 
     public Servo servo1;
     public CRServo servo2;
-    // public Servo servo3;
+    public Servo servo3;
     //public Servo servo4;
 
 
@@ -26,7 +26,7 @@ public class Servos {
 
         servo1 = opMode.hardwareMap.get(Servo.class, "servo1");
         servo2 = opMode.hardwareMap.get(CRServo.class, "servo2");
-        //  servo3 = opMode.hardwareMap.get(Servo.class, "servo3");
+        servo3 = opMode.hardwareMap.get(Servo.class, "servo3");
         // servo4 = opMode.hardwareMap.get(Servo.class, "servo4");
 
 
