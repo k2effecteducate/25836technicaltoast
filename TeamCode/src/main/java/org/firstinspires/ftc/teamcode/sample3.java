@@ -29,9 +29,11 @@ public class sample3 extends LinearOpMode {
         waitForStart();
         //change values for the 3 below
         movement.forwardDistance(.5, 150);
-        movement.turnLeftDistance(.5, 500);
-//        movement.forwardDistance(.5, 200);
-//        intoTheDeep.armUp();
+        movement.strafeLeftDistance(.5, 600);
+        movement.turnLeftDistance(.5, -200);
+        intoTheDeep.intakeOpen();
+        // intoTheDeep.armUp();
+        sleep(2000);
 //        intoTheDeep.slidePIDUp();
 //        intoTheDeep.intakeOpen();
 //        // change values for the 1 below

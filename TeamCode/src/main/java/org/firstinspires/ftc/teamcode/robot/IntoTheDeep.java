@@ -55,8 +55,10 @@ public class IntoTheDeep {
         armMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         armMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         slideMotor1.setDirection(DcMotorSimple.Direction.REVERSE);
+        servo1.setDirection(Servo.Direction.REVERSE);
+        servo3.setDirection(Servo.Direction.REVERSE);
         PIDArm = new PIDController(.01, 0, .03);
-        PIDSlide1 = new PIDController(.05, 0, 0);
+        PIDSlide1 = new PIDController(.03, 0, 0);
         motors = new Motors(opMode);
         movement = new Movement(opMode);
         servos = new Servos(opMode);
@@ -110,7 +112,7 @@ public class IntoTheDeep {
     }
 
     public void slidePIDOut() {
-        int targetPosition = -5000;
+        int targetPosition = -2080;
         opMode.telemetry.addData("PID", slideMotor1.getCurrentPosition());
 
         double command = PIDSlide1.update(targetPosition, slideMotor1.getCurrentPosition());
@@ -144,8 +146,8 @@ public class IntoTheDeep {
     }
 
     public void intakeCollect() {
-        servos.servo1.setPosition(.1);
-        servo3.setPosition(-.1);
+        servos.servo1.setPosition(.001);
+        servo3.setPosition(-.001);
     }
 
     public void intakeOpen() {

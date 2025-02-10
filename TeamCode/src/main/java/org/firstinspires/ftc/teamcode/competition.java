@@ -242,10 +242,11 @@ public class competition extends LinearOpMode {
                     }
                     break;
                 case DISABLE:
+                    intoTheDeep.intakeCollect();
                     intoTheDeep.straitArm();
                     intoTheDeep.slidePIDOut();
                     servos.disableServo1();
-                    intoTheDeep.intakeCollect();
+
 
                     if (gamepad2.y) {
                         robotState = RobotState.COLLECTION_Y;
