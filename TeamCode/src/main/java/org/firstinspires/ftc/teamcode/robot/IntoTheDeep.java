@@ -122,13 +122,19 @@ public class IntoTheDeep {
     }
 
     public void slidePIDUp() {
+        int targetPosition = -7500;
+        double command = PIDSlide1.update(targetPosition, slideMotor1.getCurrentPosition());
+        slideMotor1.setPower(command);
+    }
+
+    public void slidePIDUpAuto() {
         int targetPosition = -5500;
         double command = PIDSlide1.update(targetPosition, slideMotor1.getCurrentPosition());
         slideMotor1.setPower(command);
     }
 
     public void servo2SpinClockwise() {
-        servo2.setPower(.65);//  opMode.sleep(10);
+        servo2.setPower(.65);
     }
 
     public void servo2SpinCounterClockwise() {
@@ -141,19 +147,22 @@ public class IntoTheDeep {
     }
 
     public void intakeClose() {
-        servo1.setPosition(.89);
-        servo3.setPosition(-.89);
+        servo1.setPosition(.5);
+        servo3.setPosition(.5);
     }
 
     public void intakeCollect() {
-        servos.servo1.setPosition(.001);
-        servo3.setPosition(-.001);
+
+        opMode.telemetry.addData("servo", servo1.getPosition());
+        servos.servo1.setPosition(1);
+        servo3.setPosition(1);
+        opMode.telemetry.update();
     }
 
     public void intakeOpen() {
         // servo1.setDirection(Servo.Direction.REVERSE);
-        servo1.setPosition(.2);
-        servo3.setPosition(-.2);
+        servo1.setPosition(.8);
+        servo3.setPosition(.8);
     }
 
     public void servo2SpinClockwiseSlow() {

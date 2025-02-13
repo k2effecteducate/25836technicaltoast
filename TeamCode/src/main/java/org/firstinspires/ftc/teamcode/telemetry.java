@@ -5,6 +5,7 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
 import org.firstinspires.ftc.teamcode.robot.Motors;
 import org.firstinspires.ftc.teamcode.robot.Sensors;
+import org.firstinspires.ftc.teamcode.robot.Servos;
 
 
 @TeleOp(name = "telemetry", group = "Linear OpMode")
@@ -18,12 +19,12 @@ public class telemetry extends LinearOpMode {
         telemetry.update();
         // Movement movement = new Movement(this);
         Motors motors = new Motors(this);
-        // Servos servos = new Servos(this);
+        Servos servos = new Servos(this);
         //  IntoTheDeep intoTheDeep = new IntoTheDeep(this);
         Sensors sensors = new Sensors(this);
 
         //  movement.init();
-        //  servos.init();
+        servos.init();
         motors.init();
         // intoTheDeep.init();
         sensors.init();
@@ -46,6 +47,8 @@ public class telemetry extends LinearOpMode {
             telemetry.addData("gamepad.2,x", gamepad2.x);
             telemetry.addData("gamepad.2,b", gamepad2.b);
             telemetry.addData("gamepad.2,a", gamepad2.a);
+            telemetry.addData("gamepad.y Servo", servos.servo1.getPosition());
+            telemetry.addData("voltage of Ranger", sensors.distanceSensor.getVoltage());
             telemetry.update();
         }
     }
