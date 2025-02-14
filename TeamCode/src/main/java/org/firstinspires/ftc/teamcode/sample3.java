@@ -51,6 +51,7 @@ public class sample3 extends LinearOpMode {
             intoTheDeep.armUp();
             intoTheDeep.slidePIDUp();
             intoTheDeep.servo2SpinCounterClockwiseSlow();
+            sleep(1000);
         }
         sleep(120);
 //        // change values for the 1 below
