@@ -25,20 +25,20 @@ public class opMode1 extends LinearOpMode {
         telemetry.addData("Initialized", "Press Start");
         telemetry.update();
         Movement movement = new Movement(this);
-        Motors motors = new Motors(this);
-        Servos servos = new Servos(this);
-        Sensors sensors = new Sensors(this);
+        // Motors motors = new Motors(this);
+        //Servos servos = new Servos(this);
+        //Sensors sensors = new Sensors(this);
         movement.init();
-        servos.init();
-        motors.init();
-        sensors.init();
+        //servos.init();
+        //motors.init();
+        //sensors.init();
 
 
         // Wait for the game to start (driver presses PLAY)
 
         waitForStart();
         while (opModeIsActive()) {
-            telemetry.addData("servo2", servos.servo1.getPosition());
+            // telemetry.addData("servo2", servos.servo1.getPosition());
             // telemetry.addData("state", robotState);
             movement.teleOpControls();
 
