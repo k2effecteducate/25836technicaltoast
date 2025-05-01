@@ -12,13 +12,9 @@ public class Motors {
     public DcMotorEx armMotor;
     public Servo servo1;
     public CRServo servo2;
-    //  public Servo servo3;
     public DcMotor slideMotor1;
-    //  public DcMotor slideMotor2;
     public DigitalChannel slideTouch1;
-    // public DigitalChannel slideTouch2;
     private PIDController PIDArm;
-
 
     private int armTarget = 0;
     private int slideTarget = 0;

@@ -31,7 +31,7 @@ public class Sensors {
 
     public boolean isObjectDetected() {
 
-        return distanceSensor.getVoltage() < 0.057;
+        return distanceSensor.getVoltage() < 0.18;
     }
 }
 

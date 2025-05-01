@@ -1,27 +1,25 @@
-package org.firstinspires.ftc.teamcode;
+package org.firstinspires.ftc.teamcode.intoTheDeep;
 
+import com.acmerobotics.dashboard.config.Config;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
-import com.qualcomm.robotcore.hardware.DcMotor;
-import com.qualcomm.robotcore.hardware.Servo;
 
 //import org.firstinspires.ftc.teamcode.robot.Basket;
-import org.firstinspires.ftc.teamcode.robot.IntoTheDeep;
 import org.firstinspires.ftc.teamcode.robot.Motors;
 import org.firstinspires.ftc.teamcode.robot.Movement;
 import org.firstinspires.ftc.teamcode.robot.Sensors;
 import org.firstinspires.ftc.teamcode.robot.Servos;
 
+@Config
+@TeleOp(name = "gamePad1 ", group = "Linear OpMode")
 
-@TeleOp(name = "competition ", group = "Linear OpMode")
-
-public class competition extends LinearOpMode {
+public class gamePad1 extends LinearOpMode {
 
     public enum RobotState {
         COLLECTION_Y, ARM_UP, INTAKE_DUMP_LEFT, INTAKE_IN_DOWN, SLIDE_IN_A, SLIDE_OUT_Y2, INTAKE_OUT_RIGHT, INTAKE_RESET, SPIT_OUT_B, DISABLE, COLLECT_START
     }
 
-    competition.RobotState robotState = RobotState.INTAKE_IN_DOWN;
+    gamePad1.RobotState robotState = RobotState.INTAKE_IN_DOWN;
 
     @Override
     public void runOpMode() {
@@ -53,13 +51,13 @@ public class competition extends LinearOpMode {
                     intoTheDeep.servo2StopSpinning();
 
 
-                    if (gamepad2.y) {
+                    if (gamepad1.y) {
                         robotState = RobotState.SLIDE_OUT_Y2;
                     }
-                    if (gamepad2.a) {
+                    if (gamepad1.a) {
                         robotState = RobotState.SLIDE_IN_A;
                     }
-                    if (gamepad2.dpad_up) {
+                    if (gamepad1.dpad_up) {
                         robotState = RobotState.ARM_UP;
                     }
 
@@ -70,19 +68,19 @@ public class competition extends LinearOpMode {
                     intoTheDeep.intakeClose();
                     intoTheDeep.slideInTouch();
                     intoTheDeep.servo2StopSpinning();
-                    if (gamepad2.dpad_up) {
+                    if (gamepad1.dpad_up) {
                         robotState = RobotState.ARM_UP;
                     }
-                    if (gamepad2.y) {
+                    if (gamepad1.y) {
                         robotState = RobotState.SLIDE_OUT_Y2;
                     }
-                    if (gamepad2.dpad_down) {
+                    if (gamepad1.dpad_down) {
                         robotState = RobotState.INTAKE_IN_DOWN;
                     }
-                    if (gamepad2.dpad_left) {
+                    if (gamepad1.dpad_left) {
                         robotState = RobotState.INTAKE_OUT_RIGHT;
                     }
-                    if (gamepad2.start) {
+                    if (gamepad1.start) {
                         robotState = RobotState.COLLECT_START;
                     }
 
@@ -93,26 +91,26 @@ public class competition extends LinearOpMode {
                     intoTheDeep.slidePIDOut();
                     intoTheDeep.intakeClose();
                     intoTheDeep.servo2StopSpinning();
-                    if (gamepad2.b) {
+                    if (gamepad1.b) {
                         robotState = RobotState.SPIT_OUT_B;
                     }
-                    if (gamepad2.a) {
+                    if (gamepad1.a) {
                         robotState = RobotState.SLIDE_IN_A;
                     }
-                    if (gamepad2.dpad_down) {
+                    if (gamepad1.dpad_down) {
                         robotState = RobotState.INTAKE_IN_DOWN;
                     }
 
-                    if (gamepad2.dpad_right) {
+                    if (gamepad1.dpad_right) {
                         robotState = RobotState.INTAKE_DUMP_LEFT;
                     }
-                    if (gamepad2.y) {
+                    if (gamepad1.y) {
                         robotState = RobotState.COLLECTION_Y;
                     }
-                    if (gamepad2.dpad_left) {
+                    if (gamepad1.dpad_left) {
                         robotState = RobotState.INTAKE_OUT_RIGHT;
                     }
-                    if (gamepad2.start) {
+                    if (gamepad1.start) {
                         robotState = RobotState.COLLECT_START;
                     }
                     break;
@@ -125,39 +123,39 @@ public class competition extends LinearOpMode {
                         sleep(100);
                         robotState = RobotState.SLIDE_IN_A;
                     }
-                    if (gamepad2.a) {
+                    if (gamepad1.a) {
                         robotState = RobotState.SLIDE_IN_A;
                     }
-                    if (gamepad2.dpad_down) {
+                    if (gamepad1.dpad_down) {
                         robotState = RobotState.INTAKE_IN_DOWN;
                     }
-                    if (gamepad2.dpad_right) {
+                    if (gamepad1.dpad_right) {
                         robotState = RobotState.INTAKE_DUMP_LEFT;
                     }
-                    if (gamepad2.y) {
+                    if (gamepad1.y) {
                         robotState = RobotState.SLIDE_OUT_Y2;
                     }
-                    if (gamepad2.dpad_left) {
+                    if (gamepad1.dpad_left) {
                         robotState = RobotState.INTAKE_OUT_RIGHT;
                     }
-                    if (gamepad2.b) {
+                    if (gamepad1.b) {
                         robotState = RobotState.SPIT_OUT_B;
                     }
-                    if (gamepad2.back) {
+                    if (gamepad1.back) {
                         robotState = RobotState.DISABLE;
                     }
-                    if (gamepad2.start) {
+                    if (gamepad1.start) {
                         robotState = RobotState.COLLECT_START;
                     }
 
                     break;
                 case ARM_UP:
 
-                    if (gamepad2.a) {
+                    if (gamepad1.a) {
                         robotState = RobotState.SLIDE_IN_A;
                     }
 
-                    if (gamepad2.x) {
+                    if (gamepad1.x) {
                         robotState = RobotState.INTAKE_RESET;
                     }
 
@@ -170,13 +168,13 @@ public class competition extends LinearOpMode {
                     intoTheDeep.armUp();
                     intoTheDeep.intakeClose();
                     intoTheDeep.servo2SpinClockwiseSlow();
-                    if (gamepad2.dpad_left) {
+                    if (gamepad1.dpad_left) {
                         robotState = RobotState.INTAKE_OUT_RIGHT;
                     }
-                    if (gamepad2.a) {
+                    if (gamepad1.a) {
                         robotState = RobotState.SLIDE_IN_A;
                     }
-                    if (gamepad2.x) {
+                    if (gamepad1.x) {
                         robotState = RobotState.INTAKE_RESET;
                     }
 
@@ -186,13 +184,13 @@ public class competition extends LinearOpMode {
                     intoTheDeep.armUp();
                     intoTheDeep.servo2SpinCounterClockwiseSlow();
                     intoTheDeep.intakeClose();
-                    if (gamepad2.a) {
+                    if (gamepad1.a) {
                         robotState = RobotState.SLIDE_IN_A;
                     }
-                    if (gamepad2.x) {
+                    if (gamepad1.x) {
                         robotState = RobotState.INTAKE_RESET;
                     }
-                    if (gamepad2.dpad_right) {
+                    if (gamepad1.dpad_right) {
                         robotState = RobotState.INTAKE_DUMP_LEFT;
                     }
 
@@ -202,14 +200,14 @@ public class competition extends LinearOpMode {
                     intoTheDeep.servo2StopSpinning();
                     intoTheDeep.intakeClose();
                     intoTheDeep.slidePIDUp();
-                    if (gamepad2.a) {
+                    if (gamepad1.a) {
                         robotState = RobotState.SLIDE_IN_A;
                     }
-                    if (gamepad2.dpad_left) {
+                    if (gamepad1.dpad_left) {
                         robotState = RobotState.INTAKE_OUT_RIGHT;
                     }
 
-                    if (gamepad2.dpad_right) {
+                    if (gamepad1.dpad_right) {
                         robotState = RobotState.INTAKE_DUMP_LEFT;
                     }
 
@@ -218,14 +216,14 @@ public class competition extends LinearOpMode {
                     intoTheDeep.servo2SpinCounterClockwise();
                     intoTheDeep.slidePIDOut();
                     intoTheDeep.intakeCollect();
-                    if (gamepad2.a) {
+                    if (gamepad1.a) {
                         robotState = RobotState.SLIDE_IN_A;
                     }
-                    if (gamepad2.dpad_down) {
+                    if (gamepad1.dpad_down) {
                         robotState = RobotState.INTAKE_IN_DOWN;
                     }
 
-                    if (gamepad2.y) {
+                    if (gamepad1.y) {
                         robotState = RobotState.COLLECTION_Y;
                     }
 
@@ -238,41 +236,41 @@ public class competition extends LinearOpMode {
                     servos.disableServo1();
 
 
-                    if (gamepad2.y) {
+                    if (gamepad1.y) {
                         robotState = RobotState.COLLECTION_Y;
                     }
-                    if (gamepad2.a) {
+                    if (gamepad1.a) {
                         robotState = RobotState.SLIDE_IN_A;
                     }
-                    if (gamepad2.b) {
+                    if (gamepad1.b) {
                         robotState = RobotState.SPIT_OUT_B;
                     }
-                    if (gamepad2.start) {
+                    if (gamepad1.start) {
                         robotState = RobotState.COLLECT_START;
                     }
                 case COLLECT_START:
                     intoTheDeep.straitArm();
                     intoTheDeep.slidePIDOut();
                     intoTheDeep.intakeCollect();
-                    if (gamepad2.a) {
+                    if (gamepad1.a) {
                         robotState = RobotState.SLIDE_IN_A;
                     }
-                    if (gamepad2.dpad_down) {
+                    if (gamepad1.dpad_down) {
                         robotState = RobotState.INTAKE_IN_DOWN;
                     }
-                    if (gamepad2.dpad_right) {
+                    if (gamepad1.dpad_right) {
                         robotState = RobotState.INTAKE_DUMP_LEFT;
                     }
-                    if (gamepad2.y) {
+                    if (gamepad1.y) {
                         robotState = RobotState.SLIDE_OUT_Y2;
                     }
-                    if (gamepad2.dpad_left) {
+                    if (gamepad1.dpad_left) {
                         robotState = RobotState.INTAKE_OUT_RIGHT;
                     }
-                    if (gamepad2.b) {
+                    if (gamepad1.b) {
                         robotState = RobotState.SPIT_OUT_B;
                     }
-                    if (gamepad2.back) {
+                    if (gamepad1.back) {
                         robotState = RobotState.DISABLE;
                     }
 
@@ -284,4 +282,5 @@ public class competition extends LinearOpMode {
         }
     }
 }
+
 

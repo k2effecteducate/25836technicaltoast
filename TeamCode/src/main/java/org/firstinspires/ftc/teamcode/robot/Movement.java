@@ -108,8 +108,8 @@ public class Movement {
 
     }
 
-    public void PIDForward() {
-        int targetPosition = 1;
+    public void PIDForward(int targetPosition) {
+
         double command3 = PIDfrontLeft.update(targetPosition, frontLeft.getCurrentPosition());
         double command2 = PIDBackRight.update(targetPosition, backRight.getCurrentPosition());
         double command1 = PIDBackLeft.update(targetPosition, backLeft.getCurrentPosition());

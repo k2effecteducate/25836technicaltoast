@@ -1,6 +1,6 @@
-package org.firstinspires.ftc.teamcode.robot;
+package org.firstinspires.ftc.teamcode.decode;
 
-
+import com.acmerobotics.dashboard.config.Config;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.DcMotor;
@@ -9,8 +9,14 @@ import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.DigitalChannel;
 import com.qualcomm.robotcore.hardware.Servo;
 
+import org.firstinspires.ftc.teamcode.robot.Motors;
+import org.firstinspires.ftc.teamcode.robot.Movement;
+import org.firstinspires.ftc.teamcode.robot.PIDController;
+import org.firstinspires.ftc.teamcode.robot.Sensors;
+import org.firstinspires.ftc.teamcode.robot.Servos;
 
-public class IntoTheDeep {
+@Config
+public class decode {
     private LinearOpMode opMode;
     public DcMotorEx armMotor;
     public Servo servo1;
@@ -34,9 +40,9 @@ public class IntoTheDeep {
     public Movement movement;
     public Servos servos;
     public Sensors sensors;
+    public static int targetSlideUpPosition = -7480;
 
-
-    public IntoTheDeep(LinearOpMode myOpMode) {
+    public decode(LinearOpMode myOpMode) {
         opMode = myOpMode;
 
     }
@@ -80,7 +86,7 @@ public class IntoTheDeep {
         servo2.setPower(1);
     }
 
-    public void straitArm() {
+    public void armMotor() {
 
         int targetPosition = 50;
 
@@ -113,7 +119,7 @@ public class IntoTheDeep {
 
     public void slidePIDOut() {
         //make it go longer an
-        int targetPosition = -3000;
+        int targetPosition = -2800;
         opMode.telemetry.addData("PID", slideMotor1.getCurrentPosition());
 
         double command = PIDSlide1.update(targetPosition, slideMotor1.getCurrentPosition());
@@ -122,9 +128,19 @@ public class IntoTheDeep {
 
     }
 
+    public boolean isSlideUp() {
+        return slideMotor1.getCurrentPosition() < targetSlideUpPosition;
+    }
+
+    public boolean isSlideDown() {
+        return !slideTouch1.getState();
+
+    }
+
     public void slidePIDUp() {
-        int targetPosition = -7500;
-        double command = PIDSlide1.update(targetPosition, slideMotor1.getCurrentPosition());
+
+        double command = PIDSlide1.update(targetSlideUpPosition, slideMotor1.getCurrentPosition());
+        opMode.telemetry.addData("slide power", command);
         slideMotor1.setPower(command);
     }
 
@@ -148,12 +164,13 @@ public class IntoTheDeep {
     }
 
     public void intakeClose() {
-        servo1.setPosition(.5);
-        servo3.setPosition(.5);
+        servo1.setPosition(.7);
+        servo3.setPosition(-.7);
     }
 
     public void intakeCollect() {
-
+        servo1.setDirection(Servo.Direction.REVERSE);
+        servo3.setDirection(Servo.Direction.REVERSE);
         opMode.telemetry.addData("servo", servo1.getPosition());
         servos.servo1.setPosition(.9);
         servo3.setPosition(.8);
@@ -161,13 +178,13 @@ public class IntoTheDeep {
     }
 
     public void intakeOpen() {
-        servo1.setPosition(.8);
-        servo3.setPosition(.8);
+        servo1.setPosition(.4);
+        servo3.setPosition(-.4);
     }
 
     public void intakeDump() {
-        servo1.setPosition(.8);
-        servo3.setPosition(.8);
+        servo1.setPosition(.6);
+        servo3.setPosition(.6);
     }
 
     public void servo2SpinClockwiseSlow() {
