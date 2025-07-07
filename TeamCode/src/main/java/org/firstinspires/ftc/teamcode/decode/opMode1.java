@@ -47,6 +47,11 @@ public class opMode1 extends LinearOpMode {
             } else {
                 movement.teleOpControls();
             }
+            if (gamepad1.b) {
+                movement.turnLeft(.5, 200);
+            } else {
+                movement.teleOpControls();
+            }
 
 
         }
