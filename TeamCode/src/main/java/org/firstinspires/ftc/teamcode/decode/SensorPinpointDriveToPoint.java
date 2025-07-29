@@ -3,14 +3,13 @@ package org.firstinspires.ftc.teamcode.decode;
 import com.qualcomm.hardware.gobilda.GoBildaPinpointDriver;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
-import com.qualcomm.robotcore.eventloop.opmode.OpMode;
-import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.Pose2D;
+import org.firstinspires.ftc.teamcode.robot.DriveToPoint;
 
 import java.util.Locale;
 
@@ -37,8 +36,8 @@ public class SensorPinpointDriveToPoint extends LinearOpMode {
         DRIVE_TO_TARGET_5
     }
 
-    static final Pose2D TARGET_1 = new Pose2D(DistanceUnit.MM, 2000, 20, AngleUnit.DEGREES, 0);
-    static final Pose2D TARGET_2 = new Pose2D(DistanceUnit.MM, 2600, -20, AngleUnit.DEGREES, -90);
+    static final Pose2D TARGET_1 = new Pose2D(DistanceUnit.MM, 200, 20, AngleUnit.DEGREES, 0);
+    static final Pose2D TARGET_2 = new Pose2D(DistanceUnit.MM, 200, -20, AngleUnit.DEGREES, -90);
     static final Pose2D TARGET_3 = new Pose2D(DistanceUnit.MM, 2600, -2600, AngleUnit.DEGREES, -90);
     static final Pose2D TARGET_4 = new Pose2D(DistanceUnit.MM, 100, -2600, AngleUnit.DEGREES, 90);
     static final Pose2D TARGET_5 = new Pose2D(DistanceUnit.MM, 100, 0, AngleUnit.DEGREES, 0);
@@ -102,7 +101,7 @@ public class SensorPinpointDriveToPoint extends LinearOpMode {
                     the robot has reached the target, and has been there for (holdTime) seconds.
                     Once driveTo returns true, it prints a telemetry line and moves the state machine forward.
                      */
-                    if (nav.driveTo(pinpoint.getPosition(), TARGET_1, 0.7, 0)) {
+                    if (nav.driveTo(pinpoint.getPosition(), TARGET_1, 0.7, 6)) {
                         telemetry.addLine("at position #1!");
                         stateMachine = StateMachine.DRIVE_TO_TARGET_2;
                     }

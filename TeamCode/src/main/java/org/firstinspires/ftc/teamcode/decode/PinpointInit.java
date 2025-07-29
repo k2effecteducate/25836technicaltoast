@@ -4,75 +4,67 @@ import com.qualcomm.hardware.gobilda.GoBildaPinpointDriver;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
-//import org.firstinspires.ftc.teamcode.robot.Basket;
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.Pose2D;
-import org.firstinspires.ftc.teamcode.robot.DriveToPoint;
 import org.firstinspires.ftc.teamcode.robot.Motors;
 import org.firstinspires.ftc.teamcode.robot.Movement;
 import org.firstinspires.ftc.teamcode.robot.Odometry;
 import org.firstinspires.ftc.teamcode.robot.Sensors;
 import org.firstinspires.ftc.teamcode.robot.Servos;
 
+@TeleOp(name = "pinpointInit", group = "")
 
-@TeleOp(name = "forward", group = "Linear OpMode")
 
-public class opMode1 extends LinearOpMode {
+public class PinpointInit extends LinearOpMode {
+    public Motors motors;
+    public Movement movement;
+    public Servos servos;
+    public Sensors sensors;
 
-//    public enum RobotState {
-//        COLLECTION_Y, ARM_UP, INTAKE_DUMP_LEFT, TURN, SLIDE_IN_A, SLIDE_OUT_Y2, INTAKE_OUT_RIGHT, INTAKE_RESET, SPIT_OUT_B, DISABLE, COLLECT_START
-//    }
 
-    // opMode1.RobotState robotState = RobotState.TURN;
+    GoBildaPinpointDriver pinpoint;
 
     @Override
     public void runOpMode() {
-        telemetry.addData("Initialized", "Press Start");
-        telemetry.update();
         Movement movement = new Movement(this);
-        DriveToPoint nav = new DriveToPoint(this);
-
+        Odometry odometry = new Odometry(this);
         // Motors motors = new Motors(this);
         //Servos servos = new Servos(this);
         //Sensors sensors = new Sensors(this);
         movement.init();
+        odometry.init();
         //servos.init();
         //motors.init();
         //sensors.init();
 
-        Odometry odometry = new Odometry(this);
-        odometry.init();
 
+        // Get a reference to the sensor
 
-        // Wait for the game to start (driver presses PLAY)
+        pinpoint = hardwareMap.get(GoBildaPinpointDriver.class, "pinpoint");
 
         // Configure the sensor
         odometry.configurePinpoint();
 
         // Set the location of the robot - this should be the place you are starting the robot from
-        odometry.pinpoint.setPosition(new Pose2D(DistanceUnit.INCH, 0, 0, AngleUnit.DEGREES, 0));
+        odometry.resetToZero();
         waitForStart();
         while (opModeIsActive()) {
-            // telemetry.addData("servo2", servos.servo1.getPosition());
-            // telemetry.addData("state", robotState);
 
-
+            telemetry.addLine("Push your robot around to see it track");
+            telemetry.addLine("Press A to reset the position");
             if (gamepad1.a) {
-               
+                // You could use readings from April Tags here to give a new known position to the pinpoint
+                odometry.setPosition(0, 0, 0);
             }
-            odometry.pinpoint.update();
-            Pose2D pose2D = odometry.pinpoint.getPosition();
-            movement.teleOpControls();
+            pinpoint.update();
+            Pose2D pose2D = pinpoint.getPosition();
+
             telemetry.addData("X coordinate (IN)", pose2D.getX(DistanceUnit.INCH));
             telemetry.addData("Y coordinate (IN)", pose2D.getY(DistanceUnit.INCH));
             telemetry.addData("Heading angle (DEGREES)", pose2D.getHeading(AngleUnit.DEGREES));
-
-
+            telemetry.update();
         }
-        telemetry.update();
     }
 }
-
-
 
