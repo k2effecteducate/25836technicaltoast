@@ -1,7 +1,6 @@
 package org.firstinspires.ftc.teamcode.intoTheDeep;
 
 
-import com.acmerobotics.dashboard.config.Config;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.DcMotor;
@@ -16,7 +15,7 @@ import org.firstinspires.ftc.teamcode.robot.PIDController;
 import org.firstinspires.ftc.teamcode.robot.Sensors;
 import org.firstinspires.ftc.teamcode.robot.Servos;
 
-@Config
+
 public class IntoTheDeep {
     private LinearOpMode opMode;
     public DcMotorEx armMotor;

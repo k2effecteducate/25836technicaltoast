@@ -1,6 +1,6 @@
 package org.firstinspires.ftc.teamcode.intoTheDeep;
 
-import com.acmerobotics.dashboard.config.Config;
+
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
@@ -10,7 +10,7 @@ import org.firstinspires.ftc.teamcode.robot.Movement;
 import org.firstinspires.ftc.teamcode.robot.Sensors;
 import org.firstinspires.ftc.teamcode.robot.Servos;
 
-@Config
+
 @TeleOp(name = "gamePad1 ", group = "Linear OpMode")
 
 public class gamePad1 extends LinearOpMode {

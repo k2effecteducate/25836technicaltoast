@@ -1,7 +1,6 @@
 package org.firstinspires.ftc.teamcode.intoTheDeep;
 
-import com.acmerobotics.dashboard.FtcDashboard;
-import com.acmerobotics.dashboard.config.Config;
+
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.util.ElapsedTime;
@@ -11,7 +10,7 @@ import org.firstinspires.ftc.teamcode.robot.Sensors;
 import org.firstinspires.ftc.teamcode.robot.Servos;
 import org.firstinspires.ftc.teamcode.robot.Movement;
 
-@Config
+
 @Autonomous(name = "sample3", group = "Linear OpMode")
 public class sample3 extends LinearOpMode {
     public static int DISTANCE_AWAY_FROM_WALL = 150;
@@ -28,8 +27,7 @@ public class sample3 extends LinearOpMode {
         Servos servos = new Servos(this);
         IntoTheDeep intoTheDeep = new IntoTheDeep(this);
         Sensors sensors = new Sensors(this);
-        FtcDashboard dashboard = FtcDashboard.getInstance();
-        telemetry = dashboard.getTelemetry();
+     
         movement.init();
         motors.init();
         servos.init();
