@@ -17,39 +17,39 @@ import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 public class Constants {
 
     public static FollowerConstants followerConstants = new FollowerConstants()
-            .mass(5.98)
-            .forwardZeroPowerAcceleration(-36.8148)
-            .lateralZeroPowerAcceleration(-52.6771)
+            .mass(18)
+            .forwardZeroPowerAcceleration(-32.30)
+            .lateralZeroPowerAcceleration(-60.92)
             .useSecondaryTranslationalPIDF(false)
             .useSecondaryHeadingPIDF(false)
             .useSecondaryDrivePIDF(false)
             .centripetalScaling(0.0005)
-            .translationalPIDFCoefficients(new PIDFCoefficients(0.1, 0, 0.02, 0.05))
-            .headingPIDFCoefficients(new PIDFCoefficients(0.7, 0, 0.1, 0.025))
-            .drivePIDFCoefficients(new FilteredPIDFCoefficients(0.005, 0, 0, 0.0, 0.03));
+            .translationalPIDFCoefficients(new PIDFCoefficients(0.1, 0, 0.02, 0.045))
+            .headingPIDFCoefficients(new PIDFCoefficients(0.8, 0, 0.02, 0.025))
+            .drivePIDFCoefficients(new FilteredPIDFCoefficients(0.01, 0, 0, 0.0, 0.03));
 
     public static MecanumConstants driveConstants = new MecanumConstants()
             .maxPower(1)
-            .leftFrontMotorName("leftFront")
-            .leftRearMotorName("leftRear")
-            .rightFrontMotorName("rightFront")
-            .rightRearMotorName("rightRear")
-            .leftFrontMotorDirection(DcMotorSimple.Direction.FORWARD)
-            .leftRearMotorDirection(DcMotorSimple.Direction.FORWARD)
-            .rightFrontMotorDirection(DcMotorSimple.Direction.REVERSE)
-            .rightRearMotorDirection(DcMotorSimple.Direction.REVERSE)
-            .xVelocity(63.6195)
-            .yVelocity(47.7250);
+            .leftFrontMotorName("frontLeft")
+            .leftRearMotorName("backLeft")
+            .rightFrontMotorName("frontRight")
+            .rightRearMotorName("backRight")
+            .leftFrontMotorDirection(DcMotorSimple.Direction.REVERSE)
+            .leftRearMotorDirection(DcMotorSimple.Direction.REVERSE)
+            .rightFrontMotorDirection(DcMotorSimple.Direction.FORWARD)
+            .rightRearMotorDirection(DcMotorSimple.Direction.FORWARD)
+            .xVelocity(61.01)
+            .yVelocity(49.10);
 
     public static PinpointConstants localizerConstants = new PinpointConstants()
-            .forwardPodY(-3)
-            .strafePodX(4.5)
+            .forwardPodY(-2)
+            .strafePodX(2)
             .distanceUnit(DistanceUnit.INCH)
             .hardwareMapName("pinpoint")
             .encoderResolution(
                     GoBildaPinpointDriver.GoBildaOdometryPods.goBILDA_4_BAR_POD
             )
-            .forwardEncoderDirection(GoBildaPinpointDriver.EncoderDirection.FORWARD)
+            .forwardEncoderDirection(GoBildaPinpointDriver.EncoderDirection.REVERSED)
             .strafeEncoderDirection(GoBildaPinpointDriver.EncoderDirection.REVERSED);
 
     public static PathConstraints pathConstraints = new PathConstraints(

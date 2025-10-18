@@ -35,19 +35,19 @@ public class telemetry extends LinearOpMode {
         while (opModeIsActive()) {
 
             telemetry.addData("on", "on");
-            telemetry.addData("touchSensor", motors.slideTouch1.getState());
+            //  telemetry.addData("touchSensor", motors.slideTouch1.getState());
             telemetry.addData("gamepad.2,y", gamepad2.y);
             telemetry.addData("d-pad_up", gamepad2.dpad_up);
             telemetry.addData("d-pad_down", gamepad2.dpad_down);
             telemetry.addData("d-pad_left", gamepad2.dpad_left);
             telemetry.addData("d-pad_right", gamepad2.dpad_right);
-            telemetry.addData("slide", motors.slideMotor1.getCurrentPosition());
-            telemetry.addData("armMotor", motors.armMotor.getCurrentPosition());
+            //   telemetry.addData("slide", motors.slideMotor1.getCurrentPosition());
+            //  telemetry.addData("armMotor", motors.armMotor.getCurrentPosition());
             telemetry.addData("Distance", sensors.isObjectDetected());
             telemetry.addData("gamepad.2,x", gamepad2.x);
             telemetry.addData("gamepad.2,b", gamepad2.b);
             telemetry.addData("gamepad.2,a", gamepad2.a);
-            telemetry.addData("gamepad.y Servo", servos.servo1.getPosition());
+            //   telemetry.addData("gamepad.y Servo", servos.servo1.setPower(0));
             telemetry.addData("voltage of Ranger", sensors.distanceSensor.getVoltage());
             telemetry.update();
         }

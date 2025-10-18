@@ -172,7 +172,6 @@ public class IntoTheDeep {
         servo1.setDirection(Servo.Direction.REVERSE);
         servo3.setDirection(Servo.Direction.REVERSE);
         opMode.telemetry.addData("servo", servo1.getPosition());
-        servos.servo1.setPosition(.9);
         servo3.setPosition(.8);
         opMode.telemetry.update();
     }
@@ -213,31 +212,31 @@ public class IntoTheDeep {
         slideMotor1.setPower(command);
     }
 
-    public void slideTeleOp(double speed, double distance) {
-        if (opMode.opModeIsActive()) {
-            motors.setSlideMotorMode(DcMotor.RunMode.RUN_USING_ENCODER);
-            int moveCounts = (int) (distance * COUNTS_PER_INCH);
-            slideTarget = slideMotor1.getCurrentPosition() + moveCounts;
-            slideMotor1.setTargetPosition(slideTarget);
-            motors.setSlideMotorMode(DcMotor.RunMode.RUN_TO_POSITION);
-            motors.rightSlide(speed, 0);
-        }
-    }
+//    public void slideTeleOp(double speed, double distance) {
+//        if (opMode.opModeIsActive()) {
+//            motors.setSlideMotorMode(DcMotor.RunMode.RUN_USING_ENCODER);
+//            int moveCounts = (int) (distance * COUNTS_PER_INCH);
+//            slideTarget = slideMotor1.getCurrentPosition() + moveCounts;
+//            slideMotor1.setTargetPosition(slideTarget);
+//            motors.setSlideMotorMode(DcMotor.RunMode.RUN_TO_POSITION);
+//            motors.rightSlide(speed, 0);
+//        }
+//    }
 
-    public void slideAuto(double speed, double distance) {
-        if (opMode.opModeIsActive()) {
-            motors.setSlideMotorMode(DcMotor.RunMode.RUN_USING_ENCODER);
-            int moveCounts = (int) (distance * COUNTS_PER_INCH);
-            slideTarget = slideMotor1.getCurrentPosition() + moveCounts;
-            slideMotor1.setTargetPosition(slideTarget);
-
-            motors.setSlideMotorMode(DcMotor.RunMode.RUN_TO_POSITION);
-            motors.rightSlide(speed, 0);
-            while (opMode.opModeIsActive() && slideMotor1.isBusy()) {
-
-            }
-        }
-    }
+//    public void slideAuto(double speed, double distance) {
+//        if (opMode.opModeIsActive()) {
+//            motors.setSlideMotorMode(DcMotor.RunMode.RUN_USING_ENCODER);
+//            int moveCounts = (int) (distance * COUNTS_PER_INCH);
+//            slideTarget = slideMotor1.getCurrentPosition() + moveCounts;
+//            slideMotor1.setTargetPosition(slideTarget);
+//
+//            motors.setSlideMotorMode(DcMotor.RunMode.RUN_TO_POSITION);
+//            motors.rightSlide(speed, 0);
+//            while (opMode.opModeIsActive() && slideMotor1.isBusy()) {
+//
+//            }
+//        }
+//    }
 
     public void startSlidePID() {
         int targetPosition = 60;
