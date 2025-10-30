@@ -33,7 +33,7 @@ public class decode {
     public CRServo servo1;
     public CRServo servo2;
     public CRServo servo3;
-    public Servo servo4;
+    public CRServo servo4;
     //    public DcMotorEx slideMotor1;
 //    public DigitalChannel slideTouch1;
 //    private PIDController PIDArm;
@@ -69,7 +69,7 @@ public class decode {
         servo1 = opMode.hardwareMap.get(CRServo.class, "servo1");
         servo2 = opMode.hardwareMap.get(CRServo.class, "servo2");
         servo3 = opMode.hardwareMap.get(CRServo.class, "servo3");
-        servo4 = opMode.hardwareMap.get(Servo.class, "servo4");
+        servo4 = opMode.hardwareMap.get(CRServo.class, "servo4");
         motor1 = opMode.hardwareMap.get(DcMotorEx.class, "motor1");
         motor2 = opMode.hardwareMap.get(DcMotorEx.class, "motor2");
         motor1.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
@@ -98,6 +98,15 @@ public class decode {
         servo3.setPower(1);
     }
 
+    public void shootPusher() {
+        servo1.setPower(-.7);
+        servo3.setPower(1);
+    }
+
+    public void transfer() {
+        motor2.setPower(-.8);
+    }
+
     public void spitOutCollection() {
         servo1.setPower(1);
         servo2.setPower(-1);
@@ -111,19 +120,14 @@ public class decode {
     }
 
     public void teleOpShoot() {
-        if (opMode.gamepad1.right_bumper) {
-            motor1.setPower(.5);
-            motor2.setPower(-.4);
-        } else {
-            motor1.setPower(.9);
-            motor2.setPower(-8.7);
 
-        }
+        motor1.setPower(-.9);
+
     }
 
     public void autoShoot() {
-        motor1.setPower(.9);
-        motor2.setPower(-8.7);
+        motor1.setPower(-.9);
+
     }
 
     public void teleOpShootReverse() {
@@ -196,6 +200,19 @@ public class decode {
         } else {
             collectionRest();
         }
+    }
+
+    public boolean iswallThere() {
+        double difference = Math.abs(lastCountOfVoltage - sensors.distanceSensor.getVoltage());
+        opMode.telemetry.addData("difference", difference);
+        lastCountOfVoltage = sensors.distanceSensor.getVoltage();
+        opMode.telemetry.addData("lastCountOfVoltage", lastCountOfVoltage);
+        if (difference >= voltageChangedThreshold) {
+            return true;
+        }
+
+        return false;
+
     }
 
 

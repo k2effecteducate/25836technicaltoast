@@ -13,7 +13,7 @@ public class Servos {
     public CRServo servo1;
     public CRServo servo2;
     public CRServo servo3;
-    public Servo servo4;
+    public CRServo servo4;
 
 
     public Servos(LinearOpMode myOpMode) {
@@ -27,7 +27,7 @@ public class Servos {
         servo1 = opMode.hardwareMap.get(CRServo.class, "servo1");
         servo2 = opMode.hardwareMap.get(CRServo.class, "servo2");
         servo3 = opMode.hardwareMap.get(CRServo.class, "servo3");
-        servo4 = opMode.hardwareMap.get(Servo.class, "servo4");
+        servo4 = opMode.hardwareMap.get(CRServo.class, "servo4");
 
 
     }

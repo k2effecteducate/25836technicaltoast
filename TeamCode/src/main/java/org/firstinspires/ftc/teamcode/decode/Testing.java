@@ -4,6 +4,7 @@ import com.qualcomm.hardware.limelightvision.LLResult;
 import com.qualcomm.hardware.limelightvision.LLResultTypes;
 import com.qualcomm.hardware.limelightvision.LLStatus;
 import com.qualcomm.hardware.limelightvision.Limelight3A;
+import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
@@ -14,7 +15,7 @@ import org.firstinspires.ftc.teamcode.robot.Movement;
 import java.util.List;
 
 
-@TeleOp(name = "testing", group = "Linear OpMode")
+@Autonomous(name = "testing", group = "Linear OpMode")
 
 public class Testing extends LinearOpMode {
 
@@ -45,7 +46,7 @@ public class Testing extends LinearOpMode {
                 movement.stopMotors();
 
             } else {
-                movement.turnLeft(.2, 0);
+                //odometry movement
             }
             movement.teleOpControls();
             LLStatus status = limelight.getStatus();

@@ -12,7 +12,7 @@ import org.firstinspires.ftc.teamcode.pedroPathing.Constants;
 
 @Autonomous
 public class BigZoneBlue extends LinearOpMode {
-    public static double DISTANCE = 35;
+    public static double DISTANCE = -25;
     private ElapsedTime runtime = new ElapsedTime();
     decode decode = new decode(this);
 
@@ -26,8 +26,12 @@ public class BigZoneBlue extends LinearOpMode {
         Path forwards = new Path(new BezierLine(new Pose(0, 0), new Pose(DISTANCE, 0)));
         forwards.setConstantHeadingInterpolation(0);
 
-        Path strafeLeft = new Path(new BezierLine(new Pose(DISTANCE, 0), new Pose(DISTANCE, -20)));
+        Path strafeLeft = new Path(new BezierLine(new Pose(DISTANCE, 0), new Pose(DISTANCE, 20)));
         strafeLeft.setConstantHeadingInterpolation(0);
+        Path turn = new Path(new BezierLine(new Pose(DISTANCE, 0), new Pose(DISTANCE, 0)));
+        turn.setConstantHeadingInterpolation(20);
+        Path turnForward = new Path(new BezierLine(new Pose(DISTANCE, 0), new Pose(DISTANCE, 15)));
+        turnForward.setConstantHeadingInterpolation(20);
 
 
         follower.followPath(forwards);
@@ -36,43 +40,29 @@ public class BigZoneBlue extends LinearOpMode {
         }
 
 
-        runtime.reset();
         decode.autoShoot();
+        sleep(2000);
+        decode.transfer();
         sleep(1000);
-        while (opModeIsActive() && (runtime.seconds() < 4)) {
-            decode.servo4.setPosition(.7);
-            sleep(1000);
-            decode.servo4.setPosition(0);
-            sleep(1000);
-        }
-        decode.ShootStop();
-        sleep(500);
         decode.collection();
         sleep(2000);
         decode.collectionRest();
         decode.autoShoot();
+        sleep(2000);
+        decode.transfer();
         sleep(1000);
-        runtime.reset();
-        while (opModeIsActive() && (runtime.seconds() < 4)) {
-            decode.servo4.setPosition(.7);
-            sleep(1000);
-            decode.servo4.setPosition(0);
-            sleep(1000);
-        }
         decode.collection();
         sleep(2000);
         decode.collectionRest();
         decode.autoShoot();
+        sleep(2000);
+        decode.transfer();
         sleep(1000);
-        runtime.reset();
-        while (opModeIsActive() && (runtime.seconds() < 4)) {
-            decode.servo4.setPosition(.7);
-            sleep(1000);
-            decode.servo4.setPosition(0);
-            sleep(1000);
-        }
-        follower.followPath(strafeLeft);
+        decode.collection();
+        sleep(2000);
+        decode.collectionRest();
 
+        follower.followPath(strafeLeft);
         while (opModeIsActive() && follower.isBusy()) {
             follower.update();
 

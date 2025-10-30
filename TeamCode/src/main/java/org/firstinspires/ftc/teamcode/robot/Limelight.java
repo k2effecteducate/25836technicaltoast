@@ -42,9 +42,16 @@ public class Limelight {
                 foundTag = true;
             }
 
+            if (foundTag) {
+                // stop Odometry movement
+
+            } else {
+                //odometry movement
+            }
         }
         return foundTag;
     }
+
 
     public List<Integer> getAprilTagIDs() {
 

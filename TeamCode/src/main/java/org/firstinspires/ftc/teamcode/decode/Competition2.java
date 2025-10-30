@@ -43,10 +43,17 @@ public class Competition2 extends LinearOpMode {
 //                telemetry.addData("resetOdometry", "reset");
 //            }
             if (gamepad1.x) {
-                servos.servo4.setPosition(.7);
+                decode.motor2.setPower(-.9);
             } else {
-                servos.servo4.setPosition(0);
+                decode.motor2.setPower(0);
             }
+            if (gamepad1.dpad_up) {
+
+                decode.motor2.setPower(.9);
+            } else {
+                decode.motor2.setPower(0);
+            }
+
 
             switch (robotState) {
 
@@ -54,7 +61,9 @@ public class Competition2 extends LinearOpMode {
 
                     decode.resetDistanceCounter();
                     decode.teleOpShoot();
-                    servos.stopServos();
+                    decode.shootPusher();
+                    decode.servo2.setPower(0);
+
 
                     if (gamepad1.a) {
 
@@ -70,7 +79,8 @@ public class Competition2 extends LinearOpMode {
 
 
                 case COLLECTION_A:
-                    decode.isArtifactThere();
+                    decode.collection();
+
                     motors.stopMotors();
 
 //                    if (sensors.isObjectDetected()) {

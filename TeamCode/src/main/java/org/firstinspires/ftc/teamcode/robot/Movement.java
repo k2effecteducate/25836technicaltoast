@@ -60,9 +60,9 @@ public class Movement {
 
     public void teleOpControls() {
 
-        double modifier = 2;
+        double modifier = 1;
         if (opMode.gamepad1.b) {
-            modifier = 4;
+            modifier = 1;
         }
         double drive = -opMode.gamepad1.left_stick_y;
         double turn = -opMode.gamepad1.left_stick_x;
