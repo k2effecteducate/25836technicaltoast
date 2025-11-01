@@ -12,7 +12,7 @@ import org.firstinspires.ftc.teamcode.pedroPathing.Constants;
 
 @Autonomous
 public class BigZoneRed extends LinearOpMode {
-    public static double DISTANCE = -25;
+    public static double DISTANCE = -30;
     private ElapsedTime runtime = new ElapsedTime();
     decode decode = new decode(this);
 

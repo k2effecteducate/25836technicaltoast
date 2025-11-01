@@ -12,7 +12,7 @@ import org.firstinspires.ftc.teamcode.pedroPathing.Constants;
 
 @Autonomous
 public class BigZoneBlue extends LinearOpMode {
-    public static double DISTANCE = -25;
+    public static double DISTANCE = -35;
     private ElapsedTime runtime = new ElapsedTime();
     decode decode = new decode(this);
 
@@ -26,7 +26,7 @@ public class BigZoneBlue extends LinearOpMode {
         Path forwards = new Path(new BezierLine(new Pose(0, 0), new Pose(DISTANCE, 0)));
         forwards.setConstantHeadingInterpolation(0);
 
-        Path strafeLeft = new Path(new BezierLine(new Pose(DISTANCE, 0), new Pose(DISTANCE, 20)));
+        Path strafeLeft = new Path(new BezierLine(new Pose(DISTANCE, 0), new Pose(DISTANCE, 28)));
         strafeLeft.setConstantHeadingInterpolation(0);
         Path turn = new Path(new BezierLine(new Pose(DISTANCE, 0), new Pose(DISTANCE, 0)));
         turn.setConstantHeadingInterpolation(20);
