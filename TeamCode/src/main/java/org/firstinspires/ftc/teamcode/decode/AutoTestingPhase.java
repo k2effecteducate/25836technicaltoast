@@ -13,7 +13,7 @@ import org.firstinspires.ftc.teamcode.robot.Motors;
 import org.firstinspires.ftc.teamcode.robot.Movement;
 
 @Autonomous
-public class BigZoneRed extends LinearOpMode {
+public class AutoTestingPhase extends LinearOpMode {
 
     private ElapsedTime runtime = new ElapsedTime();
     decode decode = new decode(this);
@@ -33,13 +33,14 @@ public class BigZoneRed extends LinearOpMode {
         waitForStart();
         follower.activateAllPIDFs();
         int firstForward = -12;
-        int secondForward = -20;
+        int secondForward = -40;
+        int thirdForward = 20;
 
         movement.odemetryForward(0, 0, firstForward, 0, 0);
         decode.autoShoot();
-        sleep(3000);
+        sleep(2000);
         decode.everythingAutoShoot();
-        sleep(500);
+        sleep(100);
         motors.stopMotors();
         sleep(200);
         decode.autoShoot();
@@ -48,16 +49,13 @@ public class BigZoneRed extends LinearOpMode {
         sleep(200);
         decode.everythingAutoShoot();
         sleep(2000);
-        decode.motor1.setPower(0);
         movement.odemetryForward(firstForward, 0, secondForward, 0, 0);
         sleep(100);
-        movement.turnLeft(.4, 300);
+        movement.turnLeft(-.7, 400);
         decode.collection();
-        decode.motor2.setPower(-.9);
-        sleep(100);
-        movement.forward(.4, 600);
+        movement.forward(.7, 700);
         decode.collection();
-        sleep(2000);
+        sleep(500);
 
 
 //        movement.odemetryStrafe(-40, 0, -40, 20, 45);

@@ -43,7 +43,8 @@ public class Competition2 extends LinearOpMode {
 //                telemetry.addData("resetOdometry", "reset");
 //            }
             if (gamepad1.x) {
-                decode.motor2.setPower(-.9);
+                decode.motor2.setPower(-.95);
+                servos.servo2.setPower(1);
             } else {
                 decode.motor2.setPower(0);
             }
@@ -73,15 +74,19 @@ public class Competition2 extends LinearOpMode {
 
                         robotState = RobotState.DISABLE;
                     }
+                    if (gamepad1.dpad_left) {
+                        robotState = RobotState.SPIT_OUT_B;
+                    }
 
 
                     break;
 
 
                 case COLLECTION_A:
+                    decode.motor1.setPower(0);
                     decode.collection();
-
                     motors.stopMotors();
+                    decode.isArtifactThere();
 
 //                    if (sensors.isObjectDetected()) {
 //                        sleep(100);
@@ -103,11 +108,6 @@ public class Competition2 extends LinearOpMode {
                     telemetry.update();
 
                     break;
-                case STUCK:
-                    if (gamepad1.y) {
-                        robotState = RobotState.SHOOT;
-                    }
-                    break;
 
                 case SHOOT_REST:
                     decode.resetDistanceCounter();
@@ -123,6 +123,7 @@ public class Competition2 extends LinearOpMode {
                     decode.resetDistanceCounter();
                     decode.spitOutCollection();
                     motors.stopMotors();
+                    decode.motor2.setPower(0);
                     if (gamepad1.y) {
                         robotState = RobotState.SHOOT;
                     }
@@ -140,6 +141,7 @@ public class Competition2 extends LinearOpMode {
                     decode.resetDistanceCounter();
                     motors.stopMotors();
                     servos.stopServos();
+                    decode.motor1.setPower(0);
 
 
                     if (gamepad1.a) {

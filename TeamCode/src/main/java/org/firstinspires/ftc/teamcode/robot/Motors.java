@@ -1,11 +1,8 @@
 package org.firstinspires.ftc.teamcode.robot;
 
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
-import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
-import com.qualcomm.robotcore.hardware.DigitalChannel;
-import com.qualcomm.robotcore.hardware.Servo;
 
 public class Motors {
     private LinearOpMode opMode;
@@ -18,8 +15,8 @@ public class Motors {
 
     private int motor1Target = 0;
     private int motor2Target = 0;
-    private DcMotor motor1;
-    private DcMotor motor2;
+    private DcMotorEx motor1;
+    private DcMotorEx motor2;
     static final double COUNTS_PER_MOTOR_REV = 537.7;
     static final double DRIVE_GEAR_REDUCTION = 1.0;
     static final double WHEEL_DIAMETER_INCHES = 96;
@@ -33,8 +30,8 @@ public class Motors {
     public void init() {
         //    imu = hardwareMap.get(Gyroscope.class, "imu");
 
-        motor1 = opMode.hardwareMap.get(DcMotor.class, "motor1");
-        motor2 = opMode.hardwareMap.get(DcMotor.class, "motor2");
+        motor1 = opMode.hardwareMap.get(DcMotorEx.class, "motor1");
+        motor2 = opMode.hardwareMap.get(DcMotorEx.class, "motor2");
 //
 //        servo1 = opMode.hardwareMap.get(Servo.class, "servo1");
 //        servo2 = opMode.hardwareMap.get(CRServo.class, "servo2");
@@ -62,8 +59,8 @@ public class Motors {
     }
 
     public void stopMotors() {
-        motor1.setPower(0);
         motor2.setPower(0);
+
         //  slideMotor2.setPower(0);
     }
 
@@ -95,7 +92,7 @@ public class Motors {
 
 //    public void setSlidePosition(double speed, double distance) {
 //        if (opMode.opModeIsActive()) {
-//            setSlideMotorMode(DcMotor.RunMode.RUN_USING_ENCODER);
+//            setMotorMode2(DcMotor.RunMode.RUN_USING_ENCODER);
 //            int moveCounts = (int) (distance * COUNTS_PER_INCH);
 //            motor2Target = motor2.getCurrentPosition() + moveCounts;
 //            motor2.setTargetPosition(motor2Target);
@@ -113,24 +110,24 @@ public class Motors {
 //        opMode.sleep(time);
 //    }
 
-    public void leftslide(double speed, long time) {
-        // slideMotor2.setPower(speed);
-        opMode.sleep(time);
-    }
-
-    public void armTeleOp(double speed, double distance) {
-        if (opMode.opModeIsActive()) {
-            setMotor1Mode(DcMotor.RunMode.RUN_USING_ENCODER);
-            int moveCounts = (int) (distance * COUNTS_PER_INCH);
-            motor1Target = motor1.getCurrentPosition() + moveCounts;
-            motor1.setTargetPosition(motor1Target);
-            opMode.telemetry.addData("motor1Target", motor1Target);
-
-
-            setMotor1Mode(DcMotor.RunMode.RUN_TO_POSITION);
-            motor1(speed, 0);
-        }
-    }
+//    public void leftslide(double speed, long time) {
+//        // slideMotor2.setPower(speed);
+//        opMode.sleep(time);
+//    }
+//
+//    public void armTeleOp(double speed, double distance) {
+//        if (opMode.opModeIsActive()) {
+//            setMotor1Mode(DcMotor.RunMode.RUN_USING_ENCODER);
+//            int moveCounts = (int) (distance * COUNTS_PER_INCH);
+//            motor1Target = motor1.getCurrentPosition() + moveCounts;
+//            motor1.setTargetPosition(motor1Target);
+//            opMode.telemetry.addData("motor1Target", motor1Target);
+//
+//
+//            setMotor1Mode(DcMotor.RunMode.RUN_TO_POSITION);
+//            motor1(speed, 0);
+//        }
+//    }
 
 //    public void closeSlideTouch() {
 //        if (!slideTouch1.getState()) {
@@ -144,7 +141,7 @@ public class Motors {
 //        motor2.setPower(.7);
 //    }
 
-    public void setSlideMotorMode(DcMotor.RunMode mode) {
+    public void setMotorMode2(DcMotor.RunMode mode) {
         motor2.setMode(mode);
         //  slideMotor2.setMode(mode);
     }

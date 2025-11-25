@@ -9,65 +9,68 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.teamcode.pedroPathing.Constants;
+import org.firstinspires.ftc.teamcode.robot.Motors;
+import org.firstinspires.ftc.teamcode.robot.Movement;
 
 @Autonomous
 public class BigZoneBlue extends LinearOpMode {
-    public static double DISTANCE = -35;
+
     private ElapsedTime runtime = new ElapsedTime();
     decode decode = new decode(this);
+    Movement movement = new Movement(this);
+    Motors motors = new Motors(this);
+
 
     @Override
     public void runOpMode() {
         Follower follower = Constants.createFollower(hardwareMap);
+
+
         decode.init();
+        movement.init();
+        motors.init();
+        runtime.reset();
         waitForStart();
         follower.activateAllPIDFs();
+        int firstForward = -12;
+        int secondForward = -20;
 
-        Path forwards = new Path(new BezierLine(new Pose(0, 0), new Pose(DISTANCE, 0)));
-        forwards.setConstantHeadingInterpolation(0);
-
-        Path strafeLeft = new Path(new BezierLine(new Pose(DISTANCE, 0), new Pose(DISTANCE, 28)));
-        strafeLeft.setConstantHeadingInterpolation(0);
-        Path turn = new Path(new BezierLine(new Pose(DISTANCE, 0), new Pose(DISTANCE, 0)));
-        turn.setConstantHeadingInterpolation(20);
-        Path turnForward = new Path(new BezierLine(new Pose(DISTANCE, 0), new Pose(DISTANCE, 15)));
-        turnForward.setConstantHeadingInterpolation(20);
-
-
-        follower.followPath(forwards);
-        while (opModeIsActive() && follower.isBusy()) {
-            follower.update();
-        }
-
-
+        movement.odemetryForward(0, 0, firstForward, 0, 0);
         decode.autoShoot();
+        sleep(3000);
+        decode.everythingAutoShoot();
+        sleep(500);
+        motors.stopMotors();
+        sleep(200);
+        decode.autoShoot();
+        sleep(1500);
+        decode.servo2.setPower(.7);
+        sleep(200);
+        decode.everythingAutoShoot();
         sleep(2000);
-        decode.transfer();
-        sleep(1000);
+        decode.motor1.setPower(0);
+        movement.odemetryForward(firstForward, 0, secondForward, 0, 0);
+        sleep(100);
+        movement.turnLeft(-.4, 300);
+        decode.collection();
+        decode.motor2.setPower(-.9);
+        sleep(100);
+        movement.forward(.4, 600);
         decode.collection();
         sleep(2000);
-        decode.collectionRest();
-        decode.autoShoot();
-        sleep(2000);
-        decode.transfer();
-        sleep(1000);
-        decode.collection();
-        sleep(2000);
-        decode.collectionRest();
-        decode.autoShoot();
-        sleep(2000);
-        decode.transfer();
-        sleep(1000);
-        decode.collection();
-        sleep(2000);
-        decode.collectionRest();
 
-        follower.followPath(strafeLeft);
-        while (opModeIsActive() && follower.isBusy()) {
-            follower.update();
 
-        }
+//        movement.odemetryStrafe(-40, 0, -40, 20, 45);
+//        sleep(100);
+//        decode.collection();
+//        sleep(2000);
+//        movement.odemetryForward(-40, 0, -20, 20, 45);
+//        sleep(100);
+//        decode.collection();
+//        sleep(2000);
+
 
     }
 }
+
 

@@ -1,9 +1,17 @@
 package org.firstinspires.ftc.teamcode.robot;
 
 
+import com.pedropathing.follower.Follower;
+import com.pedropathing.geometry.BezierLine;
+import com.pedropathing.geometry.Pose;
+import com.pedropathing.paths.Path;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
+import com.qualcomm.robotcore.hardware.DcMotorSimple;
+import com.qualcomm.robotcore.util.ElapsedTime;
+
+import org.firstinspires.ftc.teamcode.pedroPathing.Constants;
 
 public class Movement {
     private LinearOpMode opMode;
@@ -21,7 +29,9 @@ public class Movement {
     private int backLeftTarget = 0;
     private int frontRightTarget = 0;
     private int backRightTarget = 0;
+    public static double DISTANCE = -35;
 
+    private ElapsedTime runtime = new ElapsedTime();
 
     static final double COUNTS_PER_MOTOR_REV = 537.7;
     static final double DRIVE_GEAR_REDUCTION = 19.2;
@@ -33,12 +43,13 @@ public class Movement {
     }
 
     public void init() {
+
         backRight = opMode.hardwareMap.get(DcMotorEx.class, "backRight");
         backLeft = opMode.hardwareMap.get(DcMotorEx.class, "backLeft");
         frontRight = opMode.hardwareMap.get(DcMotorEx.class, "frontRight");
         frontLeft = opMode.hardwareMap.get(DcMotorEx.class, "frontLeft");
-        frontLeft.setDirection(DcMotor.Direction.REVERSE);
-        backLeft.setDirection(DcMotor.Direction.REVERSE);
+        //  frontLeft.setDirection(DcMotor.Direction.REVERSE);
+        frontRight.setDirection(DcMotor.Direction.REVERSE);
         frontLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         frontRight.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         backLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
@@ -58,20 +69,55 @@ public class Movement {
     }
 
 
+    public void odemetryForward(double WhereWeAreX, double WhereWeAreY, double WhereWeAreGoingX, double WhereWeAreGoingY, double heading) {
+        Follower follower = Constants.createFollower(opMode.hardwareMap);
+        follower.activateAllPIDFs();
+        Path forwards = new Path(new BezierLine(new Pose(WhereWeAreX, WhereWeAreY), new Pose(WhereWeAreGoingX, WhereWeAreGoingY)));
+        forwards.setConstantHeadingInterpolation(heading);
+        follower.followPath(forwards);
+        while (opMode.opModeIsActive() && follower.isBusy()) {
+            follower.update();
+        }
+    }
+
+    public void odemetryStrafe(double WhereWeAreX, double WhereWeAreY, double WhereWeAreGoingX, double WhereWeAreGoingY, double heading) {
+        Follower follower = Constants.createFollower(opMode.hardwareMap);
+        follower.activateAllPIDFs();
+        Path strafeLeft = new Path(new BezierLine(new Pose(WhereWeAreX, WhereWeAreY), new Pose(WhereWeAreGoingX, WhereWeAreGoingY)));
+        strafeLeft.setConstantHeadingInterpolation(heading);
+        follower.followPath(strafeLeft);
+        while (opMode.opModeIsActive() && follower.isBusy()) {
+            follower.update();
+        }
+    }
+
+    public void odemetryTurn(double WhereWeAreX, double WhereWeAreY, double WhereWeAreGoingX, double WhereWeAreGoingY, double heading) {
+        Follower follower = Constants.createFollower(opMode.hardwareMap);
+        follower.activateAllPIDFs();
+        Path turn = new Path(new BezierLine(new Pose(WhereWeAreX, WhereWeAreY), new Pose(WhereWeAreGoingX, WhereWeAreGoingY)));
+
+        turn.setConstantHeadingInterpolation(heading);
+        follower.followPath(turn);
+        while (opMode.opModeIsActive() && follower.isBusy()) {
+            follower.update();
+        }
+    }
+
+
     public void teleOpControls() {
 
         double modifier = 1;
         if (opMode.gamepad1.b) {
             modifier = 1;
         }
-        double drive = -opMode.gamepad1.left_stick_y;
-        double turn = -opMode.gamepad1.left_stick_x;
-        double strafe = -opMode.gamepad1.right_stick_x;
+        double drive = opMode.gamepad1.left_stick_y;
+        double turn = -opMode.gamepad1.right_stick_x;
+        double strafe = opMode.gamepad1.left_stick_x;
         double MrHand = -opMode.gamepad2.left_stick_y;
         backLeft.setPower((drive - strafe + turn) / modifier);
-        frontLeft.setPower((drive - strafe - turn) / modifier);
+        frontLeft.setPower((drive + strafe + turn) / modifier);
         backRight.setPower((drive + strafe - turn) / modifier);
-        frontRight.setPower((drive + strafe + turn) / modifier);
+        frontRight.setPower((drive - strafe - turn) / modifier);
 
     }
 

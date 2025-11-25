@@ -51,6 +51,8 @@ public class decode {
     public Odometry odometry;
     private Follower follower;
     public Sensors sensors;
+    public static int targetSpeed = -3000;
+
     //   public static int targetSlideUpPosition = -7480;
     public static double flyWheelOne = 40;
     public static double flyWheelTwo = 35;
@@ -113,22 +115,27 @@ public class decode {
         servo3.setPower(-1);
     }
 
-    public void shootAuto() {
-        motor1.setPower(1);
-        opMode.sleep(10000);
-        motor1.setPower(0);
+    public void everythingAutoShoot() {
+        // servo2.setPower(.7);
+        motor2.setPower(-.9);
+        motor1.setPower(-.95);
+
     }
 
     public void teleOpShoot() {
 
-        motor1.setPower(-.9);
+        //  motor1.setPower(-.9);
+        motor1.setVelocity(targetSpeed);
+
 
     }
 
     public void autoShoot() {
         motor1.setPower(-.9);
 
+
     }
+
 
     public void teleOpShootReverse() {
         motor1.setPower(-.2);
@@ -197,10 +204,10 @@ public class decode {
         if (counterDistance < 3) {
             checkArtifactWithCounter();
             collection();
-        } else {
-            collectionRest();
+
         }
     }
+
 
     public boolean iswallThere() {
         double difference = Math.abs(lastCountOfVoltage - sensors.distanceSensor.getVoltage());
@@ -323,23 +330,23 @@ public class decode {
 
 //    public void slideTeleOp(double speed, double distance) {
 //        if (opMode.opModeIsActive()) {
-//            motors.setSlideMotorMode(DcMotor.RunMode.RUN_USING_ENCODER);
+//            motors.setMotorMode2(DcMotor.RunMode.RUN_USING_ENCODER);
 //            int moveCounts = (int) (distance * COUNTS_PER_INCH);
 //            slideTarget = slideMotor1.getCurrentPosition() + moveCounts;
 //            slideMotor1.setTargetPosition(slideTarget);
-//            motors.setSlideMotorMode(DcMotor.RunMode.RUN_TO_POSITION);
+//            motors.setMotorMode2(DcMotor.RunMode.RUN_TO_POSITION);
 //            motors.rightSlide(speed, 0);
 //        }
 //    }
 
 //    public void slideAuto(double speed, double distance) {
 //        if (opMode.opModeIsActive()) {
-//            motors.setSlideMotorMode(DcMotor.RunMode.RUN_USING_ENCODER);
+//            motors.setMotorMode2(DcMotor.RunMode.RUN_USING_ENCODER);
 //            int moveCounts = (int) (distance * COUNTS_PER_INCH);
 //            slideTarget = slideMotor1.getCurrentPosition() + moveCounts;
 //            slideMotor1.setTargetPosition(slideTarget);
 //
-//            motors.setSlideMotorMode(DcMotor.RunMode.RUN_TO_POSITION);
+//            motors.setMotorMode2(DcMotor.RunMode.RUN_TO_POSITION);
 //            motors.rightSlide(speed, 0);
 //            while (opMode.opModeIsActive() && slideMotor1.isBusy()) {
 //
@@ -355,7 +362,7 @@ public class decode {
 //        opMode.telemetry.addData("currentPosition", slideMotor1.getCurrentPosition());
 //
 //        slideMotor1.setPower(command);
-//        motors.setSlideMotorMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+//        motors.setMotorMode2(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
 
 
     // }

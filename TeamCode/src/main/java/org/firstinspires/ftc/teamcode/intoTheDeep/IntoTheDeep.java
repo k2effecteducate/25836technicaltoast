@@ -214,23 +214,23 @@ public class IntoTheDeep {
 
 //    public void slideTeleOp(double speed, double distance) {
 //        if (opMode.opModeIsActive()) {
-//            motors.setSlideMotorMode(DcMotor.RunMode.RUN_USING_ENCODER);
+//            motors.setMotorMode2(DcMotor.RunMode.RUN_USING_ENCODER);
 //            int moveCounts = (int) (distance * COUNTS_PER_INCH);
 //            slideTarget = slideMotor1.getCurrentPosition() + moveCounts;
 //            slideMotor1.setTargetPosition(slideTarget);
-//            motors.setSlideMotorMode(DcMotor.RunMode.RUN_TO_POSITION);
+//            motors.setMotorMode2(DcMotor.RunMode.RUN_TO_POSITION);
 //            motors.rightSlide(speed, 0);
 //        }
 //    }
 
 //    public void slideAuto(double speed, double distance) {
 //        if (opMode.opModeIsActive()) {
-//            motors.setSlideMotorMode(DcMotor.RunMode.RUN_USING_ENCODER);
+//            motors.setMotorMode2(DcMotor.RunMode.RUN_USING_ENCODER);
 //            int moveCounts = (int) (distance * COUNTS_PER_INCH);
 //            slideTarget = slideMotor1.getCurrentPosition() + moveCounts;
 //            slideMotor1.setTargetPosition(slideTarget);
 //
-//            motors.setSlideMotorMode(DcMotor.RunMode.RUN_TO_POSITION);
+//            motors.setMotorMode2(DcMotor.RunMode.RUN_TO_POSITION);
 //            motors.rightSlide(speed, 0);
 //            while (opMode.opModeIsActive() && slideMotor1.isBusy()) {
 //
@@ -246,7 +246,7 @@ public class IntoTheDeep {
         opMode.telemetry.addData("currentPosition", slideMotor1.getCurrentPosition());
 
         slideMotor1.setPower(command);
-        motors.setSlideMotorMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        motors.setMotorMode2(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
 
 
     }
