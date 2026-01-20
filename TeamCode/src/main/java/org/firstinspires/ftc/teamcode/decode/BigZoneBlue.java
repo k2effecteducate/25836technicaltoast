@@ -32,32 +32,27 @@ public class BigZoneBlue extends LinearOpMode {
         runtime.reset();
         waitForStart();
         follower.activateAllPIDFs();
+        decode.resetOdometry();
         int firstForward = -12;
         int secondForward = -20;
 
+        decode.collection();
+        sleep(100);
+        decode.resetOdometry();
         movement.odemetryForward(0, 0, firstForward, 0, 0);
-        decode.autoShoot();
-        sleep(3000);
-        decode.everythingAutoShoot();
-        sleep(500);
-        motors.stopMotors();
-        sleep(200);
-        decode.autoShoot();
-        sleep(1500);
-        decode.servo2.setPower(.7);
-        sleep(200);
-        decode.everythingAutoShoot();
-        sleep(2000);
-        decode.motor1.setPower(0);
+        decode.autoShooting();
+        decode.autoShooting();
+        motors.motor2.setPower(-.7);
+        sleep(100);
+        decode.autoShooting();
+        decode.autoShooting();
         movement.odemetryForward(firstForward, 0, secondForward, 0, 0);
         sleep(100);
         movement.turnLeft(-.4, 300);
-        decode.collection();
-        decode.motor2.setPower(-.9);
         sleep(100);
-        movement.forward(.4, 600);
-        decode.collection();
-        sleep(2000);
+        movement.forward(.4, 800);
+//        decode.collection();
+//        sleep(2000);
 
 
 //        movement.odemetryStrafe(-40, 0, -40, 20, 45);

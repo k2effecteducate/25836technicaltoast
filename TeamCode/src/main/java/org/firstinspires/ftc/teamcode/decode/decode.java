@@ -51,7 +51,9 @@ public class decode {
     public Odometry odometry;
     private Follower follower;
     public Sensors sensors;
-    public static int targetSpeed = -3000;
+    public static double targetRPM = -5000;
+    public static double ticksPerRev = 28;
+    public static double ticksPerSec = (targetRPM / 60.0) * ticksPerRev;
 
     //   public static int targetSlideUpPosition = -7480;
     public static double flyWheelOne = 40;
@@ -94,6 +96,17 @@ public class decode {
 
     }
 
+    public void autoShooting() {
+        collection();
+        opMode.sleep(100);
+        autoShoot();
+        opMode.sleep(3000);
+        everythingAutoShoot();
+        opMode.sleep(100);
+        motor2.setPower(0);
+        opMode.sleep(200);
+    }
+
     public void collection() {
         servo1.setPower(-1);
         servo2.setPower(.7);
@@ -118,14 +131,16 @@ public class decode {
     public void everythingAutoShoot() {
         // servo2.setPower(.7);
         motor2.setPower(-.9);
-        motor1.setPower(-.95);
+        //   motor1.setPower(-.95);
 
     }
 
     public void teleOpShoot() {
+        double actualRPM = (motor1.getVelocity() / ticksPerRev) * 60;
 
         //  motor1.setPower(-.9);
-        motor1.setVelocity(targetSpeed);
+        motor1.setVelocity(ticksPerSec);
+        opMode.telemetry.addData("actualRPM", actualRPM);
 
 
     }
@@ -138,13 +153,13 @@ public class decode {
 
 
     public void teleOpShootReverse() {
-        motor1.setPower(-.2);
+        // motor1.setPower(-.2);
         motor2.setPower(.2);
 
     }
 
     public void ShootStop() {
-        motor1.setPower(0);
+        //   motor1.setPower(0);
         motor2.setPower(0);
 
     }

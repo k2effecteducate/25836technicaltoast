@@ -27,7 +27,7 @@ public class SmallZoneRed extends LinearOpMode {
         Path forwards = new Path(new BezierLine(new Pose(0, 0), new Pose(DISTANCE, 0)));
         forwards.setConstantHeadingInterpolation(0);
 
-        Path strafeLeft = new Path(new BezierLine(new Pose(DISTANCE, 0), new Pose(DISTANCE, -20)));
+        Path strafeLeft = new Path(new BezierLine(new Pose(DISTANCE, 0), new Pose(DISTANCE, 20)));
         strafeLeft.setConstantHeadingInterpolation(0);
 
 

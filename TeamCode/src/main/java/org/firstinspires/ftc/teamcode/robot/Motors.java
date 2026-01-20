@@ -15,8 +15,8 @@ public class Motors {
 
     private int motor1Target = 0;
     private int motor2Target = 0;
-    private DcMotorEx motor1;
-    private DcMotorEx motor2;
+    public DcMotorEx motor1;
+    public DcMotorEx motor2;
     static final double COUNTS_PER_MOTOR_REV = 537.7;
     static final double DRIVE_GEAR_REDUCTION = 1.0;
     static final double WHEEL_DIAMETER_INCHES = 96;
