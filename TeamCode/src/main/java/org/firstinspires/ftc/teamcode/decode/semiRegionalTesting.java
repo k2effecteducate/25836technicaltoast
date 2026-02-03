@@ -5,16 +5,15 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
 import org.firstinspires.ftc.teamcode.robot.Motors;
 import org.firstinspires.ftc.teamcode.robot.Movement;
-
 import org.firstinspires.ftc.teamcode.robot.Servos;
 
 
-@TeleOp(name = "Competition2 ", group = "Linear OpMode")
+@TeleOp(name = "semiRegionalTesting ", group = "Linear OpMode")
 
-public class Competition2 extends LinearOpMode {
+public class semiRegionalTesting extends LinearOpMode {
 
     public enum RobotState {
-        COLLECTION_A, SHOOT, SHOOT_REST, SPIT_OUT_B, DISABLE, LINE_UP
+        COLLECTION_A, SHOOT, SHOOT_REST, SPIT_OUT_B, DISABLE, LINE_UP, OVERRIDE
     }
 
     RobotState robotState = RobotState.DISABLE;
@@ -35,13 +34,14 @@ public class Competition2 extends LinearOpMode {
 
 
         waitForStart();
+
         while (opModeIsActive()) {
+
+
             telemetry.addData("state", robotState);
             movement.teleOpControls();
-//            if (gamepad1.left_bumper) {
-//                decode.resetOdometry();
-//                telemetry.addData("resetOdometry", "reset");
-//            }
+
+
             if (gamepad1.x) {
                 decode.motor2.setPower(-.95);
                 servos.servo2.setPower(1);
@@ -55,15 +55,16 @@ public class Competition2 extends LinearOpMode {
                 decode.motor2.setPower(0);
             }
 
+            decode.isApriltagDetected();
+
 
             switch (robotState) {
 
                 case SHOOT:
-
+                    decode.apriltagDetected();
                     decode.resetDistanceCounter();
-                    decode.teleOpShoot();
+                    //      decode.teleOpShoot();
                     decode.shootPusher();
-                    decode.servo2.setPower(0);
 
 
                     if (gamepad1.a) {
@@ -173,11 +174,33 @@ public class Competition2 extends LinearOpMode {
 
 
                     break;
+                case OVERRIDE:
+
+                    if (gamepad1.start && gamepad1.right_bumper) {
+                        robotState = RobotState.DISABLE;
+                    }
+                    if (gamepad1.a) {
+                        decode.collection();
+                    }
+                    if (gamepad1.y) {
+                        decode.teleOpShoot();
+                    }
+                    if (gamepad1.b) {
+                        decode.resetDistanceCounter();
+                        motors.stopMotors();
+                        servos.stopServos();
+                        decode.motor1.setPower(0);
+
+                    }
+
+
+                    break;
             }
 
         }
         telemetry.update();
     }
 }
+
 
 

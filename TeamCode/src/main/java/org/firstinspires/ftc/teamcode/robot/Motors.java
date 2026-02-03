@@ -32,21 +32,7 @@ public class Motors {
 
         motor1 = opMode.hardwareMap.get(DcMotorEx.class, "motor1");
         motor2 = opMode.hardwareMap.get(DcMotorEx.class, "motor2");
-//
-//        servo1 = opMode.hardwareMap.get(Servo.class, "servo1");
-//        servo2 = opMode.hardwareMap.get(CRServo.class, "servo2");
-//        slideMotor1 = opMode.hardwareMap.get(DcMotor.class, "slideMotor1");
-//        //  slideMotor2 = opMode.hardwareMap.get(DcMotor.class, "slideMotor2");
-//        slideTouch1 = opMode.hardwareMap.get(DigitalChannel.class, "slideTouch1");
-//        //slideTouch2 = opMode.hardwareMap.get(DigitalChannel.class, "slideTouch1");
-//        //  servo3 = opMode.hardwareMap.get(Servo.class, "servo3");
-//        slideTouch1.setMode(DigitalChannel.Mode.INPUT);
-//        //slideTouch2.setMode(DigitalChannel.Mode.INPUT);
-//        motor2.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-//        // slideMotor2.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-//        motor1.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-//        motor1.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-//        motor1.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+
 
         PIDmotor1 = new PIDController(.01, 0, .03);
 

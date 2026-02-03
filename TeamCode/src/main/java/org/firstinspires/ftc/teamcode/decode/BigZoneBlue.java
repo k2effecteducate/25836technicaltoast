@@ -52,10 +52,6 @@ public class BigZoneBlue extends LinearOpMode {
         sleep(100);
         movement.forward(.4, 800);
 //        decode.collection();
-//        sleep(2000);
-
-
-//        movement.odemetryStrafe(-40, 0, -40, 20, 45);
 //        sleep(100);
 //        decode.collection();
 //        sleep(2000);

@@ -10,9 +10,9 @@ import com.qualcomm.robotcore.hardware.Servo;
 public class Servos {
     private LinearOpMode opMode;
 
-    public CRServo servo1;
+    //public CRServo servo1;
     public CRServo servo2;
-    public CRServo servo3;
+    //  public CRServo servo3;
     public CRServo servo4;
 
 
@@ -24,10 +24,10 @@ public class Servos {
     public void init() {
         //    imu = hardwareMap.get(Gyroscope.class, "imu");
 
-        servo1 = opMode.hardwareMap.get(CRServo.class, "servo1");
+        // servo1 = opMode.hardwareMap.get(CRServo.class, "servo1");
         servo2 = opMode.hardwareMap.get(CRServo.class, "servo2");
-        servo3 = opMode.hardwareMap.get(CRServo.class, "servo3");
-        servo4 = opMode.hardwareMap.get(CRServo.class, "servo4");
+        // servo3 = opMode.hardwareMap.get(CRServo.class, "servo3");
+        // servo4 = opMode.hardwareMap.get(CRServo.class, "servo4");
 
 
     }
@@ -75,14 +75,14 @@ public class Servos {
     }
 
     public void disableServo1() {
-        servo1.getController().pwmDisable();
+        //servo1.getController().pwmDisable();
 
     }
 
     public void stopServos() {
-        servo1.setPower(0);
+        //    servo1.setPower(0);
         servo2.setPower(0);
-        servo3.setPower(0);
+        //  servo3.setPower(0);
         //  servo4.setPosition(0);
     }
 

@@ -51,19 +51,6 @@ public class BigZoneRed extends LinearOpMode {
         movement.turnLeft(.4, 300);
         sleep(100);
         movement.forward(.4, 900);
-//        decode.collection();
-//        sleep(2000);
-
-
-//        movement.odemetryStrafe(-40, 0, -40, 20, 45);
-//        sleep(100);
-//        decode.collection();
-//        sleep(2000);
-//        movement.odemetryForward(-40, 0, -20, 20, 45);
-//        sleep(100);
-//        decode.collection();
-//        sleep(2000);
-
 
     }
 }

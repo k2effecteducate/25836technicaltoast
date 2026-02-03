@@ -1,28 +1,25 @@
 package org.firstinspires.ftc.teamcode.decode;
 
-
 import com.bylazar.configurables.annotations.Configurable;
 import com.pedropathing.follower.Follower;
 import com.pedropathing.geometry.BezierLine;
 import com.pedropathing.geometry.Pose;
 import com.pedropathing.paths.Path;
+import com.qualcomm.hardware.limelightvision.LLResult;
+import com.qualcomm.hardware.limelightvision.Limelight3A;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
-import com.qualcomm.robotcore.hardware.DigitalChannel;
-import com.qualcomm.robotcore.hardware.Servo;
+import com.qualcomm.robotcore.hardware.IMU;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
+import org.firstinspires.ftc.robotcore.external.navigation.Pose3D;
 import org.firstinspires.ftc.teamcode.pedroPathing.Constants;
-import org.firstinspires.ftc.teamcode.robot.Motors;
 import org.firstinspires.ftc.teamcode.robot.Movement;
 import org.firstinspires.ftc.teamcode.robot.Odometry;
-import org.firstinspires.ftc.teamcode.robot.PIDController;
 import org.firstinspires.ftc.teamcode.robot.Sensors;
 import org.firstinspires.ftc.teamcode.robot.Servos;
-
-import java.util.Collection;
 
 @Configurable
 public class decode {
@@ -34,6 +31,9 @@ public class decode {
     public CRServo servo2;
     public CRServo servo3;
     public CRServo servo4;
+    public Limelight3A limelight;
+    public IMU imu;
+
     //    public DcMotorEx slideMotor1;
 //    public DigitalChannel slideTouch1;
 //    private PIDController PIDArm;
@@ -52,7 +52,7 @@ public class decode {
     private Follower follower;
     public Sensors sensors;
     public static double targetRPM = -5000;
-    public static double ticksPerRev = 28;
+    public static double ticksPerRev = 40;//28 TicksPerRev was the original with the small cut gecko wheels :)
     public static double ticksPerSec = (targetRPM / 60.0) * ticksPerRev;
 
     //   public static int targetSlideUpPosition = -7480;
@@ -70,12 +70,14 @@ public class decode {
 
 
     public void init() {
-        servo1 = opMode.hardwareMap.get(CRServo.class, "servo1");
+        // servo1 = opMode.hardwareMap.get(CRServo.class, "servo1");
         servo2 = opMode.hardwareMap.get(CRServo.class, "servo2");
-        servo3 = opMode.hardwareMap.get(CRServo.class, "servo3");
-        servo4 = opMode.hardwareMap.get(CRServo.class, "servo4");
+        //  servo3 = opMode.hardwareMap.get(CRServo.class, "servo3");
+        //   servo4 = opMode.hardwareMap.get(CRServo.class, "servo4");
         motor1 = opMode.hardwareMap.get(DcMotorEx.class, "motor1");
         motor2 = opMode.hardwareMap.get(DcMotorEx.class, "motor2");
+        limelight = opMode.hardwareMap.get(Limelight3A.class, "limelight");
+
         motor1.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         motor2.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         motor1.setMode(DcMotorEx.RunMode.RUN_USING_ENCODER);
@@ -92,8 +94,8 @@ public class decode {
         //  motors.init();
         movement.init();
         sensors.init();
-
-
+        limelight.start();
+        limelight.pipelineSwitch(0);
     }
 
     public void autoShooting() {
@@ -108,14 +110,11 @@ public class decode {
     }
 
     public void collection() {
-        servo1.setPower(-1);
         servo2.setPower(.7);
-        servo3.setPower(1);
     }
 
     public void shootPusher() {
-        servo1.setPower(-.7);
-        servo3.setPower(1);
+        servo2.setPower(.7);
     }
 
     public void transfer() {
@@ -123,27 +122,53 @@ public class decode {
     }
 
     public void spitOutCollection() {
-        servo1.setPower(1);
         servo2.setPower(-1);
-        servo3.setPower(-1);
     }
 
     public void everythingAutoShoot() {
-        // servo2.setPower(.7);
         motor2.setPower(-.9);
-        //   motor1.setPower(-.95);
 
     }
 
     public void teleOpShoot() {
         double actualRPM = (motor1.getVelocity() / ticksPerRev) * 60;
 
-        //  motor1.setPower(-.9);
+        // motor1.setPower(-.95);
         motor1.setVelocity(ticksPerSec);
         opMode.telemetry.addData("actualRPM", actualRPM);
 
 
     }
+
+    public void isApriltagDetected() {
+
+
+        LLResult llResult = limelight.getLatestResult();
+        if (llResult != null && llResult.isValid()) {
+            Pose3D botpose = llResult.getBotpose();
+            opMode.telemetry.addData("Tx", llResult.getTx());
+            opMode.telemetry.addData("Ty,", llResult.getTy());
+            opMode.telemetry.addData("Ta", llResult.getTa());
+            opMode.telemetry.addData("botPose", botpose.toString());
+
+        }
+        opMode.telemetry.update();
+    }
+
+    public void apriltagDetected() {
+
+        LLResult llResult = limelight.getLatestResult();
+        int pinpointX = odometry.pinpoint.getEncoderX();
+        int pinpointY = odometry.pinpoint.getEncoderY();
+        if (llResult.getTy() != 0) {
+            opMode.telemetry.addData("done ", "apriltag was detected :)");
+            teleOpShoot();
+        } else {
+            opMode.telemetry.addData("process ", "apriltag not detected :(");
+            motor1.setPower(0);
+        }
+    }
+
 
     public void autoShoot() {
         motor1.setPower(-.9);
