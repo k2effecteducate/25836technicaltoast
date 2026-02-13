@@ -8,7 +8,7 @@ import org.firstinspires.ftc.teamcode.robot.Movement;
 import org.firstinspires.ftc.teamcode.robot.Servos;
 
 
-@TeleOp(name = "semiRegionalTesting ", group = "Linear OpMode")
+@TeleOp(name = "SemiRegionalTesting ", group = "Linear OpMode")
 
 public class semiRegionalTesting extends LinearOpMode {
 
@@ -43,7 +43,7 @@ public class semiRegionalTesting extends LinearOpMode {
 
 
             if (gamepad1.x) {
-                decode.motor2.setPower(-.95);
+                decode.motor2.setPower(-1);
                 servos.servo2.setPower(1);
             } else {
                 decode.motor2.setPower(0);
@@ -51,8 +51,6 @@ public class semiRegionalTesting extends LinearOpMode {
             if (gamepad1.dpad_up) {
 
                 decode.motor2.setPower(.9);
-            } else {
-                decode.motor2.setPower(0);
             }
 
             decode.isApriltagDetected();

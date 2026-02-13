@@ -11,6 +11,7 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 import org.firstinspires.ftc.teamcode.pedroPathing.Constants;
 import org.firstinspires.ftc.teamcode.robot.Motors;
 import org.firstinspires.ftc.teamcode.robot.Movement;
+import org.firstinspires.ftc.teamcode.robot.Odometry;
 
 @Autonomous
 public class BigZoneBlue extends LinearOpMode {
@@ -19,6 +20,7 @@ public class BigZoneBlue extends LinearOpMode {
     decode decode = new decode(this);
     Movement movement = new Movement(this);
     Motors motors = new Motors(this);
+    Odometry odometry = new Odometry(this);
 
 
     @Override
@@ -27,30 +29,34 @@ public class BigZoneBlue extends LinearOpMode {
 
 
         decode.init();
+        odometry.init();
         movement.init();
         motors.init();
         runtime.reset();
         waitForStart();
+
         follower.activateAllPIDFs();
+        odometry.configurePinpoint();
         decode.resetOdometry();
         int firstForward = -12;
         int secondForward = -20;
-
         decode.collection();
         sleep(100);
         decode.resetOdometry();
         movement.odemetryForward(0, 0, firstForward, 0, 0);
         decode.autoShooting();
-        decode.autoShooting();
-        motors.motor2.setPower(-.7);
-        sleep(100);
-        decode.autoShooting();
-        decode.autoShooting();
         movement.odemetryForward(firstForward, 0, secondForward, 0, 0);
         sleep(100);
-        movement.turnLeft(-.4, 300);
-        sleep(100);
+        movement.turnLeft(-.4, 850);//-.4,300
+        sleep(200);
+        movement.forward(.4, 1700);
+        sleep(200);
+        decode.collection();
+        movement.turnLeft(.4, 560);//-.4,300
+        decode.collection();
+        sleep(200);
         movement.forward(.4, 800);
+
 //        decode.collection();
 //        sleep(100);
 //        decode.collection();

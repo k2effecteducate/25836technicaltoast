@@ -68,7 +68,6 @@ public class decode {
 
     }
 
-
     public void init() {
         // servo1 = opMode.hardwareMap.get(CRServo.class, "servo1");
         servo2 = opMode.hardwareMap.get(CRServo.class, "servo2");
@@ -78,8 +77,8 @@ public class decode {
         motor2 = opMode.hardwareMap.get(DcMotorEx.class, "motor2");
         limelight = opMode.hardwareMap.get(Limelight3A.class, "limelight");
 
-        motor1.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        motor2.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        motor1.setMode(DcMotorEx.RunMode.STOP_AND_RESET_ENCODER);
+        motor2.setMode(DcMotorEx.RunMode.STOP_AND_RESET_ENCODER);
         motor1.setMode(DcMotorEx.RunMode.RUN_USING_ENCODER);
         motor2.setMode(DcMotorEx.RunMode.RUN_USING_ENCODER);
         follower = Constants.createFollower(opMode.hardwareMap);
@@ -100,13 +99,28 @@ public class decode {
 
     public void autoShooting() {
         collection();
-        opMode.sleep(100);
-        autoShoot();
-        opMode.sleep(3000);
-        everythingAutoShoot();
-        opMode.sleep(100);
-        motor2.setPower(0);
-        opMode.sleep(200);
+//        opMode.sleep(100);
+//        autoShoot();
+//        opMode.sleep(3000);
+//        everythingAutoShoot();
+//        opMode.sleep(100);
+//        motor2.setPower(0);
+//        opMode.sleep(200);
+        teleOpShoot();
+        opMode.sleep(1200);
+        teleOpShoot();
+        motor2.setPower(-1);
+        opMode.sleep(1200);
+        teleOpShoot();
+        opMode.sleep(1200);
+        teleOpShoot();
+        motor2.setPower(-1);
+        opMode.sleep(1200);
+        teleOpShoot();
+        opMode.sleep(1200);
+        teleOpShoot();
+        motor2.setPower(-1);
+        opMode.sleep(1200);
     }
 
     public void collection() {
@@ -133,7 +147,7 @@ public class decode {
     public void teleOpShoot() {
         double actualRPM = (motor1.getVelocity() / ticksPerRev) * 60;
 
-        // motor1.setPower(-.95);
+//       motor1.setPower(-1);
         motor1.setVelocity(ticksPerSec);
         opMode.telemetry.addData("actualRPM", actualRPM);
 
@@ -165,17 +179,15 @@ public class decode {
             teleOpShoot();
         } else {
             opMode.telemetry.addData("process ", "apriltag not detected :(");
-            motor1.setPower(0);
+            //  motor1.setPower(0);
         }
     }
-
 
     public void autoShoot() {
         motor1.setPower(-.9);
 
 
     }
-
 
     public void teleOpShootReverse() {
         // motor1.setPower(-.2);
@@ -238,7 +250,6 @@ public class decode {
 
     }
 
-
     public void isArtifactThere() {
         opMode.telemetry.addData("counterDistance", counterDistance);
         if (counterDistance < 3) {
@@ -247,7 +258,6 @@ public class decode {
 
         }
     }
-
 
     public boolean iswallThere() {
         double difference = Math.abs(lastCountOfVoltage - sensors.distanceSensor.getVoltage());
@@ -261,8 +271,6 @@ public class decode {
         return false;
 
     }
-
-
 //
 //    public void armUp() {
 //        int targetPosition = 3000;
